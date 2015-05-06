@@ -1,0 +1,79 @@
+import Part
+from FreeCAD import Base
+from FreeCAD import Gui
+import math
+import BezCubic as BC
+
+# a loop of four cubic curves to test a surface patch generator
+
+#control points
+a = [Base.Vector(0.0,0.0,0.0),1.0]
+b = [Base.Vector(0.5,1.0,0.0),1]
+c = [Base.Vector(1.0,1.0,0),1]
+d = [Base.Vector(1.5,0.0,0.0),1.0]
+
+e= [Base.Vector(1.5,0.5,-0.5),1.0]
+f = [Base.Vector(1.5,0.5,-1),1.0]
+g = [Base.Vector(1.5,0,-1.5),1.0]
+
+h = [Base.Vector(1.0,0.5,-1.5),1.0]
+i = [Base.Vector(0.5,0.5,-1.5),1.0]
+j = [Base.Vector(0.0,0.0,-1.5),1.0]
+
+k = [Base.Vector(0.0,0.5,-1.0),1.0]
+l = [Base.Vector(0.0,-0.5,-0.5),1.0]
+
+# linear guides
+Lab = Part.Line(a[0],b[0])
+Lbc = Part.Line(b[0],c[0])
+Lcd = Part.Line(c[0],d[0])
+
+Lde = Part.Line(d[0],e[0])
+Lef = Part.Line(e[0],f[0])
+Lfg = Part.Line(f[0],g[0])
+
+Lgh = Part.Line(g[0],h[0])
+Lhi = Part.Line(h[0],i[0])
+Lij = Part.Line(i[0],j[0])
+
+Ljk = Part.Line(j[0],k[0])
+Lkl = Part.Line(k[0],l[0])
+Lla = Part.Line(l[0],a[0])
+
+
+Part.show(Lab.toShape())
+Part.show(Lbc.toShape())
+Part.show(Lcd.toShape())
+
+Part.show(Lde.toShape())
+Part.show(Lef.toShape())
+Part.show(Lfg.toShape())
+
+Part.show(Lgh.toShape())
+Part.show(Lhi.toShape())
+Part.show(Lij.toShape())
+
+Part.show(Ljk.toShape())
+Part.show(Lkl.toShape())
+Part.show(Lla.toShape())
+
+# curves
+poles1 = [a,b,c,d]
+poles2 = [d,e,f,g]
+poles3 = [g,h,i,j]
+poles4 = [j,k,l,a]
+
+bez1=BC.BezCubic_curve(poles1)
+bez2=BC.BezCubic_curve(poles2)
+bez3=BC.BezCubic_curve(poles3)
+bez4=BC.BezCubic_curve(poles4)
+
+
+Part.show(bez1.toShape())
+Part.show(bez2.toShape())
+Part.show(bez3.toShape())
+Part.show(bez4.toShape())
+
+Gui.SendMsgToActiveView("ViewFit")
+Gui.activeDocument().activeView().viewTop()
+
