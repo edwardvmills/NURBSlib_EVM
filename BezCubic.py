@@ -4,6 +4,11 @@ from FreeCAD import Gui
 import math
 
 
+# Bottom up view:
+# points, weights
+# BezCubic_curve() - IS pinned cubic rational B spline - AS Part.BSplineCurve() in cubic bezier form
+
+
 
 ## Order >= 2
 ## Order:  2 = line, 3 = quadratic, 4 = cubic ...
@@ -64,6 +69,16 @@ def quad_patch(c1,c2,c3,c4):
 	poles3=c3.getPoles()
 	poles4=c4.getPoles()
 
+	weights1=c1.getWeights()
+	weights2=c2.getWeights()
+	weights3=c3.getWeights()
+	weights4=c4.getWeights()
+
+	ctrls1=[poles1,weights1]
+	ctrls2=[poles2,weights2]
+	ctrls3=[poles3,weights3]
+	ctrls4=[poles4,weights4]
+
 	# fix edge orientation, going counterclockwise from first curve (c1)
 	quad_1_2 = orient_a_to_b(poles1,poles2)
 	quad_2_3 = orient_a_to_b(poles2,poles3)
@@ -101,6 +116,20 @@ def quad_patch(c1,c2,c3,c4):
 				p_2_0,p_2_1,p_2_2,p_2_3,
 				p_3_0,p_3_1,p_3_2,p_3_3]
 	return quad_patch
+
+def mid_edge_poly(quad_patch):
+	l_01_11=Part.Line(quad_patch[1], quad_patch[5])
+	l_10_11=Part.Line(quad_patch[4], quad_patch[5])
+	l_02_12=Part.Line(quad_patch[2], quad_patch[6])
+	l_13_12=Part.Line(quad_patch[7], quad_patch[6])
+	l_23_22=Part.Line(quad_patch[11], quad_patch[10])
+	l_32_22=Part.Line(quad_patch[14], quad_patch[10])
+	l_31_21=Part.Line(quad_patch[13], quad_patch[9])
+	l_20_21=Part.Line(quad_patch[8], quad_patch[9])
+	mid_edge_poly=[l_01_11, l_10_11, l_02_12, l_13_12, 
+				l_23_22, l_32_22, l_31_21, l_20_21]
+	return mid_edge_poly
+
 
 def BezCubic_patch(quad_patch):
 	# len(knot_u) := nNodes_u + degree_u + 1
