@@ -1,0 +1,127 @@
+import Part
+from FreeCAD import Base
+from FreeCAD import Gui
+import math
+import BezCubic as BC
+
+
+#########
+# PATCH A
+# u min, v min
+A_P00=Base.Vector(0,0,0)		# patch corner
+A_P00_u=Base.Vector(30,10,10)	# tangent u direction
+A_P00_v=Base.Vector(10,30,10)	# tangent v direction
+A_P10=A_P00+A_P00_u
+A_P01=A_P00+A_P00_v
+
+# u max, v min
+A_P30=Base.Vector(100,0,0)		# patch corner
+A_P30_u=Base.Vector(-30,0,10)	# tangent u direction
+A_P30_v=Base.Vector(0,30,20)	# tangent v direction
+A_P20=A_P30+A_P30_u
+A_P31=A_P30+A_P30_v
+
+# u max, v max
+A_P33=Base.Vector(100,100,0)	# patch corner
+A_P33_u=Base.Vector(-30,0,-10)  # tangent u direction
+A_P33_v=Base.Vector(0,-30,10)	# tangent v direction
+A_P23=A_P33+A_P33_u
+A_P32=A_P33+A_P33_v
+
+# u min, v max
+A_P03=Base.Vector(0,100,0)		# patch corner
+A_P03_u=Base.Vector(30,0,10)	# tangent u direction
+A_P03_v=Base.Vector(0,-30,10)	# tangent v direction
+A_P13=A_P03+A_P03_u
+A_P02=A_P03+A_P03_v
+
+#########
+# PATCH B
+# u min, v min
+B_P00=A_P30						# patch corner
+B_P10=B_P00-A_P30_u 			# tangent across the seam
+B_P01=B_P00+A_P30_v 			# tangent along the seam
+
+# u max, v min
+B_P30=Base.Vector(200,0,-100)		# patch corner
+B_P30_u=Base.Vector(-30,0,10)	# tangent u direction
+B_P30_v=Base.Vector(0,30,-10)	# tangent v direction
+B_P20=B_P30+B_P30_u
+B_P31=B_P30+B_P30_v
+
+# u max, v max
+B_P33=Base.Vector(200,100,-100)	# patch corner
+B_P33_u=Base.Vector(-30,0,-10)	# tangent u direction
+B_P33_v=Base.Vector(0,-30,10)	# tangent v direction
+B_P23=B_P33+B_P33_u
+B_P32=B_P33+B_P33_v
+
+# u min, v max
+B_P03=A_P33 					 # patch corner
+B_P13=B_P03-A_P33_u				 # tangent across the seam
+B_P02=B_P03+A_P33_v 			 # tangent along the seam
+
+####################
+# Curves
+
+# edge curves
+A_vmin_poles=[[A_P00,1],[A_P10,1],[A_P20,1],[A_P30,1]]
+A_vmax_poles=[[A_P03,1],[A_P13,1],[A_P23,1],[A_P33,1]]
+A_umin_poles=[[A_P00,1],[A_P01,1],[A_P02,1],[A_P03,1]]
+A_umax_poles=[[A_P30,1],[A_P31,1],[A_P32,1],[A_P33,1]]
+
+B_vmin_poles=[[B_P00,1],[B_P10,1],[B_P20,1],[B_P30,1]]
+B_vmax_poles=[[B_P03,1],[B_P13,1],[B_P23,1],[B_P33,1]]
+B_umin_poles=[[B_P00,1],[B_P01,1],[B_P02,1],[B_P03,1]]
+B_umax_poles=[[B_P30,1],[B_P31,1],[B_P32,1],[B_P33,1]]
+
+
+A_umin=BC.BezCubic_curve(A_umin_poles)
+A_umax=BC.BezCubic_curve(A_umax_poles)
+A_vmin=BC.BezCubic_curve(A_vmin_poles)
+A_vmax=BC.BezCubic_curve(A_vmax_poles)
+
+B_umin=BC.BezCubic_curve(B_umin_poles)
+B_umax=BC.BezCubic_curve(B_umax_poles)
+B_vmin=BC.BezCubic_curve(B_vmin_poles)
+B_vmax=BC.BezCubic_curve(B_vmax_poles)
+
+#####################
+# surface control patch / control polygon / surface
+
+A_quad_patch = BC.quad_patch(A_vmin,A_umax,A_vmax,A_umin)
+A_mid_edge_poly = BC.mid_edge_poly(A_quad_patch)
+
+B_quad_patch = BC.quad_patch(B_vmin,B_umax,B_vmax,B_umin)
+B_mid_edge_poly = BC.mid_edge_poly(B_quad_patch)
+
+A_bezpatch = BC.BezCubic_patch(A_quad_patch)
+B_bezpatch = BC.BezCubic_patch(B_quad_patch)
+
+######################
+# display section
+Part.show(A_umin.toShape())
+Part.show(A_umax.toShape())
+Part.show(A_vmin.toShape())
+Part.show(A_vmax.toShape())
+
+Part.show(B_umin.toShape())
+Part.show(B_umax.toShape())
+Part.show(B_vmin.toShape())
+Part.show(B_vmax.toShape())
+
+for i in range(len(A_mid_edge_poly)):
+	Part.show(A_mid_edge_poly[i].toShape())
+
+for i in range(len(B_mid_edge_poly)):
+	Part.show(B_mid_edge_poly[i].toShape())
+
+Gui.SendMsgToActiveView("ViewFit")
+Gui.activeDocument().activeView().viewTop()
+
+Part.show(A_bezpatch.toShape())
+Part.show(B_bezpatch.toShape())
+
+
+Gui.SendMsgToActiveView("ViewFit")
+Gui.activeDocument().activeView().viewTop()

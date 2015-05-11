@@ -34,9 +34,8 @@ def BezCubic_curve(poles):
 	bs=Part.BSplineCurve()
 	bs.increaseDegree(degree)
 	id=1
-	for i in range(0,len(knot)-1):
-	        if knot[i+1] > knot[i]:
-	                bs.insertKnot(knot[i],id,0.0000001)
+	for i in range(0,len(knot)):    #-1):
+		bs.insertKnot(knot[i],id,0.0000001)
 	i=0
 	for ii in range(0,nPoles):
 		bs.setPole(ii+1,poles[i][0],poles[i][1])
@@ -143,13 +142,11 @@ def BezCubic_patch(quad_patch):
 	nurbs_quad_16=Part.BSplineSurface()
 	nurbs_quad_16.increaseDegree(degree_u,degree_v)
 	id=1
-	for i in range(0,len(knot_u)-1):
-		if knot_u[i+1] > knot_u[i]:
-			nurbs_quad_16.insertUKnot(knot_u[i],id,0.0000001)
+	for i in range(0,len(knot_u)):    #-1):
+		nurbs_quad_16.insertUKnot(knot_u[i],id,0.0000001)
 	id=1
-	for i in range(0,len(knot_v)-1):
-		if knot_v[i+1] > knot_v[i]:
-			nurbs_quad_16.insertVKnot(knot_v[i],id,0.0000001)
+	for i in range(0,len(knot_v)):    #-1):
+		nurbs_quad_16.insertVKnot(knot_v[i],id,0.0000001)
 	i=0
 	for jj in range(0,nNodes_v):
 		for ii in range(0,nNodes_u):
