@@ -61,7 +61,7 @@ def orient_a_to_b(polesa,polesb):
 		return 0
 
 
-def quad_patch(c1,c2,c3,c4):
+def quad_patch(c1,c2,c3,c4): # prepare 4 x 4 control point patch from four curves
 	# extract curve poles
 	poles1=c1.getPoles()
 	poles2=c2.getPoles()
@@ -105,16 +105,81 @@ def quad_patch(c1,c2,c3,c4):
 	p_1_0 = quad_4_1[2]
 
 	# calculate inner control points
-	p_1_1 =p_0_0 + (p_0_1 - p_0_0) +  (p_1_0 - p_0_0)
-	p_1_2 =p_0_3 + (p_0_2 - p_0_3) +  (p_1_3 - p_0_3)
-	p_2_1 =p_3_0 + (p_3_1 - p_3_0) +  (p_2_0 - p_3_0)
-	p_2_2 = p_3_3 +(p_2_3 - p_3_3) +  (p_3_2 - p_3_3)
+	p_1_1 = p_0_0 + (p_0_1 - p_0_0) +  (p_1_0 - p_0_0)
+	p_1_2 = p_0_3 + (p_0_2 - p_0_3) +  (p_1_3 - p_0_3)
+	p_2_1 = p_3_0 + (p_3_1 - p_3_0) +  (p_2_0 - p_3_0)
+	p_2_2 = p_3_3 + (p_2_3 - p_3_3) +  (p_3_2 - p_3_3)
 
 	quad_patch = [p_0_0,p_0_1,p_0_2,p_0_3,
 				p_1_0,p_1_1,p_1_2,p_1_3,
 				p_2_0,p_2_1,p_2_2,p_2_3,
 				p_3_0,p_3_1,p_3_2,p_3_3]
 	return quad_patch
+
+def tri_quad_patch(c1,c2,c3): 
+# prepare 4 x 4 control point patch from three curves. 
+# this is a degenrate pach. 
+# intersection of first and last curve is the singular point
+#
+# extract curve poles
+	poles1=c1.getPoles()
+	poles2=c2.getPoles()
+	poles3=c3.getPoles()
+
+	weights1=c1.getWeights()
+	weights2=c2.getWeights()
+	weights3=c3.getWeights()
+
+	ctrls1=[poles1,weights1]
+	ctrls2=[poles2,weights2]
+	ctrls3=[poles3,weights3]
+
+	# fix edge orientation, going counterclockwise from first curve (c1)
+	quad_1_2 = orient_a_to_b(poles1,poles2)
+	quad_2_3 = orient_a_to_b(poles2,poles3)
+	quad_3_1 = orient_a_to_b(poles3,poles1)
+
+	# make sure this is a degenrate quadrangle, i.e. a triangle
+	if (quad_3_1[3] != quad_1_2[0]):
+		print 'edge loop does not form a triangle'
+		return 0
+
+	# bottom edge, left to right
+	p_0_0 = quad_1_2[0]
+	p_0_1 = quad_1_2[1]
+	p_0_2 = quad_1_2[2]	
+	p_0_3 = quad_1_2[3]
+
+	# right edge, bottom to top, SKIP starting corner
+	p_1_3 = quad_2_3[1]
+	p_2_3 = quad_2_3[2]
+	p_3_3 = quad_2_3[3]
+
+	# top edge, right to left, SKIP starting corner
+	p_3_2 = quad_3_1[1]
+	p_3_1 = quad_3_1[2]
+	p_3_0 = quad_3_1[3] # this is redundant already
+
+	# left edge, top to bottom, degenerate
+	p_2_0 = p_3_0
+	p_1_0 = p_0_0
+
+	# calculate inner control points
+	s=2.0/3.0 # degenerate inner control point scale factor
+
+	tan_inner_11 = (p_3_1 - p_3_0).scale(s,s,s)
+	tan_inner_21 = (p_0_1 - p_0_0).scale(s,s,s)
+
+	p_1_1 = p_0_1 +  tan_inner_11
+	p_1_2 = p_0_3 + (p_0_2 - p_0_3) +  (p_1_3 - p_0_3)	# keep standard
+	p_2_1 = p_3_1 +  tan_inner_21
+	p_2_2 = p_3_3 + (p_2_3 - p_3_3) +  (p_3_2 - p_3_3)	# keep standard
+
+	tri_quad_patch = [p_0_0,p_0_1,p_0_2,p_0_3,
+				p_1_0,p_1_1,p_1_2,p_1_3,
+				p_2_0,p_2_1,p_2_2,p_2_3,
+				p_3_0,p_3_1,p_3_2,p_3_3]
+	return tri_quad_patch
 
 def mid_edge_poly(quad_patch):
 	l_01_11=Part.Line(quad_patch[1], quad_patch[5])
