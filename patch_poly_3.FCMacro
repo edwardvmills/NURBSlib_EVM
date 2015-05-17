@@ -1,0 +1,23 @@
+import Part
+from FreeCAD import Base
+from FreeCAD import Gui
+import math
+import BezCubic as BC
+
+
+s=Gui.Selection.getSelection()
+
+if (len(s)!=3):
+	print 'select three cubic bezier curves that form a loop counterclockwise. the corner from first to last will be degenerate'
+
+bez1=s[0].Shape.Curve
+bez2=s[1].Shape.Curve
+bez3=s[2].Shape.Curve
+
+
+quad_patch = BC.tri_quad_patch(bez1,bez2,bez3)
+
+mid_edge_poly = BC.mid_edge_poly(quad_patch)
+
+for i in range(len(mid_edge_poly)):
+	Part.show(mid_edge_poly[i].toShape())
