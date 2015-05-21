@@ -23,7 +23,7 @@ import math
 
 
 def BezCubic_curve(poles): 
-#draws a degree 3 bspline from first to last point,
+#draws a degree 3 rational bspline from first to last point,
 # second and third act as tangents
 # quartet is a list: [[[x,y,z],w],[[x,y,z],w],[[x,y,z],w],[[x,y,z],w]]
 ## nKnot = 4 + 3 +1 = 8
@@ -41,6 +41,21 @@ def BezCubic_curve(poles):
 		bs.setPole(ii+1,poles[i][0],poles[i][1])
 		i=i+1;
 	return bs
+
+def BezCubic_ddu(pole1, pole2, pole3, pole4):   # first derivative with respect to parameter, returns value at first pole given
+	BezCubic_ddu = (pole2 - pole1).multiply(3)
+	return BezCubic_ddu
+
+def BezCubic_d2du2(pole1, pole2, pole3, pole4): # second derivative with respect to parameter, returns value at first pole given
+	BezCubic_d2du2 = (pole1- pole2.scale(2,2,2) + pole3 ).multiply(6)
+	return BezCubic_d2du2
+
+def BezCubic_curvature(pole1, pole2, pole3, pole4): # curvature, returns value at first pole given
+	ddu = BezCubic_ddu(pole1, pole2, pole3, pole4)
+	d2du2 = BezCubic_d2du2(pole1, pole2, pole3, pole4)
+	BezCubic_curvature = ddu.cross(d2du2).Length/ddu.Length.__pow__(3)
+	return BezCubic_curvature
+
 
 def orient_a_to_b(polesa,polesb):
 
