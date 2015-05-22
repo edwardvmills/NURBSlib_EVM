@@ -7,20 +7,38 @@ import BezCubic as BC
 
 s=Gui.Selection.getSelectionEx()[0].SubObjects
 
-if (len(s)!=4):
-	print 'Select four vertices from one sketch. Hide other elements as necessary to get the right selection'
+if (len(s)!=3):
+	print 'Select 3 vertices from one sketch. Hide other elements as necessary to get the right selection'
 
 
 pole0=[s[0].Point,1]
 pole1=[s[1].Point,1]
 pole2=[s[2].Point,1]	
-pole3=[s[3].Point,1]
 
-poles = [pole0, pole1, pole2, pole3]
 
-curvature = BC.BezCubic_curvature(pole0[0], pole1[0], pole2[0], pole3[0])
-
+curvature = BC.BezCubic_curvature(pole0[0], pole1[0], pole2[0])
 radius = 1/curvature
+
+v1=pole1[0]-pole0[0]
+v2=pole2[0]-pole1[0]
+
+
+curvature_plane_normal = (v2.cross(v1)).normalize()
+curvature_center_direction = (v1.cross(curvature_plane_normal)).normalize()
+curvature_center = pole0[0] + curvature_center_direction.multiply(radius)
+
+
+normal=Part.Line(pole0[0], pole0[0]+curvature_plane_normal.multiply(10))
+
+center_direction = Part.Line(pole0[0], pole0[0]+curvature_center_direction)
+
+circle=Part.Circle(curvature_center,curvature_plane_normal, radius)
+
+Part.show(normal.toShape())
+Part.show(center_direction.toShape())
+Part.show(circle.toShape())
+ 
+
 
 print curvature
 print radius

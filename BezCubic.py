@@ -42,17 +42,17 @@ def BezCubic_curve(poles):
 		i=i+1;
 	return bs
 
-def BezCubic_ddu(pole1, pole2, pole3, pole4):   # first derivative with respect to parameter, returns value at first pole given
+def BezCubic_ddu(pole1, pole2):   # first derivative with respect to parameter, returns value at first pole given
 	BezCubic_ddu = (pole2 - pole1).multiply(3)
 	return BezCubic_ddu
 
-def BezCubic_d2du2(pole1, pole2, pole3, pole4): # second derivative with respect to parameter, returns value at first pole given
+def BezCubic_d2du2(pole1, pole2, pole3): # second derivative with respect to parameter, returns value at first pole given
 	BezCubic_d2du2 = (pole1- pole2.scale(2,2,2) + pole3 ).multiply(6)
 	return BezCubic_d2du2
 
-def BezCubic_curvature(pole1, pole2, pole3, pole4): # curvature, returns value at first pole given
-	ddu = BezCubic_ddu(pole1, pole2, pole3, pole4)
-	d2du2 = BezCubic_d2du2(pole1, pole2, pole3, pole4)
+def BezCubic_curvature(pole1, pole2, pole3): # curvature, returns value at first pole given
+	ddu = BezCubic_ddu(pole1, pole2)
+	d2du2 = BezCubic_d2du2(pole1, pole2, pole3)
 	BezCubic_curvature = ddu.cross(d2du2).Length/ddu.Length.__pow__(3)
 	return BezCubic_curvature
 
