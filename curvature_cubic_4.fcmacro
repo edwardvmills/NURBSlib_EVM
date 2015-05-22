@@ -20,15 +20,28 @@ curvature = BC.BezCubic_curvature(pole0[0], pole1[0], pole2[0])
 radius = 1/curvature
 
 v1=pole1[0]-pole0[0]
+
 v2=pole2[0]-pole1[0]
 
 
 curvature_plane_normal = (v2.cross(v1)).normalize()
+
 curvature_center_direction = (v1.cross(curvature_plane_normal)).normalize()
+print 'curvature_center_direction, ', curvature_center_direction
+print '---'
+
 curvature_center = pole0[0] + curvature_center_direction.multiply(radius)
+print 'curvature_center, ', curvature_center
+print 'curvature_center_direction, ', curvature_center_direction
+print '---'
 
 
-normal=Part.Line(pole0[0], pole0[0]+curvature_plane_normal.multiply(10))
+normal=Part.Line(pole0[0], pole0[0]+curvature_plane_normal)
+print 'normal, ', normal
+print 'curvature_center, ', curvature_center
+print 'curvature_center_direction, ', curvature_center_direction
+print '---'
+
 
 center_direction = Part.Line(pole0[0], pole0[0]+curvature_center_direction)
 
