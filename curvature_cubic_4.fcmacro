@@ -15,13 +15,17 @@ pole0=[s[0].Point,1]
 pole1=[s[1].Point,1]
 pole2=[s[2].Point,1]	
 
+print 'point0, ', pole0[0]
+print 'point1, ', pole1[0]
+print 'point2, ', pole2[0]
 
 curvature = BC.BezCubic_curvature(pole0[0], pole1[0], pole2[0])
 radius = 1/curvature
 
 v1=pole1[0]-pole0[0]
-
+print 'v1, ', v1
 v2=pole2[0]-pole1[0]
+print 'v2, ', v2
 
 
 curvature_plane_normal = (v2.cross(v1)).normalize()
