@@ -1,0 +1,19 @@
+import Part
+from FreeCAD import Base
+s=Gui.Selection.getSelection()
+bez1=s[0].Shape.Curve
+bez2=s[1].Shape.Curve
+bez3=s[2].Shape.Curve
+bez4=s[3].Shape.Curve
+import BezCubic as BC
+quad_patch = BC.quad_patch(bez1,bez2,bez3,bez4)
+quad_patch
+surf=Part.BezierSurface()
+surf.increase(3,3)
+n=0
+for u in range(1,5):
+	for v in range(1,5):
+		surf.setPole(u,v,quad_patch[n])
+		n=n+1
+
+surf.getPoles()

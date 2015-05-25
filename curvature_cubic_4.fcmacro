@@ -4,60 +4,31 @@ from FreeCAD import Gui
 import math
 import BezCubic as BC
 
-
 s=Gui.Selection.getSelectionEx()[0].SubObjects
 
 if (len(s)!=3):
 	print 'Select 3 vertices from one sketch. Hide other elements as necessary to get the right selection'
 
-
 pole0=[s[0].Point,1]
 pole1=[s[1].Point,1]
 pole2=[s[2].Point,1]	
-
-print 'point0, ', pole0[0]
-print 'point1, ', pole1[0]
-print 'point2, ', pole2[0]
 
 curvature = BC.BezCubic_curvature(pole0[0], pole1[0], pole2[0])
 radius = 1/curvature
 
 v1=pole1[0]-pole0[0]
-print 'v1, ', v1
 v2=pole2[0]-pole1[0]
-print 'v2, ', v2
-
-
 curvature_plane_normal = (v2.cross(v1)).normalize()
-
 curvature_center_direction = (v1.cross(curvature_plane_normal)).normalize()
-print 'curvature_center_direction, ', curvature_center_direction
-print '---'
-
 curvature_center = pole0[0] + curvature_center_direction.multiply(radius)
-print 'curvature_center, ', curvature_center
-print 'curvature_center_direction, ', curvature_center_direction
-print '---'
-
 
 normal=Part.Line(pole0[0], pole0[0]+curvature_plane_normal)
-print 'normal, ', normal
-print 'curvature_center, ', curvature_center
-print 'curvature_center_direction, ', curvature_center_direction
-print '---'
-
-
 center_direction = Part.Line(pole0[0], pole0[0]+curvature_center_direction)
-
-circle=Part.Circle(curvature_center,curvature_plane_normal, radius)
+circle=Part.makeCircle(radius, curvature_center, curvature_plane_normal, 0,360)
 
 Part.show(normal.toShape())
 Part.show(center_direction.toShape())
-Part.show(circle.toShape())
+Part.show(circle)
  
-
-
 print curvature
 print radius
-
-

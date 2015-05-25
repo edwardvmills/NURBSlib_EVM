@@ -1,0 +1,55 @@
+import Part
+from FreeCAD import Base
+from FreeCAD import Gui
+import math
+import BezCubic as BC
+
+s=Gui.Selection.getSelectionEx()[0].SubObjects
+
+if (len(s)!=1):
+	print 'Select one surface'
+
+
+s=Gui.Selection.getSelectionEx()[0].SubObjects[0].Surface
+
+tan_0md_p=s.value(0,0.5)
+tan_0md_t=s.tangent(0,0.5)
+tan_0md_ptu=tan_0md_p+tan_0md_t[0]
+tan_0md_ptv=tan_0md_p+tan_0md_t[1]
+tan_0md_u=Part.Line(tan_0md_p,tan_0md_ptu)
+tan_0md_v=Part.Line(tan_0md_p,tan_0md_ptv)
+
+tan_1md_p=s.value(1,0.5)
+tan_1md_t=s.tangent(1,0.5)
+tan_1md_ptu=tan_1md_p+tan_1md_t[0]
+tan_1md_ptv=tan_1md_p+tan_1md_t[1]
+tan_1md_u=Part.Line(tan_1md_p,tan_1md_ptu)
+tan_1md_v=Part.Line(tan_1md_p,tan_1md_ptv)
+
+tan_md0_p=s.value(0.5,0)
+tan_md0_t=s.tangent(0.5,0)
+tan_md0_ptu=tan_md0_p+tan_md0_t[0]
+tan_md0_ptv=tan_md0_p+tan_md0_t[1]
+tan_md0_u=Part.Line(tan_md0_p,tan_md0_ptu)
+tan_md0_v=Part.Line(tan_md0_p,tan_md0_ptv)
+
+tan_md1_p=s.value(0.5,1)
+tan_md1_t=s.tangent(0.5,1)
+tan_md1_ptu=tan_md1_p+tan_md1_t[0]
+tan_md1_ptv=tan_md1_p+tan_md1_t[1]
+tan_md1_u=Part.Line(tan_md1_p,tan_md1_ptu)
+tan_md1_v=Part.Line(tan_md1_p,tan_md1_ptv)
+
+
+
+Part.show(tan_0md_u.toShape())
+Part.show(tan_0md_v.toShape())
+
+Part.show(tan_1md_u.toShape())
+Part.show(tan_1md_v.toShape())
+
+Part.show(tan_md0_u.toShape())
+Part.show(tan_md0_v.toShape())
+
+Part.show(tan_md1_u.toShape())
+Part.show(tan_md1_v.toShape())

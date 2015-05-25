@@ -6,14 +6,20 @@ import math
 
 # Bottom up view:
 # points, weights
-# BezCubic_curve() - IS pinned cubic rational B spline - AS Part.BSplineCurve() in cubic bezier form
-
-
+# BezCubic_curve -  pinned cubic rational B spline -  Part.BSplineCurve() in cubic bezier form
+# BezCubic_ddu - derivative with u at curve start based on first two control points (no curve rquired)
+# BezCubic_d2du2 - second derivative with u at curve start based on first three control points (no curve rquired)
+# BezCubic_curvature - curvature at curve start based on the first three control points (no curve rquired)
+# orient_a_to_b - a and b are lists of points share one endpoint. if needed, this function reorders a or b so that a.end = b.start
+# quad_patch - given four curves that form a closed loop, prepare a 4*4 nurbs control mesh
+# tri_quad_patch - prepare 4 x 4 control point patch from three curves. this is a degenerate pach. intersection of first and last curve is the singular point
+# mid_edge_poly - given a control patch, show the internal control mesh
+# BezCubic_patch - given a 4 x 4 control patch, build the bicubic bezier patch
 
 ## Order >= 2
 ## Order:  2 = line, 3 = quadratic, 4 = cubic ...
 ## Degree = Order - 1
-## Order = Degree +1
+## Order = Degree + 1
 ## nPoles >= Order
 ## nPoles >= Degree + 1
 ## nKnots = nPoles + Order
@@ -43,11 +49,16 @@ def BezCubic_curve(poles):
 	return bs
 
 def BezCubic_ddu(pole1, pole2):   # first derivative with respect to parameter, returns value at first pole given
-	BezCubic_ddu = (pole2 - pole1).multiply(3)
+	P1=Base.Vector(pole1)
+	P2=Base.Vector(pole2)
+	BezCubic_ddu = (P2 - P1)*3
 	return BezCubic_ddu
 
 def BezCubic_d2du2(pole1, pole2, pole3): # second derivative with respect to parameter, returns value at first pole given
-	BezCubic_d2du2 = (pole1- pole2.scale(2,2,2) + pole3 ).multiply(6)
+	P1=Base.Vector(pole1)
+	P2=Base.Vector(pole2)
+	P3=Base.Vector(pole3)	
+	BezCubic_d2du2 = (P1- P2*2 + P3)*6
 	return BezCubic_d2du2
 
 def BezCubic_curvature(pole1, pole2, pole3): # curvature, returns value at first pole given
@@ -133,7 +144,7 @@ def quad_patch(c1,c2,c3,c4): # prepare 4 x 4 control point patch from four curve
 
 def tri_quad_patch(c1,c2,c3): 
 # prepare 4 x 4 control point patch from three curves. 
-# this is a degenrate pach. 
+# this is a degenerate pach. 
 # intersection of first and last curve is the singular point
 #
 # extract curve poles
@@ -209,6 +220,16 @@ def mid_edge_poly(quad_patch):
 				l_23_22, l_32_22, l_31_21, l_20_21]
 	return mid_edge_poly
 
+
+def BezBiCubic_surf(quad_patch):
+	surf=Part.BezierSurface()
+	surf.increase(3,3)
+	n=0
+	for u in range(1,5):
+		for v in range(1,5):
+			surf.setPole(v,u,quad_patch[n])
+			n=n+1
+	return surf
 
 def BezCubic_patch(quad_patch):
 	# len(knot_u) := nNodes_u + degree_u + 1
