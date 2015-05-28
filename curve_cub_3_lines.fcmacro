@@ -1,0 +1,30 @@
+import Part
+from FreeCAD import Base
+from FreeCAD import Gui
+import math
+import BezCubic as BC
+
+
+s=Gui.Selection.getSelectionEx()[0].SubObjects
+
+if (len(s)!=3):
+	print 'Select three connected lines from one sketch. Hide other elements as necessary to get the right selection'
+
+
+
+line0=s[0].Curve
+line1=s[1].Curve
+line2=s[2].Curve
+
+orient_a_to_b(polesa,polesb
+
+pole0=[s[0].Point,1]
+pole1=[s[1].Point,1]
+pole2=[s[2].Point,1]	
+pole3=[s[3].Point,1]
+
+poles = [pole0, pole1, pole2, pole3]
+
+curve = BC.BezCubic_curve(poles)
+
+Part.show(curve.toShape())
