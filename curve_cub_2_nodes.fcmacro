@@ -1,0 +1,32 @@
+import Part
+from FreeCAD import Base
+from FreeCAD import Gui
+import math
+import BezCubic as BC
+
+
+s=Gui.Selection.getSelectionEx()
+
+if (len(s)!=2):
+	print 'Select one & circle one point, then one & point one circle, from two sketches.'
+
+node0=s[0]
+node1=s[1]
+
+circle0=node0.SubObjects[0].Curve.Center
+point0=node0.SubObjects[1].Point
+
+point1=node1.SubObjects[0].Point
+circle1=node1.SubObjects[1].Curve.Center
+
+
+pole0=[circle0,1]
+pole1=[point0,1]
+pole2=[point1,1]
+pole3=[circle1,1]
+
+poles = [pole0, pole1, pole2, pole3]
+
+curve = BC.BezCubic_curve(poles)
+
+Part.show(curve.toShape())

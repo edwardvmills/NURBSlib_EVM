@@ -1,0 +1,33 @@
+import Part
+from FreeCAD import Base
+from FreeCAD import Gui
+import math
+import BezCubic as BC
+
+>>> s.uIso(0.5)
+<BezierCurve object>
+>>> u5=s.uIso(0.5)
+>>> Part.show(u5.toShape())
+>>> Gui.getDocument("curve_nodes_03").getObject("Shape016").Visibility=False
+>>> Gui.getDocument("curve_nodes_03").getObject("Shape016").Visibility=True
+>>> s=Gui.Selection.getSelectionEx()[0].SubObjects[0]
+>>> s
+<Edge object at 0x33ca440>
+>>> s.Curve
+<BezierCurve object>
+>>> s0=s.Curve
+>>> s0
+<BezierCurve object>
+>>> s0.intersect2d
+<built-in method intersect2d of Part.GeomBezierCurve object at 0x387c388>
+>>> s=Gui.Selection.getSelectionEx()[0].SubObjects[0]
+>>> s1=s.Curve
+>>> s1
+<BezierCurve object>
+>>> s1.intersect2d(s0)
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+TypeError: function takes exactly 2 arguments (1 given)
+>>> Part.Plane(Base.vector
+
+print 'test cross product: ', test

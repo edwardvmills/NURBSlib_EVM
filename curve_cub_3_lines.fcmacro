@@ -8,7 +8,7 @@ import BezCubic as BC
 s=Gui.Selection.getSelectionEx()[0].SubObjects
 
 if (len(s)!=3):
-	print 'Select three connected lines from one sketch. Hide other elements as necessary to get the right selection'
+	print 'Select three connected lines from one sketch (in order). Hide other elements as necessary to get the right selection'
 
 
 
@@ -16,12 +16,16 @@ line0=s[0].Curve
 line1=s[1].Curve
 line2=s[2].Curve
 
-orient_a_to_b(polesa,polesb
+seg0=BC.orient_a_to_b([line0.StartPoint,line0.EndPoint],[line1.StartPoint,line1.EndPoint])
+seg1=BC.orient_a_to_b([line1.StartPoint,line1.EndPoint],[line2.StartPoint,line2.EndPoint])
+seg2_reverse=BC.orient_a_to_b([line2.StartPoint,line2.EndPoint],[line1.StartPoint,line1.EndPoint])
 
-pole0=[s[0].Point,1]
-pole1=[s[1].Point,1]
-pole2=[s[2].Point,1]	
-pole3=[s[3].Point,1]
+
+
+pole0=[seg0[0],1]
+pole1=[seg1[0],1]
+pole2=[seg2_reverse[1],1]	
+pole3=[seg2_reverse[0],1]
 
 poles = [pole0, pole1, pole2, pole3]
 

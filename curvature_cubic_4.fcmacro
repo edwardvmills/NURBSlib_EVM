@@ -26,8 +26,8 @@ normal=Part.Line(pole0[0], pole0[0]+curvature_plane_normal)
 center_direction = Part.Line(pole0[0], pole0[0]+curvature_center_direction)
 circle=Part.makeCircle(radius, curvature_center, curvature_plane_normal, 0,360)
 
-Part.show(normal.toShape())
-Part.show(center_direction.toShape())
+#Part.show(normal.toShape())
+#Part.show(center_direction.toShape())
 Part.show(circle)
  
 print curvature
