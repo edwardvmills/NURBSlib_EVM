@@ -255,6 +255,48 @@ def BezCubic_patch(quad_patch):
 			i=i+1;
 	return nurbs_quad_16
 
+def test_isect(curve, surf, u):		# provides information about a curve point at parameter u as a surface intersection candidate.						
+	test_point = curve.value(u)											# point on curve
+	test_proj_param = surf.parameter(test_point)							# parameter of projection of curve point onto surface
+	test_proj = surf.value(test_proj_param[0],test_proj_param[1])			# projection of curve point onto surface
+	test_proj_tan = surf.tangent(test_proj_param[0],test_proj_param[1])		# tangents of surface at projection
+	test_proj_n = test_proj_tan[0].cross(test_proj_tan[1])					# get surface normal from tangents
+	test_error = test_proj - test_point									# error vector
+	error = test_error.Length											# distance between curve point and its surface projection
+	testdot = test_error.dot(test_proj_n)									# compare orientation of point and surface
+	test_center = [test_point, test_error, error, testdot,test_proj_param]					# prepare list of results
+	return test_center
+
+def curve_surf_isect(curve, surf):
+	tol= 0.00000001
+	# setup the parameter search span 
+	test_span = [curve.FirstParameter, curve.LastParameter]
+	# determine whether the curve grows from inside or outside the surface. this will govern how to split the search span
+	test_u_direction = test_isect(curve, surf, curve.FirstParameter) 	# project curve startpoint to determine if it is 'inside' or 'outside' the surface.
+	if (test_u_direction[3] < 0):								# compare projection path to surface normal: dot product negative
+		direction = 1											# > curve grows 'into' the surface
+	elif (test_u_direction[3] > 0):								# compare projection path to surface normal: dot product positive
+		direction = -1										# > curve grows 'out of' the surface
+	# initialize error
+	error = 1.0	
+	# set up binary search loop
+	loop_count = 0
+	while (error > tol  and loop_count < 100):
+		test_u = (test_span[1] + test_span[0]) / 2	# pick u in the center of the search span
+		test = test_isect(curve, surf, test_u)			# project curve(u) onto surface
+		error = test[2]							# set current intersection error
+		if ((test[3]*direction) < 0):					# is the projection still coming from outside the surface?
+			test_span = [test_u, test_span[1]]		# > use second half of current span for the next search
+		if ((test[3]*direction) > 0):					# is the projection coming from inside the surface?
+			test_span = [test_span[0], test_u]		# > use first half of current span for the next search
+		loop_count=loop_count + 1
+	print 'step ', loop_count, '  u ', test_u, '  error ', test[2]
+	if error > tol:
+		print 'no intersection found within ', tol
+		curve_surf_isect = 'NONE'
+	else:
+		curve_surf_isect = [test[0], test_u, test[4]]
+	return curve_surf_isect
 
 
 

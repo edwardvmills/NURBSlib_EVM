@@ -4,14 +4,10 @@ from FreeCAD import Gui
 import math
 import BezCubic as BC
 
->>> s.uIso(0.5)
-<BezierCurve object>
->>> u5=s.uIso(0.5)
->>> Part.show(u5.toShape())
->>> Gui.getDocument("curve_nodes_03").getObject("Shape016").Visibility=False
->>> Gui.getDocument("curve_nodes_03").getObject("Shape016").Visibility=True
+
+u5=s.uIso(0.5)
+
 >>> s=Gui.Selection.getSelectionEx()[0].SubObjects[0]
->>> s
 <Edge object at 0x33ca440>
 >>> s.Curve
 <BezierCurve object>
@@ -30,4 +26,12 @@ Traceback (most recent call last):
 TypeError: function takes exactly 2 arguments (1 given)
 >>> Part.Plane(Base.vector
 
-print 'test cross product: ', test
+
+>>> s=Gui.Selection.getSelectionEx()[0].SubObjects[0].Surface
+>>> s
+<BezierSurface object>
+>>> seg=s
+>>> seg
+<BezierSurface object>
+>>> seg.segment(0.1,0.5,0.4,0.9)
+>>> Part.show(seg.toShape())
