@@ -11,9 +11,9 @@ I am learning as i go, so i am trying to 'juice' the most out of the basic NURBS
 -individual .fcmacro files that tie the current GUI and selection behavior of FreeCAD to single modeling operations.   
 -test model files. Here it gets incredibly messy because i use both git and horrible filenames to track different versions. These model files are irrelevant to the script structure, in keep them in the repo for my ease of access.   
 
-#the basic structute for the scripts is:  
+#the basic structure for the scripts/macros is:  
 -write a function in BezCubic.py   
--write a GUI wrapper as guioperationx.fcmacro  
+-write a GUI wrapper as guioperationx.fcmacro that calls functions in BezCubic.py  
 -make a toolbar button   
 
 i don't have any premade toolbars or icons yet.
