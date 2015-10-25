@@ -13,4 +13,4 @@ the basic flow for the scripts is:
 
 i don't have any premade toolbars or icons yet.
 
-I'm aware of the plugin loader tool that's available, and i wish i was smart enough to use it, b ut i'm not :)
+I'm aware of the plugin loader tool that's available, and i wish i was smart/dedicated enough to use it, but i'm not :)
