@@ -9,9 +9,9 @@ I am learning as i go, so i am trying to 'juice' the most out of the basic NURBS
 #In this repo:   
 -a single .py with all the 'geometry' functions, where i try to use the most basic inputs.   
 -individual .fcmacro files that tie the current GUI and selection behavior of FreeCAD to single modeling operations.   
--test model files. Here it gets incredibly messy because i use both git and horrible filenames to track different versions. These model files are irrelevant to the script structure, in keep them in the repo for my ease of access.   
+-test model files. Here it gets incredibly messy because i use both git and horrible filenames to track different versions.  These model files are irrelevant to the script structure, in keep them in the repo for my ease of access.   
 
-#the basic structure for the scripts/macros is:  
+#the basic design structure is:  
 -write a function in BezCubic.py   
 -write a GUI wrapper as guioperationx.fcmacro that calls functions in BezCubic.py  
 -make a toolbar button   
@@ -22,7 +22,7 @@ i don't have any premade toolbars or icons yet.
 
 #setup   
 -put BezCubic.py and all the .fcmacro files where FreeCAD can find them   
--link the fcmacro scripts to icons, give the macro a name you like, tooltip, etc.
+-link the fcmacro scripts to icons, give the macro a name you like, tooltip, etc.   
 -put all those GUI macros in a tool bar.   
 -add that toolbar to the PartDesign workbench. The raw material will be PartDesign sketches, so this is the logical place to put this toolbar.   
 (see http://freecadweb.org/wiki/index.php?title=Macros for details regarding setting toolbars/macros in FreeCAD)   
