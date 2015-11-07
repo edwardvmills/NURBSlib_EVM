@@ -184,21 +184,24 @@ def tri_quad_patch(c1,c2,c3):
 	# top edge, right to left, SKIP starting corner
 	p_3_2 = quad_3_1[1]
 	p_3_1 = quad_3_1[2]
-	p_3_0 = quad_3_1[3] # this is redundant already
+	p_3_0 = p_0_0
 
-	# left edge, top to bottom, degenerate
-	p_2_0 = p_3_0
+	# left edge, top to bottom, degenerate. SKIP both corners
+	p_2_0 = p_0_0
 	p_1_0 = p_0_0
 
 	# calculate inner control points
-	s=2.0/3.0 # degenerate inner control point scale factor
+	tan_inner_11 = (p_3_1 - p_0_0) # direction p_0_1 to p_1_1
+	tan_inner_21 = (p_0_1 - p_0_0) # direction p_3_1 to p_2_1
 
-	tan_inner_11 = (p_3_1 - p_3_0).scale(s,s,s)
-	tan_inner_21 = (p_0_1 - p_0_0).scale(s,s,s)
+	# degenerate inner control point scale factor
+	# delt=2.0/3.0 
+	theta = tan_inner_11.getAngle(tan_inner_21)
+	delt = math.sin(theta) # 1 for a right angle corner, 0 for a collapsed corner
 
-	p_1_1 = p_0_1 +  tan_inner_11
+	p_1_1 = p_0_1 +  tan_inner_11.scale(delt,delt,delt)
 	p_1_2 = p_0_3 + (p_0_2 - p_0_3) +  (p_1_3 - p_0_3)	# keep standard
-	p_2_1 = p_3_1 +  tan_inner_21
+	p_2_1 = p_3_1 +  tan_inner_21.scale(delt,delt,delt)
 	p_2_2 = p_3_3 + (p_2_3 - p_3_3) +  (p_3_2 - p_3_3)	# keep standard
 
 	tri_quad_patch = [p_0_0,p_0_1,p_0_2,p_0_3,
@@ -208,13 +211,21 @@ def tri_quad_patch(c1,c2,c3):
 	return tri_quad_patch
 
 def mid_edge_poly(quad_patch):
-	l_01_11=Part.Line(quad_patch[1], quad_patch[5])
+
+	# check for triangular patches with collapsed degenerate corners
+	if quad_patch[1] != quad_patch[13]:
+		l_01_11=Part.Line(quad_patch[1], quad_patch[5])
+		l_31_21=Part.Line(quad_patch[13], quad_patch[9])
+	else:
+		l_01_11=Part.Point(quad_patch[1])
+		l_31_21=Part.Point(quad_patch[13])
+	## l_01_11 above
 	l_10_11=Part.Line(quad_patch[4], quad_patch[5])
 	l_02_12=Part.Line(quad_patch[2], quad_patch[6])
 	l_13_12=Part.Line(quad_patch[7], quad_patch[6])
 	l_23_22=Part.Line(quad_patch[11], quad_patch[10])
 	l_32_22=Part.Line(quad_patch[14], quad_patch[10])
-	l_31_21=Part.Line(quad_patch[13], quad_patch[9])
+	## l_31_21
 	l_20_21=Part.Line(quad_patch[8], quad_patch[9])
 	mid_edge_poly=[l_01_11, l_10_11, l_02_12, l_13_12, 
 				l_23_22, l_32_22, l_31_21, l_20_21]

@@ -1,0 +1,164 @@
+import Part
+from FreeCAD import Base
+from FreeCAD import Gui
+import math
+import BezCubic as BC
+
+#select an edge, and the face it is a part of.
+#must be a visible edge of the face, 
+#not an external curve, 
+#such the guide used to build the face.
+#TODO: refine selection to allow an external curve (check all poles)
+
+
+s=Gui.Selection.getSelectionEx()[0].SubObjects
+
+#get the endpoints of the edge
+edge=s[0]
+curve=edge.Curve
+curve_pts=[curve.StartPoint, curve.EndPoint]
+
+#get the corners of the face, arranged in edge pairs.
+face=s[1]
+surface=face.Surface
+bounds=surface.bounds()
+
+p00=surface.value(bounds[0],bounds[2])
+p10=surface.value(bounds[1],bounds[2])
+p11=surface.value(bounds[1],bounds[3])
+p01=surface.value(bounds[0],bounds[3])
+surface_pts=[[p00,p10],[p10,p11],[p11,p01],[p01,p00]]
+
+# find the edge in the list, identify the the split direction, identify the parameter (min/max?) at the split
+
+if curve_pts in surface_pts:
+	match=surface_pts.index(curve_pts)
+	if match == 0:
+		split=0
+		pin=0
+	elif match == 1:
+		split=1
+		pin=1
+	elif match == 2:
+		split=0
+		pin=1
+	elif match == 3:
+		split=1
+		pin=0
+
+elif curve_pts[::-1] in surface_pts:
+	match=surface_pts.index(curve_pts[::-1])
+	if match == 0:
+		split=0
+		pin=0
+	elif match == 1:
+		split=1
+		pin=1
+	elif match == 2:
+		split=0
+		pin=1
+	elif match == 3:
+		split=1
+		pin=0
+
+#make the face splitting curve along u or v, 
+#regenerate the edge of interest
+
+e_split=0.5 # this could set by mouse position, or a numeric entry
+
+u_mid=(bounds[1]-bounds[0])*e_split
+v_mid=(bounds[3]-bounds[2])*e_split
+
+if split==0:
+	face_split=surface.uIso(u_mid)
+	#prepare two copies to avoid passing by reference later
+	#this is temporary, copy() function is not available on windows
+	edge_to_split1=surface.vIso(bounds[pin+2])
+	edge_to_split2=surface.vIso(bounds[pin+2])
+
+elif split==1:
+	face_split=surface.vIso(v_mid)
+	#prepare two copies to avoid passing by reference later
+	#this is temporary, copy() function is not available on windows	
+	edge_to_split1=surface.uIso(bounds[pin])
+	edge_to_split2=surface.uIso(bounds[pin])
+
+#check the edge parameters
+u0=edge_to_split1.FirstParameter
+u1=edge_to_split1.LastParameter
+
+split_point=edge_to_split1.value((u1-u0)*e_split) # to check against later?
+
+#create the two 'clipped' edges from the (GUI) selected edge
+edge_to_split1.segment(u0,(u1-u0)*e_split)
+edge_to_split2.segment((u1-u0)*e_split, u1)
+
+edge_split1=edge_to_split1
+edge_split2=edge_to_split2
+
+#extract the control polygons of the three curves
+poles_center=face_split.getPoles()
+poles_side_1=edge_split1.getPoles()
+poles_side_2=edge_split2.getPoles()
+
+#reorder the curves so they end at the split point
+if poles_center[0]==split_point:
+	poles_center=poles_center[::-1]
+elif poles_center[3]==split_point:
+	poles_center=poles_center
+
+if poles_side_1[0]==split_point:
+	poles_side_1=poles_side_1[::-1]
+elif poles_side_1[3]==split_point:
+	poles_side_1=poles_side_1
+	
+if poles_side_2[0]==split_point:
+	poles_side_2=poles_side_2[::-1]
+elif poles_side_2[3]==split_point:
+	poles_side_2=poles_side_1
+
+#the split edges' polygons aren't necessarily planar, so they won't fit on a sketch object
+poly_split1_1=Part.Line(poles_side_1[0], poles_side_1[1])
+poly_split1_2=Part.Line(poles_side_1[1], poles_side_1[2]) 
+poly_split1_3=Part.Line(poles_side_1[2], poles_side_1[3])
+
+poly_split2_1=Part.Line(poles_side_2[0], poles_side_2[1])
+poly_split2_2=Part.Line(poles_side_2[1], poles_side_2[2]) 
+poly_split2_3=Part.Line(poles_side_2[2], poles_side_2[3])
+
+#the center curve control points need to be 
+#projected out from the surface to build on the other side
+poly_center_1=Part.Line(poles_center[0], poles_center[1])
+poly_center_2=Part.Line(poles_center[1], poles_center[2])
+poly_center_3=Part.Line(poles_center[2], poles_center[3])
+
+poly_proj_tan=poles_center[3]+poles_center[3]-poles_center[2]
+
+poly_center_4=Part.Line(poles_center[3], poly_proj_tan)
+
+
+
+
+Part.show(face_split.toShape())
+Part.show(edge_split1.toShape())
+Part.show(edge_split2.toShape())
+
+Part.show(poly_split1_1.toShape())
+Part.show(poly_split1_2.toShape())
+Part.show(poly_split1_3.toShape())
+
+Part.show(poly_split2_1.toShape())
+Part.show(poly_split2_2.toShape())
+Part.show(poly_split2_3.toShape())
+
+Part.show(poly_center_1.toShape())
+Part.show(poly_center_2.toShape())
+Part.show(poly_center_3.toShape())
+Part.show(poly_center_4.toShape())
+
+#
+
+
+
+
+
