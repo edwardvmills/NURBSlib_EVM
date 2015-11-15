@@ -1,0 +1,44 @@
+import Part
+from FreeCAD import Base
+from FreeCAD import Gui
+import math
+import BezCubic as BC
+
+
+s=Gui.Selection.getSelectionEx()
+
+s1=s[0]
+
+s1.Object.Placement
+
+s1.Object.Placement.move(Base.Vector(1,0,0))
+
+s2=s1.Object
+s2.Placement
+Placement [Pos=(51,0,-60), Yaw-Pitch-Roll=(0,70,0)]
+s2.Placement.toMatrix()
+Matrix ((0.34202,0,0.939693,51),(0,1,0,0),(-0.939693,0,0.34202,-60),(0,0,0,1))
+s2.Placement.multiply()?
+
+#found it 
+sk1=Gui.Selection.getSelectionEx()[0].Object
+sk1.Placement
+>>>Placement [Pos=(0,0,0), Yaw-Pitch-Roll=(0,0,0)]
+sk1.Placement.move(App.Vector(10,0,0)) #the sketch moves immediately
+sk1.Placement.toMatrix()
+>>>Matrix ((1,0,0,10),(0,1,0,0),(0,0,1,0),(0,0,0,1))
+newmatrix=App.Matrix(0,1,0,10,0,0,1,0,1,0,0,0,0,0,0,1)
+newplac=App.Placement(newmatrix)
+sk1.Placement=newplac #the sketch rotates immediately
+
+matrix = (ux,uy,uz,posx,vx,vy,vz,posy,wx,wy,wz,posz,0,0,0,1)
+
+#new sketch in script and access
+
+App.activeDocument().addObject('Sketcher::SketchObject','Sketch003')
+newmatrix=App.Matrix(0,1,0,10,0,0,1,0,1,0,0,0,0,0,0,1)
+App.ActiveDocument.Sketch003.addGeometry(Part.Circle())
+App.ActiveDocument.Sketch003.Placement=App.Placement(newmatrix)
+App.ActiveDocument.recompute()
+Gui.activeDocument().activeView().viewAxonometric()
+Gui.SendMsgToActiveView("ViewFit")
