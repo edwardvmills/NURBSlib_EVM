@@ -1,0 +1,237 @@
+import Part
+from FreeCAD import Base
+from FreeCAD import Gui
+import math
+import BezCubic as BC
+
+#select an edge, and the face it is a part of.
+#must be a visible edge of the face, 
+#not an external curve, such as the guide used to build the face.
+
+## comment comment: "selected edge" = "target edge", which gets split in two. 
+
+#TODO: refine selection to allow an external curve (check all poles)
+#there is an unnecessary mess of curve creation to get poles, they could just be extracted from the surface poles.
+
+# process the selection
+s=Gui.Selection.getSelectionEx()[0].SubObjects
+edge=s[0]
+face=s[1]
+
+#get the endpoints of the edge
+curve=edge.Curve
+curve_pts=[curve.StartPoint, curve.EndPoint]
+
+# prepare a list of the surfaces edges references, identified by corner point pairs
+surface=face.Surface
+bounds=surface.bounds() # returns (u_min, u_max, v_min, v_max)
+
+p00=surface.value(bounds[0],bounds[2])
+p10=surface.value(bounds[1],bounds[2])
+p11=surface.value(bounds[1],bounds[3])
+p01=surface.value(bounds[0],bounds[3])
+surface_pts=[[p00,p10],[p10,p11],[p11,p01],[p01,p00]]
+
+# find the target edge in the list, identify the the split direction, identify the parameter (min/max?) at the split. reorient the split edge for consistent sketch creation.
+if curve_pts in surface_pts: # selected edge is in the same orientation as target edge. this is precautionary, to be ready for alternate selection methods for the edge. 
+						#right now, as the edge came from the surface itself, it should always hold.
+	match=surface_pts.index(curve_pts) # get index of matching edge in the surface
+	if match == 0: # target edge is v_iso at v=0
+		split=0 # the splitting curve will be a u_iso
+		pin=0 # the intersection of the splitting curve and split edge is at parameter 0 along u (which puts it on the v=0 v_iso)
+		flip=1 # the edge is naturally CCW, so it needs to flip for consistent sketch orientation.
+	elif match == 1: # target edge is u_iso at u=1
+		split=1 # the splitting curve will be a v_iso
+		pin=1 # the intersection of the splitting curve and split edge is at parameter 1 along u (which puts it on the u=1 u_iso)
+		flip=1
+	elif match == 2: # target edge is v_iso at v=1
+		split=0 # the splitting curve will be a u_iso
+		pin=1
+		flip=0
+	elif match == 3: # target edge is u_iso at u=0
+		split=1 # the splitting curve will be a v_iso
+		pin=0
+		flip=0
+
+elif curve_pts[::-1] in surface_pts: # selected edge is in the opposite orientation as target edge
+	match=surface_pts.index(curve_pts[::-1])
+	if match == 0:
+		split=0
+		pin=0
+		flip=1
+	elif match == 1:
+		split=1
+		pin=1
+		flip=1
+	elif match == 2:
+		split=0
+		pin=1
+		flip=0
+	elif match == 3:
+		split=1
+		pin=0
+		flip=0
+
+#make the face splitting curve along u or v, 
+#regenerate the selected edge as two sub-curves.
+
+e_split=0.5 # parameter ratio at edge cut. this could set by mouse position, or a numeric entry, or whatever
+
+u_split=(bounds[1]-bounds[0])*e_split # ratio applied to actual u domain
+v_split=(bounds[3]-bounds[2])*e_split # ratio applied to actual v domain
+
+if split==0:
+	face_0=surface.uIso(bounds[0])
+	face_1=surface.uIso(bounds[1])
+	face_split=surface.uIso(u_split)
+	#prepare two copies to avoid passing by reference later
+	#this is temporary, copy() function is not available on windows
+	edge_to_split_0=surface.vIso(bounds[pin+2])
+	edge_to_split_1=surface.vIso(bounds[pin+2])
+
+
+elif split==1:
+	face_0=surface.vIso(bounds[2])
+	face_1=surface.vIso(bounds[3])
+	face_split=surface.vIso(v_split)
+	#prepare two copies to avoid passing by reference later
+	#this is temporary, copy() function is not available on windows	
+	edge_to_split_0=surface.uIso(bounds[pin])
+	edge_to_split_1=surface.uIso(bounds[pin])
+
+#check the edge parameters
+u0=edge_to_split_0.FirstParameter
+u1=edge_to_split_1.LastParameter
+
+split_point=edge_to_split_0.value((u1-u0)*e_split) # to check against later?
+
+#create the two 'clipped' edges from the (GUI) selected edge
+edge_to_split_0.segment(u0,(u1-u0)*e_split)
+edge_to_split_1.segment((u1-u0)*e_split, u1)
+
+# rename clipped edges to mark the step - necessary because the segment() function passes by references
+edge_split_0=edge_to_split_0
+edge_split_1=edge_to_split_1
+
+#extract the control polygons of the five curves
+poles_face_0=face_0.getPoles()
+poles_face_1=face_1.getPoles()
+poles_center=face_split.getPoles()
+poles_split_0=edge_split_0.getPoles()
+poles_split_1=edge_split_1.getPoles()
+
+#reorder the center and split curves so they end at the split point
+if poles_center[0]==split_point:
+	poles_center=poles_center[::-1]
+elif poles_center[3]==split_point:
+	poles_center=poles_center
+
+if poles_split_0[0]==split_point:
+	poles_split_0=poles_split_0[::-1]
+elif poles_split_0[3]==split_point:
+	poles_split_0=poles_split_0
+	
+if poles_split_1[0]==split_point:
+	poles_split_1=poles_split_1[::-1]
+elif poles_split_1[3]==split_point:
+	poles_split_1=poles_split_1
+
+#reorder the full side curves so they end at the corner with the split curves
+#this is the part that should be redone to look up the surface poles directly...sometime
+if poles_face_0[0]==poles_split_0[0]:
+	poles_face_0=poles_face_0[::-1]
+elif poles_face_0[3]==poles_split_0[0]:
+	poles_face_0=poles_face_0
+
+if poles_face_1[0]==poles_split_1[0]:
+	poles_face_1=poles_face_1[::-1]
+elif poles_face_1[3]==poles_split_1[0]:
+	poles_face_1=poles_face_1
+
+# group poles into 'node' sketches
+
+if flip==0:
+	corner_A=poles_split_0[0]
+	corner_A_split=poles_split_0[1]
+	corner_A_full=corner_A+poles_face_0[3]-poles_face_0[2]
+elif flip==1:
+	corner_A=poles_split_1[0]
+	corner_A_split=poles_split_1[1]
+	corner_A_full=corner_A+poles_face_0[3]-poles_face_0[2]	
+
+corner_A_x=(corner_A_split-corner_A).normalize()
+corner_A_y=(corner_A_full-corner_A).normalize()
+corner_A_z=corner_A_x.cross(corner_A_y).normalize()
+
+corner_A_matrix=App.Matrix(corner_A_x.x,corner_A_x.y,corner_A_x.z,corner_A.x,
+						corner_A_y.x,corner_A_y.y,corner_A_y.z,corner_A.y,
+						corner_A_z.x,corner_A_z.y,corner_A_z.z,corner_A.z,
+						0,0,0,1)
+
+App.activeDocument().addObject('Sketcher::SketchObject','corner_A_sk')
+App.ActiveDocument.corner_A_sk.Placement=App.Placement(corner_A_matrix)
+App.ActiveDocument.corner_A_sk.addGeometry(Part.Circle())
+App.ActiveDocument.corner_A_sk.addGeometry(Part.Line(Base.Vector(1,1,0),Base.Vector(2,2,0)))
+App.ActiveDocument.corner_A_sk.addGeometry(Part.Line(Base.Vector(1,0,0),Base.Vector(2,0,0)))
+App.ActiveDocument.corner_A_sk.addGeometry(Part.Line(Base.Vector(0,1,0),Base.Vector(0,2,0)))
+
+App.ActiveDocument.recompute()
+
+# the names face_0, face_1, split_0, split_1 are not consistent across the varying u and v directions of the face/edge selection. 
+# this makes the concept of corner_0 and corner_1 inconstistent in terms of the projected sketch orientations
+
+
+### The section below is the original Part.Line visualization of the curves and the poles.
+
+#the split edges' polygons aren't necessarily planar, so they won't fit on a sketch object
+poly_split_0_1=Part.Line(poles_split_0[0], poles_split_0[1])
+poly_split_0_2=Part.Line(poles_split_0[1], poles_split_0[2]) 
+poly_split_0_3=Part.Line(poles_split_0[2], poles_split_0[3])
+
+poly_split_1_1=Part.Line(poles_split_1[0], poles_split_1[1])
+poly_split_1_2=Part.Line(poles_split_1[1], poles_split_1[2]) 
+poly_split_1_3=Part.Line(poles_split_1[2], poles_split_1[3])
+
+#the center curve and parallel edges' control points need to be 
+#projected out from the surface to build on the other side
+poly_center_1=Part.Line(poles_center[0], poles_center[1])
+poly_center_2=Part.Line(poles_center[1], poles_center[2])
+poly_center_3=Part.Line(poles_center[2], poles_center[3])
+poly_proj_tan=poles_center[3]+poles_center[3]-poles_center[2]
+poly_center_4=Part.Line(poles_center[3], poly_proj_tan)
+
+poly_face_0_tan=poles_face_0[3]+poles_face_0[3]-poles_face_0[2]
+poly_face_0_0=Part.Line(poles_face_0[3], poly_face_0_tan)
+
+poly_face_1_tan=poles_face_1[3]+poles_face_1[3]-poles_face_1[2]
+poly_face_1_0=Part.Line(poles_face_1[3], poly_face_1_tan)
+
+
+
+
+Part.show(face_split.toShape())
+Part.show(edge_split_0.toShape())
+Part.show(edge_split_1.toShape())
+
+Part.show(poly_split_0_1.toShape())
+Part.show(poly_split_0_2.toShape())
+Part.show(poly_split_0_3.toShape())
+
+Part.show(poly_split_1_1.toShape())
+Part.show(poly_split_1_2.toShape())
+Part.show(poly_split_1_3.toShape())
+
+Part.show(poly_center_1.toShape())
+Part.show(poly_center_2.toShape())
+Part.show(poly_center_3.toShape())
+Part.show(poly_center_4.toShape())
+
+
+Part.show(poly_face_0_0.toShape())
+Part.show(poly_face_1_0.toShape())
+#
+
+
+
+
+
