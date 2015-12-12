@@ -1,16 +1,17 @@
 import Part
 from FreeCAD import Base
 from FreeCAD import Gui
+from PySide import QtGui
 import math
 import BezCubic as BC
 
 #select an edge, and the face it is a part of.
 #must be a visible edge of the face,
-#not an external curve, such as the guide used to build the face.
+#not an external curve, such as the guide that was used to build the face.
 #TODO: refine selection to allow an external curve as the selected edge (check all poles).
 
-#this script cuts the selected edge at the specified parameter, shows the iso curve orthogonal to the selected edges at the cutting point,
-#and create three sketches which allow G1 curve>surface connections to the selected surface at:
+#this script cuts the selected edge at the specified parameter, shows the iso curve orthogonal to the selected edge at the cutting point,
+#and creates three sketches which allow G1 curve>surface connections to the selected surface at:
 #the two corners of the selected edges, AND
 #the cut point on the edge
 
@@ -29,7 +30,13 @@ import BezCubic as BC
 s=Gui.Selection.getSelectionEx()[0].SubObjects
 edge=s[0]
 face=s[1]
-e_split=0.25 # parameter ratio at edge cut. this could set by mouse position, or a numeric entry, or whatever
+
+#e_split=0.25 # parameter ratio at edge cut. this could set by mouse position, or a numeric entry, or whatever
+#e_split = raw_input("Enter the split position along the selected edge (0-1): ") #gives a type error when multipying later
+#print "selected position: ", e_split
+e_split=QtGui.QInputDialog.getDouble(None, "pick split point", "edge parameter (0-1):")[0]
+name=QtGui.QInputDialog.getText(None, "Name the sketch group", "a unique string such as AA, AB, AC:")[0]
+
 
 #get the endpoints of the edge
 curve=edge.Curve
@@ -82,33 +89,35 @@ elif curve_pts[::-1] in surface_pts: # selected edge is in the opposite orientat
 if split==0:
 	if pin==0:
 		A=surf_poles[0][0]
-		A_tan_y=surf_poles[0][0]-surf_poles[0][1]
+		A_tan_y=surf_poles[0][0]-surf_poles[0][1]		# this is an extension of the last control segment of the edge
 		C=surf_poles[3][0]
-		C_tan_y=surf_poles[3][0]-surf_poles[3][1]
+		C_tan_y=surf_poles[3][0]-surf_poles[3][1]		# this is an extension of the last control segment of the edge
 	elif pin==1:
 		A=surf_poles[3][3]
-		A_tan_y=surf_poles[3][3]-surf_poles[3][2]
+		A_tan_y=surf_poles[3][3]-surf_poles[3][2]	
 		C=surf_poles[0][3]
 		C_tan_y=surf_poles[0][3]-surf_poles[0][2]
 
 elif split==1:
 	if pin==0:
 		A=surf_poles[0][3]
-		A_tan_y=surf_poles[0][3]-surf_poles[1][3]
+		A_tan_y=surf_poles[0][3]-surf_poles[1][3]	
 		C=surf_poles[0][0]
-		C_tan_y=surf_poles[0][0]-surf_poles[1][0]
+		C_tan_y=surf_poles[0][0]-surf_poles[1][0]	
 	elif pin==1:
 		A=surf_poles[3][0]
-		A_tan_y=surf_poles[3][0]-surf_poles[2][0]
+		A_tan_y=surf_poles[3][0]-surf_poles[2][0]	
 		C=surf_poles[3][3]
 		C_tan_y=surf_poles[3][3]-surf_poles[2][3]
 
 ##############################################################################	
-#test section
+#test section: extensions of the control net outwards of the surface at the selected edge corners.
+''' # successfully compared to nodes A and C sketches
 A_y=Part.Line(A, A+A_tan_y)
 C_y=Part.Line(C, C+C_tan_y)		
 Part.show(A_y.toShape())
 Part.show(C_y.toShape())
+'''
 #end test section
 ##############################################################################
 
@@ -147,10 +156,12 @@ edge_split_0p=edge_to_split_0
 edge_split_p1=edge_to_split_1
 
 ##############################################################################
-#test section
+#test section: the isoparametric 'splitting' curve, and the two segments of the 'split' edge
+''' # successfully compared to the surface and target edge.
 Part.show(face_split.toShape())
 Part.show(edge_split_0p.toShape())
 Part.show(edge_split_p1.toShape())
+'''
 #end test section
 ##############################################################################
 
@@ -168,79 +179,192 @@ elif pin==1:
 	B_tan_y=face_split_poles[3]-face_split_poles[2]
 
 ##############################################################################
-#test section
+#test section: extension of the control net outwards of the surface at the splitting point.
+''' # successfully compared to sketch node B
 B_y=Part.Line(B, B+B_tan_y)
-Part.show(B_y.toShape())
+#Part.show(B_y.toShape())	
+'''
 #end test section
 ##############################################################################
 
 #find all the tangents along the split edge (these will exactly define the x axes of our sketches)
 if split==pin: #natural edge parameter follows the intended ABC order
 	A_check=edge_split_0p_poles[0]
-	A_tan_x=edge_split_0p_poles[1]-edge_split_0p_poles[0]
+	if A_check==A:
+		A_tan_x=edge_split_0p_poles[1]-edge_split_0p_poles[0]
+
 	B_check=edge_split_0p_poles[3]
-	B_tan_x_A=edge_split_0p_poles[2]-edge_split_0p_poles[3]
-	B_tan_x_C=edge_split_p1_poles[1]-edge_split_p1_poles[0]
+	if B_check==B:
+		B_tan_x_A=edge_split_0p_poles[2]-edge_split_0p_poles[3]
+		B_tan_x_C=edge_split_p1_poles[1]-edge_split_p1_poles[0]
+
 	C_check=edge_split_p1_poles[3]
-	C_tan_x=edge_split_p1_poles[2]-edge_split_p1_poles[3]
+	if C_check==C:
+		C_tan_x=edge_split_p1_poles[2]-edge_split_p1_poles[3]
 	
-elif split!=pin:
+elif split!=pin: # natural edge order is opposite of intended ABC order
 	A_check=edge_split_p1_poles[3]
-	A_tan_x=edge_split_p1_poles[2]-edge_split_p1_poles[3]
+	if A_check==A:
+		A_tan_x=edge_split_p1_poles[2]-edge_split_p1_poles[3]
+
 	B_check=edge_split_p1_poles[0]
-	B_tan_x_A=edge_split_p1_poles[1]-edge_split_p1_poles[0]
-	B_tan_x_C=edge_split_0p_poles[2]-edge_split_0p_poles[3]
+	if B_check==B:	
+		B_tan_x_A=edge_split_p1_poles[1]-edge_split_p1_poles[0]
+		B_tan_x_C=edge_split_0p_poles[2]-edge_split_0p_poles[3]
+
 	C_check=edge_split_0p_poles[0]
-	C_tan_x=edge_split_0p_poles[1]-edge_split_0p_poles[0]
+	if C_check==C:
+		C_tan_x=edge_split_0p_poles[1]-edge_split_0p_poles[0]
 
 ##############################################################################
-#test section
+#test section: the tangents along the segments of the selected edge
+''' # successfully compared to sketch nodes A, B, and C
 A_x=Part.Line(A_check, A_check+A_tan_x)
 B_x_A=Part.Line(B_check, B_check+B_tan_x_A)
 B_x_C=Part.Line(B_check, B_check+B_tan_x_C)
 C_x=Part.Line(C_check, C_check+C_tan_x)
-Part.show(A_x.toShape())
-Part.show(B_x_A.toShape())
-Part.show(B_x_C.toShape())
-Part.show(C_x.toShape())
+#Part.show(A_x.toShape())			# successfully compared to sketch node A
+#Part.show(B_x_A.toShape())		# successfully compared to sketch node B
+#Part.show(B_x_C.toShape())		# successfully compared to sketch node B
+#Part.show(C_x.toShape())			# successfully compared to sketch node C
+'''
 #end test section
 ##############################################################################
 
-sketch_A_x=A_tan_x.normalize()			# the actual x direction of the sketch
-sketch_A_y_temp=Base.Vector(0,0,0)-A_tan_y.normalize()		#  something vaguely in the sketch's y direction
-sketch_A_z=A_tan_x.cross(sketch_A_y_temp).normalize()				#the actual z direction of the sketch
-sketch_A_y=sketch_A_z.cross(sketch_A_x).normalize()			#the actual sketch's y direction
+zero_v=Base.Vector(0,0,0)						# a zero vector - used to reverse other vectors
+
+A_tan_x_copy=Base.Vector(A_tan_x)				#copy to prevent 'pass by reference' tampering of the original
+A_tan_x_copy.normalize()
+A_tan_y_copy=Base.Vector(A_tan_y)				
+A_tan_y_copy.normalize()
+sketch_A_x=A_tan_x_copy						# the actual sketch's x unit vector
+sketch_A_y_temp=zero_v-A_tan_y_copy			# something vaguely in the sketch's y direction
+sketch_A_z=A_tan_x.cross(sketch_A_y_temp)		# the actual z direction of the sketch
+sketch_A_z.normalize()						# the actual sketch's z unit vector
+sketch_A_y=sketch_A_z.cross(sketch_A_x)		# re-crossing finds the real y direction
+sketch_A_y.normalize()						# the actual sketch's y unit vector
+
+B_tan_x_copy=Base.Vector(B_tan_x_C)			#copy to prevent 'pass by reference' tampering of the original
+B_tan_x_copy.normalize()
+B_tan_y_copy=Base.Vector(B_tan_y)				
+B_tan_y_copy.normalize()
+sketch_B_x=B_tan_x_copy						# the actual sketch's x unit vector
+sketch_B_y_temp=zero_v-B_tan_y_copy			# something vaguely in the sketch's y direction
+sketch_B_z=B_tan_x_C.cross(sketch_B_y_temp)	# the actual z direction of the sketch
+sketch_B_z.normalize()							# the actual sketch's z unit vector
+sketch_B_y=sketch_B_z.cross(sketch_B_x)		# re-crossing finds the real y direction
+sketch_B_y.normalize()						# the actual sketch's y unit vector
+
+
+C_tan_x_copy=Base.Vector(C_tan_x)				#copy to prevent 'pass by reference' tampering of the original
+C_tan_x_copy.normalize()
+C_tan_y_copy=Base.Vector(C_tan_y)				
+C_tan_y_copy.normalize()
+sketch_C_x=zero_v-C_tan_x_copy				# the actual sketch's x unit vector
+sketch_C_y_temp=C_tan_y_copy				# something vaguely in the sketch's y direction
+sketch_C_z=C_tan_x.cross(sketch_C_y_temp)		# the actual z direction of the sketch
+sketch_C_z.normalize()							# the actual sketch's z unit vector
+sketch_C_y=sketch_C_z.cross(sketch_C_x)		# re-crossing finds the real y direction
+sketch_C_y.normalize()						# the actual sketch's y unit vector
 
 
 ##############################################################################
-#test section
+#test section: intended sketch local coordinate systems
+'''
 sA_x=Part.Line(A_check, A_check+sketch_A_x)
-sA_y=Part.Line(A_check, A_check+sketch_A_y.scale(2,2,2))
-sA_z=Part.Line(A_check, A_check+sketch_A_z.scale(3,3,3))
+sA_y=Part.Line(A_check, A_check+sketch_A_y)
+sA_z=Part.Line(A_check, A_check+sketch_A_z)
 Part.show(sA_x.toShape())
 Part.show(sA_y.toShape())
 Part.show(sA_z.toShape())
+'''
+'''
+sB_x=Part.Line(B_check, B_check+sketch_B_x)
+sB_y=Part.Line(B_check, B_check+sketch_B_y)
+sB_z=Part.Line(B_check, B_check+sketch_B_z)
+Part.show(sB_x.toShape())
+Part.show(sB_y.toShape())
+Part.show(sB_z.toShape())
+'''
+'''
+sC_x=Part.Line(C_check, C_check+sketch_C_x)
+sC_y=Part.Line(C_check, C_check+sketch_C_y)
+sC_z=Part.Line(C_check, C_check+sketch_C_z)
+Part.show(sC_x.toShape())
+Part.show(sC_y.toShape())
+Part.show(sC_z.toShape())
+'''
 #end test section
 ##############################################################################
 
-sketch_A_matrix=App.Matrix(sketch_A_x.x,sketch_A_y.x,sketch_A_z.x,A.x,
-						sketch_A_x.y,sketch_A_y.y,sketch_A_z.y,A.y,
-						sketch_A_x.z,sketch_A_y.z,sketch_A_z.z,A.z,
+
+# node A sketch
+sketch_A_matrix=App.Matrix(
+						sketch_A_x.x, sketch_A_y.x, sketch_A_z.x, A.x,
+						sketch_A_x.y, sketch_A_y.y, sketch_A_z.y, A.y,
+						sketch_A_x.z, sketch_A_y.z, sketch_A_z.z, A.z,
 						0,0,0,1)
 
-App.activeDocument().addObject('Sketcher::SketchObject','node_A')
-App.ActiveDocument.node_A.Placement=App.Placement(sketch_A_matrix)
-App.ActiveDocument.node_A.addGeometry(Part.Circle())
-App.ActiveDocument.node_A.addGeometry(Part.Line(Base.Vector(1,0,0),Base.Vector(2,0,0)))
-App.ActiveDocument.node_A.addGeometry(Part.Line(Base.Vector(0,-1,0),Base.Vector(0,-2,0)))
+skA_mat_inverse=sketch_A_matrix.inverse()
+skA_u=skA_mat_inverse.multiply(A+A_tan_x)
+skA_v=skA_mat_inverse.multiply(A+A_tan_y)
+
+name_A= name+'_node_A'
+
+# shorter method to access the sketch from Yorik
+#myObject = App.activeDocument().addObject('Sketcher::SketchObject',name_A)
+
+App.activeDocument().addObject('Sketcher::SketchObject', name_A)
+node_A=App.ActiveDocument.getObjectsByLabel(name_A)[0]
+node_A.Placement=App.Placement(sketch_A_matrix)
+node_A.addGeometry(Part.Circle())
+node_A.addGeometry(Part.Line(Base.Vector(0,0,0),skA_u))
+node_A.addGeometry(Part.Line(Base.Vector(0,0,0),skA_v))
+
+# node B sketch
+sketch_B_matrix=App.Matrix(
+						sketch_B_x.x, sketch_B_y.x, sketch_B_z.x, B.x,
+						sketch_B_x.y, sketch_B_y.y, sketch_B_z.y, B.y,
+						sketch_B_x.z, sketch_B_y.z, sketch_B_z.z, B.z,
+						0,0,0,1)
+
+skB_mat_inverse=sketch_B_matrix.inverse()
+skB_uA=skB_mat_inverse.multiply(B+B_tan_x_A)
+skB_uC=skB_mat_inverse.multiply(B+B_tan_x_C)
+skB_v=skB_mat_inverse.multiply(B+B_tan_y)
+
+name_B= name+'_node_B'
+
+App.activeDocument().addObject('Sketcher::SketchObject', name_B)
+node_B=App.ActiveDocument.getObjectsByLabel(name_B)[0]
+node_B.Placement=App.Placement(sketch_B_matrix)
+node_B.addGeometry(Part.Circle())
+node_B.addGeometry(Part.Line(Base.Vector(0,0,0),skB_uC))
+node_B.addGeometry(Part.Line(Base.Vector(0,0,0),skB_uA))
+node_B.addGeometry(Part.Line(Base.Vector(0,0,0),skB_v))
+
+# node C sketch
+sketch_C_matrix=App.Matrix(
+						sketch_C_x.x, sketch_C_y.x, sketch_C_z.x, C.x,
+						sketch_C_x.y, sketch_C_y.y, sketch_C_z.y, C.y,
+						sketch_C_x.z, sketch_C_y.z, sketch_C_z.z, C.z,
+						0,0,0,1)
+
+skC_mat_inverse=sketch_C_matrix.inverse()
+skC_u=skC_mat_inverse.multiply(C+C_tan_x)
+skC_v=skC_mat_inverse.multiply(C+C_tan_y)
+
+name_C= name+'_node_C'
+
+App.activeDocument().addObject('Sketcher::SketchObject', name_C)
+node_C=App.ActiveDocument.getObjectsByLabel(name_C)[0]
+node_C.Placement=App.Placement(sketch_C_matrix)
+node_C.addGeometry(Part.Circle())
+node_C.addGeometry(Part.Line(Base.Vector(0,0,0),skC_u))
+node_C.addGeometry(Part.Line(Base.Vector(0,0,0),skC_v))
+
+
+
 App.ActiveDocument.recompute()
 
-''' this snippet from an old file shows how to use intersect 2d
-lax=Part.Line(pa1,pa3)
-	lbx=Part.Line(pb1,pb3)
-	pln=Part.Plane(pa1,pb1,pa2)
-	int_0_1= lax.intersect2d(lbx,pln) #works down to 5.73 degrees between the lines 
-	if int_0_1==[]:
-		return 'intersection failed'
-	int_abs_coord=pln.value(int_0_1[0][0],int_0_1[0][1]) 
-'''
+
