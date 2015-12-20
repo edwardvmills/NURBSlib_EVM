@@ -121,16 +121,21 @@ def quad_patch(c1,c2,c3,c4): # prepare 4 x 4 control point patch from four curve
 	weights3=c3.getWeights()
 	weights4=c4.getWeights()
 
-	ctrls1=[poles1,weights1]
-	ctrls2=[poles2,weights2]
-	ctrls3=[poles3,weights3]
-	ctrls4=[poles4,weights4]
-
 	# fix edge orientation, going counterclockwise from first curve (c1)
 	quad_1_2 = orient_a_to_b(poles1,poles2)
 	quad_2_3 = orient_a_to_b(poles2,poles3)
 	quad_3_4 = orient_a_to_b(poles3,poles4)
 	quad_4_1 = orient_a_to_b(poles4,poles1)	
+
+	# flip weights of flipped edges - maybe this should go into 'orient_a_to_b()'
+	if quad_1_2[0]!=poles1[0] and quad_1_2[0]==poles1[-1]:
+		weights1=weights1[::-1]
+	if quad_2_3[0]!=poles2[0] and quad_2_3[0]==poles2[-1]:
+		weights2=weights2[::-1]
+	if quad_3_4[0]!=poles3[0] and quad_3_4[0]==poles3[-1]:
+		weights3=weights3[::-1]
+	if quad_4_1[0]!=poles4[0] and quad_4_1[0]==poles4[-1]:
+		weights4=weights4[::-1]
 
 	# bottom edge, left to right
 	p_0_0 = quad_1_2[0]
@@ -152,16 +157,42 @@ def quad_patch(c1,c2,c3,c4): # prepare 4 x 4 control point patch from four curve
 	p_2_0 = quad_4_1[1]
 	p_1_0 = quad_4_1[2]
 
-	# calculate inner control points
+	# calculate inner control points. this method makes continuous patches, but all corner grids make parallelograms. need to improve.
+	# needs to stay planar across the patch corners!
 	p_1_1 = p_0_0 + (p_0_1 - p_0_0) +  (p_1_0 - p_0_0)
 	p_1_2 = p_0_3 + (p_0_2 - p_0_3) +  (p_1_3 - p_0_3)
 	p_2_1 = p_3_0 + (p_3_1 - p_3_0) +  (p_2_0 - p_3_0)
 	p_2_2 = p_3_3 + (p_2_3 - p_3_3) +  (p_3_2 - p_3_3)
 
-	quad_patch = [p_0_0,p_0_1,p_0_2,p_0_3,
-				p_1_0,p_1_1,p_1_2,p_1_3,
-				p_2_0,p_2_1,p_2_2,p_2_3,
-				p_3_0,p_3_1,p_3_2,p_3_3]
+	# set weights, assign to control points, final format is [[x,y,z],w]. The patch will be a 4x4 matrix arranged as a list of 16 of these control format.
+	# original edges
+	w00 = [p_0_0, weights1[0]]
+	w01 = [p_0_1, weights1[1]]
+	w02 = [p_0_2, weights1[2]]
+	w03 = [p_0_3, weights1[3]]
+
+	w13 = [p_1_3, weights2[1]]
+	w23 = [p_2_3, weights2[2]]
+	w33 = [p_3_3, weights2[3]]
+
+	w32 = [p_3_2, weights3[2]]
+	w31 = [p_3_1, weights3[1]]
+	w30 = [p_3_0, weights3[0]]
+
+	w20 = [p_2_0, weights4[2]]
+	w10 = [p_1_0, weights4[1]]
+
+	# calculate inner weights
+	# multiply neighbors across the grid? this makes a good cylinder, but bad tori and spheres...lets blame the inner control points!
+	w11 = [p_1_1, weights1[1]*weights4[2]]
+	w12 = [p_1_2, weights1[2]*weights2[1]]
+	w21 = [p_2_1, weights3[2]*weights4[1]]
+	w22 = [p_2_2, weights2[2]*weights3[1]]
+
+	quad_patch = [w00 ,w01, w02, w03,
+				w10, w11, w12, w13,
+				w20, w21, w22, w23,
+				w30, w31, w32, w33]
 	return quad_patch
 
 def quad66_patch(c1,c2,c3,c4): # prepare 6 x 6 control point patch from four curves
@@ -325,24 +356,59 @@ def tri_quad_patch(c1,c2,c3):
 	return tri_quad_patch
 
 def mid_edge_poly(quad_patch):
+	# start around the perimeter
+	l_00_01 = Part.Line(quad_patch[0][0], quad_patch[1][0])
+	l_01_02 = Part.Line(quad_patch[1][0], quad_patch[2][0])
+	l_02_03 = Part.Line(quad_patch[2][0], quad_patch[3][0])
+	l_03_13 = Part.Line(quad_patch[3][0], quad_patch[7][0])
+	l_13_23 = Part.Line(quad_patch[7][0], quad_patch[11][0])
+	l_23_33 = Part.Line(quad_patch[11][0], quad_patch[15][0])
+	l_33_32 = Part.Line(quad_patch[15][0], quad_patch[14][0])
+	l_32_31 = Part.Line(quad_patch[14][0], quad_patch[13][0])
+	l_31_30 = Part.Line(quad_patch[13][0], quad_patch[12][0])
 
-	# check for triangular patches with collapsed degenerate corners
-	if quad_patch[1] != quad_patch[13]:
-		l_01_11=Part.Line(quad_patch[1], quad_patch[5])
-		l_31_21=Part.Line(quad_patch[13], quad_patch[9])
-	else:
-		l_01_11=Part.Point(quad_patch[1])
-		l_31_21=Part.Point(quad_patch[13])
+	# check for triangular patches - collapsed fourth edge
+	if quad_patch[0] != quad_patch[12]: #normal case, four sided patch
+		l_00_10=Part.Line(quad_patch[0][0], quad_patch[4][0])
+		l_10_20=Part.Line(quad_patch[4][0], quad_patch[8][0])
+		l_20_30=Part.Line(quad_patch[8][0], quad_patch[12][0])
+	else: # triangle case
+		l_00_10=Part.Point(quad_patch[0][0])
+		l_10_20=Part.Point(quad_patch[0][0])
+		l_20_30=Part.Point(quad_patch[0][0])
+
+	# Internal controls
+
+	# check for triangular patches with collapsed foruth edge AND collpapsed fourth corner.
+	if quad_patch[1] != quad_patch[13]: #normal case, four sided patch, or unique tangents on triangle patch
+		l_01_11=Part.Line(quad_patch[1][0], quad_patch[5][0])
+		l_31_21=Part.Line(quad_patch[13][0], quad_patch[9][0])
+	else: #triangle case, collapsed tangents
+		l_01_11=Part.Point(quad_patch[1][0])
+		l_31_21=Part.Point(quad_patch[13][0])
+
+
 	## l_01_11 above
-	l_10_11=Part.Line(quad_patch[4], quad_patch[5])
-	l_02_12=Part.Line(quad_patch[2], quad_patch[6])
-	l_13_12=Part.Line(quad_patch[7], quad_patch[6])
-	l_23_22=Part.Line(quad_patch[11], quad_patch[10])
-	l_32_22=Part.Line(quad_patch[14], quad_patch[10])
+	l_10_11=Part.Line(quad_patch[4][0], quad_patch[5][0])
+	l_02_12=Part.Line(quad_patch[2][0], quad_patch[6][0])
+	l_13_12=Part.Line(quad_patch[7][0], quad_patch[6][0])
+	l_23_22=Part.Line(quad_patch[11][0], quad_patch[10][0])
+	l_32_22=Part.Line(quad_patch[14][0], quad_patch[10][0])
 	## l_31_21
-	l_20_21=Part.Line(quad_patch[8], quad_patch[9])
-	mid_edge_poly=[l_01_11, l_10_11, l_02_12, l_13_12, 
-				l_23_22, l_32_22, l_31_21, l_20_21]
+	l_20_21=Part.Line(quad_patch[8][0], quad_patch[9][0])
+
+	l_11_12=Part.Line(quad_patch[5][0], quad_patch[6][0])
+	l_12_22=Part.Line(quad_patch[6][0], quad_patch[10][0])
+	l_21_22=Part.Line(quad_patch[9][0], quad_patch[10][0])
+	l_11_21=Part.Line(quad_patch[5][0], quad_patch[9][0])
+
+	mid_edge_poly=[l_00_01, l_01_02, l_02_03,
+				l_03_13, l_13_23, l_23_33,
+				l_33_32, l_32_31, l_31_30,
+				l_20_30, l_10_20, l_00_10,
+				l_01_11, l_10_11, l_02_12, l_13_12, 
+				l_23_22, l_32_22, l_31_21, l_20_21,
+				l_11_12, l_12_22, l_21_22, l_11_21]
 	return mid_edge_poly
 
 
@@ -376,7 +442,7 @@ def BezCubic_patch(quad_patch):
 	i=0
 	for jj in range(0,nNodes_v):
 		for ii in range(0,nNodes_u):
-			nurbs_quad_16.setPole(ii+1,jj+1,quad_patch[i],1);
+			nurbs_quad_16.setPole(ii+1,jj+1,quad_patch[i][0], quad_patch[i][1]);
 			i=i+1;
 	return nurbs_quad_16
 

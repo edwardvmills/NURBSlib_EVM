@@ -27,5 +27,5 @@ elif (len(s)==4):
 	bez4=s[3].Shape.Curve
 	quad_patch1 = BC.quad_patch(bez1,bez2,bez3,bez4)
 #	bezpatch1 = BC.BezCubic_patch(quad_patch1) # Part.BsplineSurface() based surface
-	bezpatch1 = BC.BezBiCubic_surf(quad_patch1)
+	bezpatch1 = BC.BezCubic_patch(quad_patch1)
 	Part.show(bezpatch1.toShape())
