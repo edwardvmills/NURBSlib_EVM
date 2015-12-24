@@ -27,6 +27,6 @@ pole3=[circle1,1]
 
 poles = [pole0, pole1, pole2, pole3]
 
-curve = Nl.Bezier_Cubic_curve(poles)
+curve = Nl.BezCubic_curve(poles)
 
 Part.show(curve.toShape())

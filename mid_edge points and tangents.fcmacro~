@@ -2,7 +2,7 @@ import Part
 from FreeCAD import Base
 from FreeCAD import Gui
 import math
-
+import BezCubic as BC
 
 s=Gui.Selection.getSelectionEx()[0].SubObjects
 

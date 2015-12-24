@@ -2,13 +2,13 @@ import Part
 from FreeCAD import Base
 from FreeCAD import Gui
 import math
-import NURBSlib_EVM as Nl
+import BezCubic as BC
 
 
 # general purpose cubic spline with 6 points / 5 control segments. pinned ends
 # Creates a cubic spline from 5 selected lines connected 1>2>3>4>5 within the same sketch.
 # The first and last lines  define the start point, end point, start tangent, and end tangent.
-# The three inner segments (2 inner points) control curvature at first and last points.
+# The three inner segments (2 inner points) control curvature.
 
 # any curvature can be obtained at the endpoints, but not all results will be interesting. loops and waviness need to be accounted for.
 
@@ -29,11 +29,11 @@ line4=s[4].Curve # a Part.Line object
 
 
 #orient the line endpoints to proceed from one end of the connected lines to the other. Checks for proper connection along the way
-seg0=Nl.orient_a_to_b([line0.StartPoint,line0.EndPoint],[line1.StartPoint,line1.EndPoint])
-seg1=Nl.orient_a_to_b([line1.StartPoint,line1.EndPoint],[line2.StartPoint,line2.EndPoint])
-seg2=Nl.orient_a_to_b([line2.StartPoint,line2.EndPoint],[line3.StartPoint,line3.EndPoint])
-seg3=Nl.orient_a_to_b([line3.StartPoint,line3.EndPoint],[line4.StartPoint,line4.EndPoint])
-seg4_reverse=Nl.orient_a_to_b([line4.StartPoint,line4.EndPoint],[line3.StartPoint,line3.EndPoint])
+seg0=BC.orient_a_to_b([line0.StartPoint,line0.EndPoint],[line1.StartPoint,line1.EndPoint])
+seg1=BC.orient_a_to_b([line1.StartPoint,line1.EndPoint],[line2.StartPoint,line2.EndPoint])
+seg2=BC.orient_a_to_b([line2.StartPoint,line2.EndPoint],[line3.StartPoint,line3.EndPoint])
+seg3=BC.orient_a_to_b([line3.StartPoint,line3.EndPoint],[line4.StartPoint,line4.EndPoint])
+seg4_reverse=BC.orient_a_to_b([line4.StartPoint,line4.EndPoint],[line3.StartPoint,line3.EndPoint])
 
 p0=seg0[0]
 p1=seg1[0]
@@ -65,7 +65,7 @@ poles = [pole0, pole1, pole2, pole3, pole4, pole5]
 
 
 # create the cubice bezier curve from the poles (Part.BSplineCurve)
-curve = Nl.SplineCubic6P_curve(poles)
+curve = BC.SplineCubic6P_curve(poles)
 
 Part.show(curve.toShape())
 #Part.show(ctrl1.toShape())

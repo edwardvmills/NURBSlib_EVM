@@ -12,27 +12,17 @@ curve=nurbs.Edge1.Curve
 
 curve.increaseDegree(3)
 
-start=curve.FirstParameter
-end=curve.LastParameter
-
-knot1=start+(end-start)/3.0
-knot2=end-(end-start)/3.0
-
-curve.insertKnot(knot1)
-curve.insertKnot(knot2)
-
 raw_poles = curve.getPoles()
 weights = curve.getWeights()
+
 
 pole0=[raw_poles[0],weights[0]]
 pole1=[raw_poles[1],weights[1]]
 pole2=[raw_poles[2],weights[2]]	
 pole3=[raw_poles[3],weights[3]]
-pole4=[raw_poles[4],weights[4]]
-pole5=[raw_poles[5],weights[5]]
 
-poles = [pole0, pole1, pole2, pole3, pole4, pole5]
+poles = [pole0, pole1, pole2, pole3]
 
-curve = Nl.SplineCubic6P_curve(poles)
+curve = Nl.BezCubic_curve(poles)
 
 Part.show(curve.toShape())

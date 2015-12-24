@@ -8,15 +8,30 @@ import BezCubic as BC
 s=Gui.Selection.getSelection()
 
 if (len(s)!=4):
-	print 'select four cubic bezier curves that form a loop counterclockwise'
+	print 'select four bezoid curves that form a loop counterclockwise'
 
 bez1=s[0].Shape.Curve
 bez2=s[1].Shape.Curve
 bez3=s[2].Shape.Curve
 bez4=s[3].Shape.Curve
 
-quad_patch1=BC.quad_patch(bez1,bez2,bez3,bez4)
 
-bezpatch1 = BC.BezCubic_patch(quad_patch1)
+quad66_patch=BC.quad66_patch(bez1,bez2,bez3,bez4)
+patch66=BC.BezCubic66_patch(quad66_patch)
 
-Part.show(bezpatch1.toShape())
+Part.show(patch66.toShape())
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -2,7 +2,7 @@ import Part
 from FreeCAD import Base
 from FreeCAD import Gui
 import math
-import BezCubic as BC
+import NURBSlib_EVM as Nl
 
 
 s=Gui.Selection.getSelection()
@@ -16,8 +16,8 @@ bez3=s[2].Shape.Curve
 bez4=s[3].Shape.Curve
 
 
-quad66_patch=BC.quad66_patch(bez1,bez2,bez3,bez4)
-patch66=BC.BezCubic66_patch(quad66_patch)
+quad66_patch=Nl.quad66_patch(bez1,bez2,bez3,bez4)
+patch66=Nl.BezCubic66_patch(quad66_patch)
 
 Part.show(patch66.toShape())
 

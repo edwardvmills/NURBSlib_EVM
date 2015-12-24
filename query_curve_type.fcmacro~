@@ -7,7 +7,6 @@ import math
 
 curve=Gui.Selection.getSelectionEx()[0].SubObjects[0].Curve
 
-print curve.__class__
 print 'Degree: ', curve.Degree
 print 'Knot Sequence: ', curve.KnotSequence
 print curve.NbPoles, ' Poles'

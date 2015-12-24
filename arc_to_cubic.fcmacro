@@ -2,8 +2,9 @@ import Part
 from FreeCAD import Base
 from FreeCAD import Gui
 import math
-import BezCubic as BC
+import NURBSlib_EVM as Nl
 
+# select an arc, and turn it into a rational cubic bezier arc. This allows it to be used as an edge in bi-cubic bezier surfaces.
 
 sel=Gui.Selection.getSelectionEx()[0]
 edge=sel.SubObjects[0]
@@ -11,6 +12,8 @@ nurbs=edge.toNurbs()
 curve=nurbs.Edge1.Curve
 
 curve.increaseDegree(3)
+
+# at this point 'curve' is already a rational cubic bezier arc. The steps below just push it through my function for verification.
 
 raw_poles = curve.getPoles()
 weights = curve.getWeights()
@@ -23,6 +26,6 @@ pole3=[raw_poles[3],weights[3]]
 
 poles = [pole0, pole1, pole2, pole3]
 
-curve = BC.BezCubic_curve(poles)
+curve = Nl.Bezier_Cubic_curve(poles)
 
 Part.show(curve.toShape())

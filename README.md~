@@ -1,14 +1,10 @@
-# NURBSlib_EVM
+# FreeCAD_Scripts_EVM
 My python scripts for FreeCAD
 
 #NURBS   
 The ultimate goal is to implement a set of tools to specify points and tangents/normals to generate NURBS surfaces of high continuity. I have some ideas in regards to what constitutes an efficient and intuitive input/interface structure. This is very personal, and cannot address all individual pereferences.
 
-I am learning as i go, so i am trying to 'juice' the most out of the basic NURBS formulations before moving on to more complex forms. 
-
-The cubic bezier form is the simplest form that can connect two points with specified tangents, so i am exploring its limits. The weight control interface is incomplete, but arcs can be converted to rational Bezier and used in surfaces. I have a basic quadrilateral surface patch, and a rudimentary triangular suface patch (one collapsed edge/corner).
-
-In order to have isolated curvature at each curve endpoint, i have made a 6 control point cubic curve, which opens up the possibility of using the 3rd and 4th points to control start and end curvature respectively. This can be done without interfering with the use of the 2nd and 5th control points to set tangents. Right now the curvature matching must be done by hand.
+I am learning as i go, so i am trying to 'juice' the most out of the basic NURBS formulations before moving on to more complex forms. The cubic bezier form is the simplest form that can connect two points with specified tangents, so i am currently exploring its limits. The weight control interface is incomplete.
 
 #In this repo:   
 -a single .py with all the 'geometry' functions, where i try to use the most basic inputs.   
@@ -20,7 +16,7 @@ In order to have isolated curvature at each curve endpoint, i have made a 6 cont
 -write a GUI wrapper as guioperationx.fcmacro that calls functions in BezCubic.py  
 -make a toolbar button   
 
-there are a few icons in the 'icons'folder.
+i don't have any premade toolbars or icons yet.
 
 ##to use as intended (general description only, not a FreeCAD tutorial):
 
@@ -35,6 +31,6 @@ I'm aware of the plugin loader tool that's available, and i wish i was smart/ded
 #usage   
 -draw sketches of lines/circles (read the curve macros to see what inputs they want)   
 -select those lines/circles in the order specified by the macro, then hit the macro button > curve is created.   
--select 3/4 curves in a loop counterclockwise (surface normal will then point towards you), hit the surface macro button > surface is created.   
+-select 3/4 curves in a loop counterclockwise (surface normal with then point towards you), hit the surface macro button > surface is created.   
 
-The surfaces are 100% controlled by the curves, which are 100% controlled by the sketches. This can be very powerful, but requires following strict rules for the sketches to obtain good results.
+The surfaces are 100% controlled by the curves, which are 100% controlled by the sketches. This is very powerful, but requires following strict rules for the sketches to obtain good results.

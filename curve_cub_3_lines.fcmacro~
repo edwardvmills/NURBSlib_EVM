@@ -11,7 +11,7 @@ import NURBSlib_EVM as Nl
 #get selection contents
 s=Gui.Selection.getSelectionEx()[0].SubObjects
 
-# check basic contents of selection
+# check basic contents of selection (seems broken right now, doesn't go to report view)
 if (len(s)!=3):
 	print 'Select three connected lines from one sketch (in order). Hide other elements as necessary to get the right selection'
 

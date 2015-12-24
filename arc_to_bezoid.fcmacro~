@@ -2,7 +2,7 @@ import Part
 from FreeCAD import Base
 from FreeCAD import Gui
 import math
-import NURBSlib_EVM as Nl
+import BezCubic as BC
 
 
 sel=Gui.Selection.getSelectionEx()[0]
@@ -33,6 +33,6 @@ pole5=[raw_poles[5],weights[5]]
 
 poles = [pole0, pole1, pole2, pole3, pole4, pole5]
 
-curve = Nl.SplineCubic6P_curve(poles)
+curve = BC.SplineCubic6P_curve(poles)
 
 Part.show(curve.toShape())

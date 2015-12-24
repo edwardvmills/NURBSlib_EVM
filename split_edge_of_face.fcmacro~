@@ -1,16 +1,17 @@
 import Part
 from FreeCAD import Base
 from FreeCAD import Gui
+from PySide import QtGui
 import math
 import BezCubic as BC
 
 #select an edge, and the face it is a part of.
 #must be a visible edge of the face,
-#not an external curve, such as the guide used to build the face.
+#not an external curve, such as the guide that was used to build the face.
 #TODO: refine selection to allow an external curve as the selected edge (check all poles).
 
-#this script cuts the selected edge at the specified parameter, shows the iso curve orthogonal to the selected edges at the cutting point,
-#and create three sketches which allow G1 curve>surface connections to the selected surface at:
+#this script cuts the selected edge at the specified parameter, shows the iso curve orthogonal to the selected edge at the cutting point,
+#and creates three sketches which allow G1 curve>surface connections to the selected surface at:
 #the two corners of the selected edges, AND
 #the cut point on the edge
 
@@ -29,7 +30,13 @@ import BezCubic as BC
 s=Gui.Selection.getSelectionEx()[0].SubObjects
 edge=s[0]
 face=s[1]
-e_split=0.25 # parameter ratio at edge cut. this could set by mouse position, or a numeric entry, or whatever
+
+#e_split=0.25 # parameter ratio at edge cut. this could set by mouse position, or a numeric entry, or whatever
+#e_split = raw_input("Enter the split position along the selected edge (0-1): ") #gives a type error when multipying later
+#print "selected position: ", e_split
+e_split=QtGui.QInputDialog.getDouble(None, "pick split point", "edge parameter (0-1):")[0]
+name=QtGui.QInputDialog.getText(None, "Name the sketch group", "a unique string such as AA, AB, AC:")[0]
+
 
 #get the endpoints of the edge
 curve=edge.Curve
@@ -173,8 +180,10 @@ elif pin==1:
 
 ##############################################################################
 #test section: extension of the control net outwards of the surface at the splitting point.
+''' # successfully compared to sketch node B
 B_y=Part.Line(B, B+B_tan_y)
-Part.show(B_y.toShape())
+#Part.show(B_y.toShape())	
+'''
 #end test section
 ##############################################################################
 
@@ -209,18 +218,20 @@ elif split!=pin: # natural edge order is opposite of intended ABC order
 
 ##############################################################################
 #test section: the tangents along the segments of the selected edge
+''' # successfully compared to sketch nodes A, B, and C
 A_x=Part.Line(A_check, A_check+A_tan_x)
 B_x_A=Part.Line(B_check, B_check+B_tan_x_A)
 B_x_C=Part.Line(B_check, B_check+B_tan_x_C)
 C_x=Part.Line(C_check, C_check+C_tan_x)
-#Part.show(A_x.toShape()) # successfully compared to sketch node A
-Part.show(B_x_A.toShape())
-Part.show(B_x_C.toShape())
-#Part.show(C_x.toShape()) # successfully compared to sketch node C
+#Part.show(A_x.toShape())			# successfully compared to sketch node A
+#Part.show(B_x_A.toShape())		# successfully compared to sketch node B
+#Part.show(B_x_C.toShape())		# successfully compared to sketch node B
+#Part.show(C_x.toShape())			# successfully compared to sketch node C
+'''
 #end test section
 ##############################################################################
 
-zero_v=Base.Vector(0,0,0)
+zero_v=Base.Vector(0,0,0)						# a zero vector - used to reverse other vectors
 
 A_tan_x_copy=Base.Vector(A_tan_x)				#copy to prevent 'pass by reference' tampering of the original
 A_tan_x_copy.normalize()
@@ -233,15 +244,15 @@ sketch_A_z.normalize()						# the actual sketch's z unit vector
 sketch_A_y=sketch_A_z.cross(sketch_A_x)		# re-crossing finds the real y direction
 sketch_A_y.normalize()						# the actual sketch's y unit vector
 
-B_tan_x_copy=Base.Vector(B_tan_x_C)				#copy to prevent 'pass by reference' tampering of the original
+B_tan_x_copy=Base.Vector(B_tan_x_C)			#copy to prevent 'pass by reference' tampering of the original
 B_tan_x_copy.normalize()
 B_tan_y_copy=Base.Vector(B_tan_y)				
 B_tan_y_copy.normalize()
 sketch_B_x=B_tan_x_copy						# the actual sketch's x unit vector
 sketch_B_y_temp=zero_v-B_tan_y_copy			# something vaguely in the sketch's y direction
-sketch_B_z=B_tan_x_C.cross(sketch_B_y_temp)		# the actual z direction of the sketch
-sketch_B_z.normalize()						# the actual sketch's z unit vector
-sketch_B_y=sketch_A_z.cross(sketch_A_x)		# re-crossing finds the real y direction
+sketch_B_z=B_tan_x_C.cross(sketch_B_y_temp)	# the actual z direction of the sketch
+sketch_B_z.normalize()							# the actual sketch's z unit vector
+sketch_B_y=sketch_B_z.cross(sketch_B_x)		# re-crossing finds the real y direction
 sketch_B_y.normalize()						# the actual sketch's y unit vector
 
 
@@ -250,7 +261,7 @@ C_tan_x_copy.normalize()
 C_tan_y_copy=Base.Vector(C_tan_y)				
 C_tan_y_copy.normalize()
 sketch_C_x=zero_v-C_tan_x_copy				# the actual sketch's x unit vector
-sketch_C_y_temp=C_tan_y_copy			# something vaguely in the sketch's y direction
+sketch_C_y_temp=C_tan_y_copy				# something vaguely in the sketch's y direction
 sketch_C_z=C_tan_x.cross(sketch_C_y_temp)		# the actual z direction of the sketch
 sketch_C_z.normalize()							# the actual sketch's z unit vector
 sketch_C_y=sketch_C_z.cross(sketch_C_x)		# re-crossing finds the real y direction
@@ -298,31 +309,39 @@ skA_mat_inverse=sketch_A_matrix.inverse()
 skA_u=skA_mat_inverse.multiply(A+A_tan_x)
 skA_v=skA_mat_inverse.multiply(A+A_tan_y)
 
-App.activeDocument().addObject('Sketcher::SketchObject','node_A')
-App.ActiveDocument.node_A.Placement=App.Placement(sketch_A_matrix)
-App.ActiveDocument.node_A.addGeometry(Part.Circle())
-App.ActiveDocument.node_A.addGeometry(Part.Line(Base.Vector(0,0,0),skA_u))
-App.ActiveDocument.node_A.addGeometry(Part.Line(Base.Vector(0,0,0),skA_v))
+name_A= name+'_node_A'
+
+# shorter method to access the sketch from Yorik
+#myObject = App.activeDocument().addObject('Sketcher::SketchObject',name_A)
+
+App.activeDocument().addObject('Sketcher::SketchObject', name_A)
+node_A=App.ActiveDocument.getObjectsByLabel(name_A)[0]
+node_A.Placement=App.Placement(sketch_A_matrix)
+node_A.addGeometry(Part.Circle())
+node_A.addGeometry(Part.Line(Base.Vector(0,0,0),skA_u))
+node_A.addGeometry(Part.Line(Base.Vector(0,0,0),skA_v))
 
 # node B sketch
-# node A sketch
-sketch_A_matrix=App.Matrix(
-						sketch_A_x.x, sketch_A_y.x, sketch_A_z.x, A.x,
-						sketch_A_x.y, sketch_A_y.y, sketch_A_z.y, A.y,
-						sketch_A_x.z, sketch_A_y.z, sketch_A_z.z, A.z,
+sketch_B_matrix=App.Matrix(
+						sketch_B_x.x, sketch_B_y.x, sketch_B_z.x, B.x,
+						sketch_B_x.y, sketch_B_y.y, sketch_B_z.y, B.y,
+						sketch_B_x.z, sketch_B_y.z, sketch_B_z.z, B.z,
 						0,0,0,1)
 
-skA_mat_inverse=sketch_A_matrix.inverse()
-skA_u=skA_mat_inverse.multiply(A+A_tan_x)
-skA_v=skA_mat_inverse.multiply(A+A_tan_y)
+skB_mat_inverse=sketch_B_matrix.inverse()
+skB_uA=skB_mat_inverse.multiply(B+B_tan_x_A)
+skB_uC=skB_mat_inverse.multiply(B+B_tan_x_C)
+skB_v=skB_mat_inverse.multiply(B+B_tan_y)
 
-App.activeDocument().addObject('Sketcher::SketchObject','node_A')
-App.ActiveDocument.node_A.Placement=App.Placement(sketch_A_matrix)
-App.ActiveDocument.node_A.addGeometry(Part.Circle())
-App.ActiveDocument.node_A.addGeometry(Part.Line(Base.Vector(0,0,0),skA_u))
-App.ActiveDocument.node_A.addGeometry(Part.Line(Base.Vector(0,0,0),skA_v))
+name_B= name+'_node_B'
 
-
+App.activeDocument().addObject('Sketcher::SketchObject', name_B)
+node_B=App.ActiveDocument.getObjectsByLabel(name_B)[0]
+node_B.Placement=App.Placement(sketch_B_matrix)
+node_B.addGeometry(Part.Circle())
+node_B.addGeometry(Part.Line(Base.Vector(0,0,0),skB_uC))
+node_B.addGeometry(Part.Line(Base.Vector(0,0,0),skB_uA))
+node_B.addGeometry(Part.Line(Base.Vector(0,0,0),skB_v))
 
 # node C sketch
 sketch_C_matrix=App.Matrix(
@@ -335,11 +354,14 @@ skC_mat_inverse=sketch_C_matrix.inverse()
 skC_u=skC_mat_inverse.multiply(C+C_tan_x)
 skC_v=skC_mat_inverse.multiply(C+C_tan_y)
 
-App.activeDocument().addObject('Sketcher::SketchObject','node_C')
-App.ActiveDocument.node_C.Placement=App.Placement(sketch_C_matrix)
-App.ActiveDocument.node_C.addGeometry(Part.Circle())
-App.ActiveDocument.node_C.addGeometry(Part.Line(Base.Vector(0,0,0),skC_u))
-App.ActiveDocument.node_C.addGeometry(Part.Line(Base.Vector(0,0,0),skC_v))
+name_C= name+'_node_C'
+
+App.activeDocument().addObject('Sketcher::SketchObject', name_C)
+node_C=App.ActiveDocument.getObjectsByLabel(name_C)[0]
+node_C.Placement=App.Placement(sketch_C_matrix)
+node_C.addGeometry(Part.Circle())
+node_C.addGeometry(Part.Line(Base.Vector(0,0,0),skC_u))
+node_C.addGeometry(Part.Line(Base.Vector(0,0,0),skC_v))
 
 
 

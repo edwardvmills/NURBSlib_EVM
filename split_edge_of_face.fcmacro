@@ -3,7 +3,7 @@ from FreeCAD import Base
 from FreeCAD import Gui
 from PySide import QtGui
 import math
-import BezCubic as BC
+
 
 #select an edge, and the face it is a part of.
 #must be a visible edge of the face,

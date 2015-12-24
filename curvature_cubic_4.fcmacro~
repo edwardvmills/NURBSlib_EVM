@@ -2,7 +2,7 @@ import Part
 from FreeCAD import Base
 from FreeCAD import Gui
 import math
-import NURBSlib_EVM as Nl
+import BezCubic as BC
 
 s=Gui.Selection.getSelectionEx()[0].SubObjects
 
@@ -13,7 +13,7 @@ pole0=[s[0].Point,1]
 pole1=[s[1].Point,1]
 pole2=[s[2].Point,1]	
 
-curvature = Nl.Cubic_curvature(pole0[0], pole1[0], pole2[0])
+curvature = BC.Cubic_curvature(pole0[0], pole1[0], pole2[0])
 radius = 1/curvature
 
 v1=pole1[0]-pole0[0]

@@ -2,7 +2,7 @@ import Part
 from FreeCAD import Base
 from FreeCAD import Gui
 import math
-import NURBSlib_EVM as Nl
+import BezCubic as BC
 import copy
 
 doc=App.activeDocument()
@@ -10,7 +10,7 @@ curve=Gui.Selection.getSelectionEx()[0].SubObjects[0].Curve
 surf=Gui.Selection.getSelectionEx()[1].SubObjects[0].Surface
 
 # get the curve-surface intersection
-isect = Nl.curve_surf_isect(curve, surf)
+isect = BC.curve_surf_isect(curve, surf)
 point_isect = isect[0]
 curve_isect_u = isect[1]
 surf_isect_uv = isect[2]
