@@ -31,6 +31,6 @@ I'm aware of the plugin loader tool that's available, and i wish i was smart/ded
 #usage   
 -draw sketches of lines/circles (read the curve macros to see what inputs they want)   
 -select those lines/circles in the order specified by the macro, then hit the macro button > curve is created.   
--select 3/4 curves in the order they form a loop, hit the surface macro button > surface is created.   
+-select 3/4 curves in a loop counterclockwise (surface normal with then point towards you), hit the surface macro button > surface is created.   
 
-The surfaces are 100% controlled by the curves, which are 100% controlled by the sketches. This is very powerful, but requires following strict rules for the sketches to obtain good results.   
+The surfaces are 100% controlled by the curves, which are 100% controlled by the sketches. This is very powerful, but requires following strict rules for the sketches to obtain good results.
