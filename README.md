@@ -49,4 +49,4 @@ I'm aware of the plugin loader tool that's available, and i wish i was smart/ded
 -select those lines/circles in the order specified by the macro, then hit the macro button > curve is created.   
 -select 3/4 curves in a loop counterclockwise (surface normal will then point towards you), hit the surface macro button > surface is created.   
 
-The surfaces are 100% controlled by the curves, which are 100% controlled by the sketches. This can be very powerful, but requires following strict rules for the sketches to obtain good results. Utilities to control the sketches and contimuity are in various stages of planning. I suspect much could alrady be doen by 
+The surfaces are 100% controlled by the curves, which are 100% controlled by the sketches. This can be very powerful, but requires following strict rules for the sketches to obtain good results. Utilities to control the sketches and continuity are in various stages of planning/prototyping. I suspect much could alrady be done by using spreadsheets and expressions.
