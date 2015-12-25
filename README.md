@@ -5,10 +5,14 @@ FreeCAD already has some of these tools in the Part module and i believe the Par
 
 All scripts in this repository are offered under the terms of the GPLv3. 
 
-###To use as intended 
-(general description only, not a FreeCAD tutorial)
+###In this repo:   
+-a single .py with all the 'geometry' functions, where i try to use the most basic inputs.   
+-individual .fcmacro files that tie the current GUI and selection behavior of FreeCAD to single modeling operations.   
+-'odds and ends' guioperationx.fcmacro functions to handle placing the basic points/tangents as necessary. These are not really related to the main goal of formulating NURBS.
+-test model files. Here it gets incredibly messy because i use both git and horrible filenames to track different versions. These model files are irrelevant to the script structure, i keep them in the repo for my ease of access. 
 
-####Setup   
+
+###Setup   
 -from the top level of the repository, take NURBSlib_EVM.py, all  *.fcmacro files, and the icons folder
 -put them somewhere FreeCAD can find them   
 -link the fcmacro scripts to icons, descriptions, tooltips, etc. 
@@ -17,23 +21,12 @@ All scripts in this repository are offered under the terms of the GPLv3.
 
 [instructions for toolbars/macros in FreeCAD](http://freecadweb.org/wiki/index.php?title=Macros) 
 
-####Usage   
+###Usage   
 -draw sketches of lines/circles (read the curve macros to see what inputs they want)   
 -select those lines/circles in the order specified by the macro, then hit the macro button > curve is created.   
 -select 3/4 curves in a loop counterclockwise (surface normal will then point towards you), hit the surface macro button > surface is created.   
 
 The surfaces are 100% controlled by the curves, which are 100% controlled by the sketches. This can be very powerful, but requires following strict rules for the sketches to obtain good results. Utilities to control the sketches and continuity are in various stages of planning/prototyping. I suspect much could already be done by using spreadsheets and expressions.
-
-###In this repo:   
--a single .py with all the 'geometry' functions, where i try to use the most basic inputs.   
--individual .fcmacro files that tie the current GUI and selection behavior of FreeCAD to single modeling operations.   
--test model files. Here it gets incredibly messy because i use both git and horrible filenames to track different versions. These model files are irrelevant to the script structure, i keep them in the repo for my ease of access.   
-
-###Basic development structure:  
--write a function in NURBSlib_EVM.py   
--write a GUI wrapper as guioperationx.fcmacro that calls functions in NURBSlib_EVM.py  
--make a toolbar button   
--write as many 'odds and ends' guioperationx.fcmacro functions to handle placing the basic points/tangents/normals as necessary. These are not really related to the main goal of formulating NURBS.
 
 ###NURBS in general, and what these scripts are trying to do   
 The ultimate goal is to implement a set of tools to specify points and tangents/normals to generate NURBS surfaces of high continuity. I have some ideas in regards to what constitutes an efficient and intuitive input/interface structure. This is very personal, and cannot address all individual preferences. 
