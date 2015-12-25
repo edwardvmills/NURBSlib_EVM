@@ -1,6 +1,6 @@
 ## NURBSlib_EVM
 My python scripts for creating surfaces in [FreeCAD](http://freecadweb.org/).    
-I am not trying to implement the 'classic' surfacing tools like sweep, loft, blend, trim, etc, although there are many parallels.    
+These are not the 'classic' surfacing tools like sweep, loft, blend, trim, etc, although there are many parallels.    
 FreeCAD already has some of these tools in the Part module and i believe the PartDesign module is slated to get improved versions soon. OpenCascade itself already has all of these functions built in, but i am not a programmer, so i cannot use OpenCascade directly. 
 
 All scripts in this repository are offered under the terms of the GPLv3. 
@@ -13,10 +13,9 @@ All scripts in this repository are offered under the terms of the GPLv3.
 -put them somewhere FreeCAD can find them   
 -link the fcmacro scripts to icons, descriptions, tooltips, etc. 
 -put all those GUI macros in toolbars.   
-See http://freecadweb.org/wiki/index.php?title=Macros for instructions to set up toolbars/macros in FreeCAD      
--add that toolbar to the PartDesign workbench. The raw material will be PartDesign sketches, so this is the logical place to put this toolbar for the time being.   
+-add that toolbar to the PartDesign workbench. The raw material will be PartDesign sketches, so this is a good place to put the toolbars for the time being.   
 
-I'm aware of the plugin loader tool that's available, and maybe one day i'll try to use it.
+[instructions for toolbars/macros in FreeCAD](http://freecadweb.org/wiki/index.php?title=Macros) 
 
 ####Usage   
 -draw sketches of lines/circles (read the curve macros to see what inputs they want)   
@@ -28,7 +27,7 @@ The surfaces are 100% controlled by the curves, which are 100% controlled by the
 ###In this repo:   
 -a single .py with all the 'geometry' functions, where i try to use the most basic inputs.   
 -individual .fcmacro files that tie the current GUI and selection behavior of FreeCAD to single modeling operations.   
--test model files. Here it gets incredibly messy because i use both git and horrible filenames to track different versions.  These model files are irrelevant to the script structure, i keep them in the repo for my ease of access.   
+-test model files. Here it gets incredibly messy because i use both git and horrible filenames to track different versions. These model files are irrelevant to the script structure, i keep them in the repo for my ease of access.   
 
 ###Basic development structure:  
 -write a function in NURBSlib_EVM.py   
