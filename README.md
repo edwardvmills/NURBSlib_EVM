@@ -1,14 +1,16 @@
 ## NURBSlib_EVM
 My python scripts for creating surfaces in [FreeCAD](http://freecadweb.org/).   
 
-The ultimate goal is to implement a set of tools to specify very few points and tangents/normals to generate NURBS surfaces of high continuity. I have some ideas in regards to what constitutes an efficient and intuitive input/interface structure. This is very personal, and cannot address all individual preferences. 
+At this time, none of the entites created by these scripts are parametric. This is the rough workflow prototyping phase. If/when the surface creation methods reach my minimum goals, i intend to make them parametric.
 
-Ideally, the user interaction with the points/normals would be analogous to manipulating a coarse mesh, like subdivision surfaces. The main difference with subdivision surface being that with full NURBS, we can have perfect conics, no intrinsic continuity limits, and the 'handles' <i>stay on the surface itself</i>. So when we dimension/constrain the handles, we are dimensioning the surface itself.
+The ultimate goal is to implement a set of tools that require *very few points and tangents/normals* to generate NURBS surfaces of high continuity. I have some ideas in regards to what constitutes an efficient and intuitive input/interface structure. This is very personal, and cannot address all individual preferences. 
+
+Ideally, the user interaction with the points/normals would be analogous to manipulating a coarse mesh, like subdivision surfaces. The main difference with subdivision surfaces being that with full NURBS, we can have perfect conics, no intrinsic continuity limits, and the 'handles' <i>stay on the surface itself</i>. So when we dimension/constrain the handles, we are dimensioning the surface itself.
+
+What this means in practice is that eventually the user will not need to know *anything* about control points, knot vectors, or weights. At this stage however, a minimum understanding of control points is still necessary to use the tools.
 
 These are not the 'classic' surfacing tools like sweep, loft, blend, trim, etc, although there are many parallels.    
 FreeCAD already has some of these tools in the Part module and i believe the PartDesign module is slated to get improved versions soon. OpenCascade itself already has all of these functions built in, but i am not a programmer, so i cannot use OpenCascade directly. 
-
-At this time, none of the entites created by these scripts are parametric. This is the rough workflow prototyping phase.
 
 All scripts in this repository are offered under the terms of the GPLv3. 
 
