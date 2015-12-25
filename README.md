@@ -1,26 +1,40 @@
-# NURBSlib_EVM
+## NURBSlib_EVM
 My python scripts for creating surfaces in FreeCAD. Although there are many parallels, i am not trying to implement the 'classic' surfacing tools like sweep, loft, blend, trim, etc. FreeCAD already has some of these tools in the Part module and i believe the PartDesign module is slated to get improved versions soon. OpenCascade itself already has all of these functions built in, but i am not a programmer, so i cannot use OpenCascade directly. 
 
 All scripts in this repository are offered under the terms of the GPLv3. 
 
-#To use as intended (general description only, not a FreeCAD tutorial):
+###To use as intended 
+(general description only, not a FreeCAD tutorial)
 
-##Setup   
--put NURBSlib_EVM.py, the .fcmacro files, and icons where FreeCAD can find them   
--link the fcmacro scripts to icons, descriptions, tooltips, etc.   
+####Setup   
+-formt he top level of the repository, take NURBSlib_EVM.py, all the .fcmacro files, and the icons folder
+-put them somewhere FreeCAD can find them   
+-link the fcmacro scripts to icons, descriptions, tooltips, etc. 
 -put all those GUI macros in toolbars.   
+See http://freecadweb.org/wiki/index.php?title=Macros for instructions to set up toolbars/macros in FreeCAD      
 -add that toolbar to the PartDesign workbench. The raw material will be PartDesign sketches, so this is the logical place to put this toolbar for the time being.   
-(see http://freecadweb.org/wiki/index.php?title=Macros for details regarding setting toolbars/macros in FreeCAD)   
-I'm aware of the plugin loader tool that's available, and i wish i was smart/dedicated enough to use it, but i'm not :)
 
-##Usage   
+I'm aware of the plugin loader tool that's available, and maybe one day i'll try to use it.
+
+####Usage   
 -draw sketches of lines/circles (read the curve macros to see what inputs they want)   
 -select those lines/circles in the order specified by the macro, then hit the macro button > curve is created.   
 -select 3/4 curves in a loop counterclockwise (surface normal will then point towards you), hit the surface macro button > surface is created.   
 
 The surfaces are 100% controlled by the curves, which are 100% controlled by the sketches. This can be very powerful, but requires following strict rules for the sketches to obtain good results. Utilities to control the sketches and continuity are in various stages of planning/prototyping. I suspect much could alrady be done by using spreadsheets and expressions.
 
-##NURBS in general, and what these scripts are trying to do   
+###In this repo:   
+-a single .py with all the 'geometry' functions, where i try to use the most basic inputs.   
+-individual .fcmacro files that tie the current GUI and selection behavior of FreeCAD to single modeling operations.   
+-test model files. Here it gets incredibly messy because i use both git and horrible filenames to track different versions.  These model files are irrelevant to the script structure, i keep them in the repo for my ease of access.   
+
+###Basic development structure:  
+-write a function in NURBSlib_EVM.py   
+-write a GUI wrapper as guioperationx.fcmacro that calls functions in NURBSlib_EVM.py  
+-make a toolbar button   
+-write as many 'odds and ends' guioperationx.fcmacro functions to handle placing the basic points/tangents/normals as necessary. These are not really related to the main goal of formulating NURBS.
+
+###NURBS in general, and what these scripts are trying to do   
 The ultimate goal is to implement a set of tools to specify points and tangents/normals to generate NURBS surfaces of high continuity. I have some ideas in regards to what constitutes an efficient and intuitive input/interface structure. This is very personal, and cannot address all individual preferences. 
 
 Ideally, the user interaction with the points/normals would be analogous to manipulating a coarse mesh, like subdivision surfaces. The main difference with subdivision surface being that with full NURBS, we can have perfect conics, no intrinsic continuity limits, and the 'handles' <i>stay on the surface itself</i>. So when we dimension/constrain the handles, we are dimensioning the surface itself.
@@ -35,14 +49,3 @@ For now, the Bezier curves and surfaces are considered to be 'rough drafts' of t
 
 In order to have isolated curvature at each curve endpoint, i made a 6 control point cubic curve and associated 6X6 surface. Included are utilites to convert cubic Bezier and arcs to this curve type.  
 This will open up the possibility of using the 3rd and 4th points to control start and end curvature respectively. This can be done without interfering with the use of the 2nd and 5th control points to set tangents. Right now the curvature matching must be done by hand, but for any particular value of curvature desired at a curve connection, there are many possible control points positions. These additional degrees of freedom will (i hope) allow the possibility of controlling the derivative of curvature (highlight flow).
-
-##In this repo:   
--a single .py with all the 'geometry' functions, where i try to use the most basic inputs.   
--individual .fcmacro files that tie the current GUI and selection behavior of FreeCAD to single modeling operations.   
--test model files. Here it gets incredibly messy because i use both git and horrible filenames to track different versions.  These model files are irrelevant to the script structure, i keep them in the repo for my ease of access.   
-
-##Basic development structure:  
--write a function in NURBSlib_EVM.py   
--write a GUI wrapper as guioperationx.fcmacro that calls functions in NURBSlib_EVM.py  
--make a toolbar button   
--write as many 'odds and ends' guioperationx.fcmacro functions to handle placing the basic points/tangents/normals as necessary. These are not really related to the main goal of formulating NURBS.
