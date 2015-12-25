@@ -11,7 +11,7 @@ FreeCAD already has some of these tools in the Part module and i believe the Par
 At this time, none of the entites created by these scripts are parametric. This is the rough workflow prototyping phase.
 
 All scripts in this repository are offered under the terms of the GPLv3. 
-___
+
 ###In this repo:   
 -a single .py with all the 'geometry' functions, where i try to use the most basic inputs.   
 -individual .fcmacro files that tie the current GUI and selection behavior of FreeCAD to single modeling operations.   
@@ -26,7 +26,7 @@ ___
 -add that toolbar to the PartDesign workbench. The raw material will be PartDesign sketches, so this is a good place to put the toolbars for the time being.   
 
 [instructions for toolbars/macros in FreeCAD](http://freecadweb.org/wiki/index.php?title=Macros) 
-___
+
 ###Usage (basic knowledge of the FreeCAD PartDesign Sketcher is required) 
 
 -draw sketches of lines/circles (read the curve macros to see what inputs they want)   
@@ -36,7 +36,7 @@ ___
 More details on usage will be made available [here](http://edwardvmills.github.io/NURBSlib_EVM/) as time permits.
 
 The surfaces are 100% controlled by the curves, which are 100% controlled by the sketches. This can be very powerful, but requires following strict rules for the sketches to obtain good results. Utilities to control the sketches and continuity are in various stages of planning/prototyping. I suspect much could already be done by using spreadsheets and expressions.
-
+___
 ###NURBS in general, and what these scripts are trying to do   
 
 For now, my focus is on skinning sets of 3 or 4 curves in a loop. The skinning routines should be consistent and produce the same result for the same inputs, and a scaled result for a scaled input. The seams joining adjacent surfaces should always have the same level of continuity as the adjacent curves at the surface corners.
