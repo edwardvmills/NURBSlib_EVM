@@ -3,7 +3,10 @@ My python scripts for creating surfaces in [FreeCAD](http://freecadweb.org/).
 
 At this time, none of the entities created by these scripts are parametric. This is the rough workflow prototyping phase. If/when the surface creation methods reach my minimum goals, i intend to make them parametric.
 
-[TL;DR, dkip to setup] (###Setup   )
+All scripts in this repository are offered under the terms of the [GPLv3](http://www.gnu.org/licenses/gpl-3.0.en.html)   
+All models in this repository are offered under the terms of [CC-BY](http://creativecommons.org/licenses/by/2.0/)
+
+[TL;DR, skip to Setup,][###Setup   ][or Usage][###Usage ]
 
 The ultimate goal is to implement a set of tools that require *very few points and tangents/normals* to generate NURBS surfaces of high continuity. I have some ideas as to what constitutes an efficient and intuitive input/interface structure. This is very personal, and cannot address all individual preferences. 
 
@@ -13,9 +16,6 @@ What this means in practice is that eventually the user will not need to know *a
 
 **These are not the 'classic' surfacing tools like sweep, loft, blend, trim, etc**, although there are many parallels.    
 FreeCAD already has some of these tools in the Part module and i believe the PartDesign module is slated to get improved versions soon. OpenCascade itself already has all of these functions built in, but i am not a programmer, so i cannot use OpenCascade directly. 
-
-All scripts in this repository are offered under the terms of the [GPLv3](http://www.gnu.org/licenses/gpl-3.0.en.html)   
-All models in this repository are offered under the terms of [CC-BY](http://creativecommons.org/licenses/by/2.0/)
 
 ###In this repo:   
 -a single .py with all the 'geometry' functions, where i try to use the most basic inputs.   
