@@ -12,7 +12,8 @@ What this means in practice is that eventually the user will not need to know *a
 **These are not the 'classic' surfacing tools like sweep, loft, blend, trim, etc**, although there are many parallels.    
 FreeCAD already has some of these tools in the Part module and i believe the PartDesign module is slated to get improved versions soon. OpenCascade itself already has all of these functions built in, but i am not a programmer, so i cannot use OpenCascade directly. 
 
-All scripts in this repository are offered under the terms of the GPLv3. 
+All scripts in this repository are offered under the terms of the [GPLv3](http://www.gnu.org/licenses/gpl-3.0.en.html)   
+All models in this repository are offered under the terms of [CC-BY](http://creativecommons.org/licenses/by/2.0/)
 
 ###In this repo:   
 -a single .py with all the 'geometry' functions, where i try to use the most basic inputs.   
