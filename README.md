@@ -8,7 +8,7 @@ All scripts in this repository are offered under the terms of the GPLv3.
 ###In this repo:   
 -a single .py with all the 'geometry' functions, where i try to use the most basic inputs.   
 -individual .fcmacro files that tie the current GUI and selection behavior of FreeCAD to single modeling operations.   
--'odds and ends' guioperationx.fcmacro functions to handle placing the basic points/tangents as necessary. These are not really related to the main goal of formulating NURBS.
+-'odds and ends' guioperationx.fcmacro functions to assist in creating sketches to pass to the NURBS tools.   
 -test model files. Here it gets incredibly messy because i use both git and horrible filenames to track different versions. These model files are irrelevant to the script structure, i keep them in the repo for my ease of access. 
 
 
