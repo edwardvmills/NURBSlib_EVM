@@ -3,14 +3,14 @@ My python scripts for creating surfaces in [FreeCAD](http://freecadweb.org/).
 These are not the 'classic' surfacing tools like sweep, loft, blend, trim, etc, although there are many parallels.    
 FreeCAD already has some of these tools in the Part module and i believe the PartDesign module is slated to get improved versions soon. OpenCascade itself already has all of these functions built in, but i am not a programmer, so i cannot use OpenCascade directly. 
 
+
 All scripts in this repository are offered under the terms of the GPLv3. 
 
 ###In this repo:   
 -a single .py with all the 'geometry' functions, where i try to use the most basic inputs.   
 -individual .fcmacro files that tie the current GUI and selection behavior of FreeCAD to single modeling operations.   
--'odds and ends' guioperationx.fcmacro functions to assist in creating sketches to pass to the NURBS tools.   
--test model files. Here it gets incredibly messy because i use both git and horrible filenames to track different versions. These model files are irrelevant to the script structure, i keep them in the repo for my ease of access. 
-
+-various utility .fcmacro functions to assist in creating sketches to pass to the NURBS tools.   
+-test FreeCAD model files. These model files are irrelevant to the scripts, i keep them in the repo for my ease of access. 
 
 ###Setup   
 -from the top level of the repository, take NURBSlib_EVM.py, all  *.fcmacro files, and the icons folder
@@ -21,10 +21,15 @@ All scripts in this repository are offered under the terms of the GPLv3.
 
 [instructions for toolbars/macros in FreeCAD](http://freecadweb.org/wiki/index.php?title=Macros) 
 
-###Usage   
+###Usage (basic knowledge of the FreeCAD PartDesign Sketcher is required) 
+
 -draw sketches of lines/circles (read the curve macros to see what inputs they want)   
 -select those lines/circles in the order specified by the macro, then hit the macro button > curve is created.   
--select 3/4 curves in a loop counterclockwise (surface normal will then point towards you), hit the surface macro button > surface is created.   
+-select 3/4 curves in a loop counterclockwise (surface normal will then point towards you), hit the surface macro button > surface is created.
+
+NOTE:at this time, none of the entites created by these sketches are parametric. This is the rough workflow prototyping phase.
+
+More details on usage will be made available [here](http://edwardvmills.github.io/NURBSlib_EVM/) as time permits.
 
 The surfaces are 100% controlled by the curves, which are 100% controlled by the sketches. This can be very powerful, but requires following strict rules for the sketches to obtain good results. Utilities to control the sketches and continuity are in various stages of planning/prototyping. I suspect much could already be done by using spreadsheets and expressions.
 
