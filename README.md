@@ -27,7 +27,7 @@ All scripts in this repository are offered under the terms of the GPLv3.
 -select those lines/circles in the order specified by the macro, then hit the macro button > curve is created.   
 -select 3/4 curves in a loop counterclockwise (surface normal will then point towards you), hit the surface macro button > surface is created.
 
-NOTE:at this time, none of the entites created by these sketches are parametric. This is the rough workflow prototyping phase.
+NOTE: at this time, none of the entites created by these sketches are parametric. This is the rough workflow prototyping phase.
 
 More details on usage will be made available [here](http://edwardvmills.github.io/NURBSlib_EVM/) as time permits.
 
