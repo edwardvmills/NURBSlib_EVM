@@ -1,5 +1,7 @@
 ## NURBSlib_EVM
-My python scripts for creating surfaces in FreeCAD. Although there are many parallels, i am not trying to implement the 'classic' surfacing tools like sweep, loft, blend, trim, etc. FreeCAD already has some of these tools in the Part module and i believe the PartDesign module is slated to get improved versions soon. OpenCascade itself already has all of these functions built in, but i am not a programmer, so i cannot use OpenCascade directly. 
+My python scripts for creating surfaces in [FreeCAD](http://freecadweb.org/).    
+I am not trying to implement the 'classic' surfacing tools like sweep, loft, blend, trim, etc, although there are many parallels.    
+FreeCAD already has some of these tools in the Part module and i believe the PartDesign module is slated to get improved versions soon. OpenCascade itself already has all of these functions built in, but i am not a programmer, so i cannot use OpenCascade directly. 
 
 All scripts in this repository are offered under the terms of the GPLv3. 
 
@@ -7,7 +9,7 @@ All scripts in this repository are offered under the terms of the GPLv3.
 (general description only, not a FreeCAD tutorial)
 
 ####Setup   
--formt he top level of the repository, take NURBSlib_EVM.py, all the .fcmacro files, and the icons folder
+-from the top level of the repository, take NURBSlib_EVM.py, all  *.fcmacro files, and the icons folder
 -put them somewhere FreeCAD can find them   
 -link the fcmacro scripts to icons, descriptions, tooltips, etc. 
 -put all those GUI macros in toolbars.   
@@ -21,7 +23,7 @@ I'm aware of the plugin loader tool that's available, and maybe one day i'll try
 -select those lines/circles in the order specified by the macro, then hit the macro button > curve is created.   
 -select 3/4 curves in a loop counterclockwise (surface normal will then point towards you), hit the surface macro button > surface is created.   
 
-The surfaces are 100% controlled by the curves, which are 100% controlled by the sketches. This can be very powerful, but requires following strict rules for the sketches to obtain good results. Utilities to control the sketches and continuity are in various stages of planning/prototyping. I suspect much could alrady be done by using spreadsheets and expressions.
+The surfaces are 100% controlled by the curves, which are 100% controlled by the sketches. This can be very powerful, but requires following strict rules for the sketches to obtain good results. Utilities to control the sketches and continuity are in various stages of planning/prototyping. I suspect much could already be done by using spreadsheets and expressions.
 
 ###In this repo:   
 -a single .py with all the 'geometry' functions, where i try to use the most basic inputs.   
