@@ -1,8 +1,14 @@
 ## NURBSlib_EVM
-My python scripts for creating surfaces in [FreeCAD](http://freecadweb.org/).    
+My python scripts for creating surfaces in [FreeCAD](http://freecadweb.org/).   
+
+The ultimate goal is to implement a set of tools to specify very few points and tangents/normals to generate NURBS surfaces of high continuity. I have some ideas in regards to what constitutes an efficient and intuitive input/interface structure. This is very personal, and cannot address all individual preferences. 
+
+Ideally, the user interaction with the points/normals would be analogous to manipulating a coarse mesh, like subdivision surfaces. The main difference with subdivision surface being that with full NURBS, we can have perfect conics, no intrinsic continuity limits, and the 'handles' <i>stay on the surface itself</i>. So when we dimension/constrain the handles, we are dimensioning the surface itself.
+
 These are not the 'classic' surfacing tools like sweep, loft, blend, trim, etc, although there are many parallels.    
 FreeCAD already has some of these tools in the Part module and i believe the PartDesign module is slated to get improved versions soon. OpenCascade itself already has all of these functions built in, but i am not a programmer, so i cannot use OpenCascade directly. 
 
+At this time, none of the entites created by these scripts are parametric. This is the rough workflow prototyping phase.
 
 All scripts in this repository are offered under the terms of the GPLv3. 
 
@@ -27,16 +33,11 @@ All scripts in this repository are offered under the terms of the GPLv3.
 -select those lines/circles in the order specified by the macro, then hit the macro button > curve is created.   
 -select 3/4 curves in a loop counterclockwise (surface normal will then point towards you), hit the surface macro button > surface is created.
 
-NOTE: at this time, none of the entites created by these sketches are parametric. This is the rough workflow prototyping phase.
-
 More details on usage will be made available [here](http://edwardvmills.github.io/NURBSlib_EVM/) as time permits.
 
 The surfaces are 100% controlled by the curves, which are 100% controlled by the sketches. This can be very powerful, but requires following strict rules for the sketches to obtain good results. Utilities to control the sketches and continuity are in various stages of planning/prototyping. I suspect much could already be done by using spreadsheets and expressions.
 
 ###NURBS in general, and what these scripts are trying to do   
-The ultimate goal is to implement a set of tools to specify points and tangents/normals to generate NURBS surfaces of high continuity. I have some ideas in regards to what constitutes an efficient and intuitive input/interface structure. This is very personal, and cannot address all individual preferences. 
-
-Ideally, the user interaction with the points/normals would be analogous to manipulating a coarse mesh, like subdivision surfaces. The main difference with subdivision surface being that with full NURBS, we can have perfect conics, no intrinsic continuity limits, and the 'handles' <i>stay on the surface itself</i>. So when we dimension/constrain the handles, we are dimensioning the surface itself.
 
 For now, my focus is on skinning sets of 3 or 4 curves in a loop. The skinning routines should be consistent and produce the same result for the same inputs, and a scaled result for a scaled input. The seams joining adjacent surfaces should always have the same level of continuity as the adjacent curves at the surface corners.
 
@@ -46,5 +47,6 @@ The cubic bezier form is the simplest form that can connect two points with spec
 
 For now, the Bezier curves and surfaces are considered to be 'rough drafts' of the final surfaces. Easy to specify, cheap to tesselate. Sometimes they may even be adequate to patch a hole in a shell.
 
-In order to have isolated curvature at each curve endpoint, i made a 6 control point cubic curve and associated 6X6 surface. Included are utilites to convert cubic Bezier and arcs to this curve type.  
+In order to have isolated curvature at each curve endpoint, i made a 6 control point cubic curve and associated 6X6 surface. Included are utilites to convert cubic Bezier and arcs to this curve type.   
+
 This will open up the possibility of using the 3rd and 4th points to control start and end curvature respectively. This can be done without interfering with the use of the 2nd and 5th control points to set tangents. Right now the curvature matching must be done by hand, but for any particular value of curvature desired at a curve connection, there are many possible control points positions. These additional degrees of freedom will (i hope) allow the possibility of controlling the derivative of curvature (highlight flow).
