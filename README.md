@@ -3,7 +3,7 @@ My python scripts for creating surfaces in [FreeCAD](http://freecadweb.org/).
 
 At this time, none of the entities created by these scripts are parametric. This is the rough workflow prototyping phase. If/when the surface creation methods reach my minimum goals, i intend to make them parametric.
 
-The ultimate goal is to implement a set of tools that require *very few points and tangents/normals* to generate NURBS surfaces of high continuity. I have some ideas in regards to what constitutes an efficient and intuitive input/interface structure. This is very personal, and cannot address all individual preferences. 
+The ultimate goal is to implement a set of tools that require *very few points and tangents/normals* to generate NURBS surfaces of high continuity. I have some ideas as to what constitutes an efficient and intuitive input/interface structure. This is very personal, and cannot address all individual preferences. 
 
 Ideally, the user interaction with the points/normals would be analogous to manipulating a coarse mesh, like subdivision surfaces. The main difference with subdivision surfaces being that with full NURBS, we can have perfect conics, no intrinsic continuity limits, and the 'handles' <i>stay on the surface itself</i>. So when we dimension/constrain the handles, we are dimensioning the surface itself.
 
