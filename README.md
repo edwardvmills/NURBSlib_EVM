@@ -6,7 +6,7 @@ At this time, none of the entities created by these scripts are parametric. This
 All scripts in this repository are offered under the terms of the [GPLv3](http://www.gnu.org/licenses/gpl-3.0.en.html)   
 All models in this repository are offered under the terms of [CC-BY](http://creativecommons.org/licenses/by/2.0/)
 
-[TL;DR, skip to Setup,][###Setup   ][or Usage][###Usage ]
+[TL;DR, skip to Setup,][###Setup   ] [or Usage][###Usage ]
 
 The ultimate goal is to implement a set of tools that require *very few points and tangents/normals* to generate NURBS surfaces of high continuity. I have some ideas as to what constitutes an efficient and intuitive input/interface structure. This is very personal, and cannot address all individual preferences. 
 
