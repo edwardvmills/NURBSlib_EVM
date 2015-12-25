@@ -11,13 +11,13 @@ FreeCAD already has some of these tools in the Part module and i believe the Par
 At this time, none of the entites created by these scripts are parametric. This is the rough workflow prototyping phase.
 
 All scripts in this repository are offered under the terms of the GPLv3. 
-
+___
 ###In this repo:   
 -a single .py with all the 'geometry' functions, where i try to use the most basic inputs.   
 -individual .fcmacro files that tie the current GUI and selection behavior of FreeCAD to single modeling operations.   
--various utility .fcmacro functions to assist in creating sketches to pass to the NURBS tools.   
+-various utility .fcmacro functions to assist in creating sketches ('handles') to pass to the NURBS tools.   
 -test FreeCAD model files. These model files are irrelevant to the scripts, i keep them in the repo for my ease of access. 
-
+___
 ###Setup   
 -from the top level of the repository, take NURBSlib_EVM.py, all  *.fcmacro files, and the icons folder
 -put them somewhere FreeCAD can find them   
@@ -26,7 +26,7 @@ All scripts in this repository are offered under the terms of the GPLv3.
 -add that toolbar to the PartDesign workbench. The raw material will be PartDesign sketches, so this is a good place to put the toolbars for the time being.   
 
 [instructions for toolbars/macros in FreeCAD](http://freecadweb.org/wiki/index.php?title=Macros) 
-
+___
 ###Usage (basic knowledge of the FreeCAD PartDesign Sketcher is required) 
 
 -draw sketches of lines/circles (read the curve macros to see what inputs they want)   
