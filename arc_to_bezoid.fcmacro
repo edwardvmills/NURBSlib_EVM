@@ -33,6 +33,6 @@ pole5=[raw_poles[5],weights[5]]
 
 poles = [pole0, pole1, pole2, pole3, pole4, pole5]
 
-curve = Nl.SplineCubic6P_curve(poles)
+curve = Nl.NURBS_Cubic_6P_curve(poles)
 
 Part.show(curve.toShape())

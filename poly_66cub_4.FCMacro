@@ -17,118 +17,118 @@ bez2=s[1].Shape.Curve
 bez3=s[2].Shape.Curve
 bez4=s[3].Shape.Curve
 
-quad66_patch=Nl.quad66_patch(bez1,bez2,bez3,bez4)
+grid_66_quad=Nl.grid_66_quad(bez1,bez2,bez3,bez4)
 
 
 # inner corner control points
-l01_11=Part.Line(quad66_patch[1],quad66_patch[7])
-l10_11=Part.Line(quad66_patch[6],quad66_patch[7])
+l01_11=Part.Line(grid_66_quad[1],grid_66_quad[7])
+l10_11=Part.Line(grid_66_quad[6],grid_66_quad[7])
 Part.show(l01_11.toShape())
 Part.show(l10_11.toShape())
 
-l04_14=Part.Line(quad66_patch[4],quad66_patch[10])
-l15_14=Part.Line(quad66_patch[11],quad66_patch[10])
+l04_14=Part.Line(grid_66_quad[4],grid_66_quad[10])
+l15_14=Part.Line(grid_66_quad[11],grid_66_quad[10])
 Part.show(l04_14.toShape())
 Part.show(l15_14.toShape())
 
-l54_44=Part.Line(quad66_patch[34],quad66_patch[28])
-l45_44=Part.Line(quad66_patch[29],quad66_patch[28])
+l54_44=Part.Line(grid_66_quad[34],grid_66_quad[28])
+l45_44=Part.Line(grid_66_quad[29],grid_66_quad[28])
 Part.show(l54_44.toShape())
 Part.show(l45_44.toShape())
 
-l51_41=Part.Line(quad66_patch[31],quad66_patch[25])
-l40_41=Part.Line(quad66_patch[24],quad66_patch[25])
+l51_41=Part.Line(grid_66_quad[31],grid_66_quad[25])
+l40_41=Part.Line(grid_66_quad[24],grid_66_quad[25])
 Part.show(l51_41.toShape())
 Part.show(l40_41.toShape())
 
 #inner edge control points
 #for p12 and p13
-l11_12=Part.Line(quad66_patch[7],quad66_patch[8])
-l02_12=Part.Line(quad66_patch[2],quad66_patch[8])
+l11_12=Part.Line(grid_66_quad[7],grid_66_quad[8])
+l02_12=Part.Line(grid_66_quad[2],grid_66_quad[8])
 Part.show(l11_12.toShape())
 Part.show(l02_12.toShape())
 
-l14_13=Part.Line(quad66_patch[10],quad66_patch[9])
-l03_13=Part.Line(quad66_patch[3],quad66_patch[9])
+l14_13=Part.Line(grid_66_quad[10],grid_66_quad[9])
+l03_13=Part.Line(grid_66_quad[3],grid_66_quad[9])
 Part.show(l14_13.toShape())
 Part.show(l03_13.toShape())
 
-l12_13=Part.Line(quad66_patch[8],quad66_patch[9])
+l12_13=Part.Line(grid_66_quad[8],grid_66_quad[9])
 Part.show(l12_13.toShape())
 
 #for p24 and p34
-l14_24=Part.Line(quad66_patch[10],quad66_patch[16])
-l25_24=Part.Line(quad66_patch[17],quad66_patch[16])
+l14_24=Part.Line(grid_66_quad[10],grid_66_quad[16])
+l25_24=Part.Line(grid_66_quad[17],grid_66_quad[16])
 Part.show(l14_24.toShape())
 Part.show(l25_24.toShape())
 
-l44_34=Part.Line(quad66_patch[28],quad66_patch[22])
-l35_34=Part.Line(quad66_patch[23],quad66_patch[22])
+l44_34=Part.Line(grid_66_quad[28],grid_66_quad[22])
+l35_34=Part.Line(grid_66_quad[23],grid_66_quad[22])
 Part.show(l44_34.toShape())
 Part.show(l35_34.toShape())
 
-l24_34=Part.Line(quad66_patch[16],quad66_patch[22])
+l24_34=Part.Line(grid_66_quad[16],grid_66_quad[22])
 Part.show(l24_34.toShape())
 
 #for p42 and p43
-l41_42=Part.Line(quad66_patch[25],quad66_patch[26])
-l52_42=Part.Line(quad66_patch[32],quad66_patch[26])
+l41_42=Part.Line(grid_66_quad[25],grid_66_quad[26])
+l52_42=Part.Line(grid_66_quad[32],grid_66_quad[26])
 Part.show(l41_42.toShape())
 Part.show(l52_42.toShape())
 
-l44_43=Part.Line(quad66_patch[28],quad66_patch[27])
-l53_43=Part.Line(quad66_patch[33],quad66_patch[27])
+l44_43=Part.Line(grid_66_quad[28],grid_66_quad[27])
+l53_43=Part.Line(grid_66_quad[33],grid_66_quad[27])
 Part.show(l44_43.toShape())
 Part.show(l53_43.toShape())
 
-l42_43=Part.Line(quad66_patch[26],quad66_patch[27])
+l42_43=Part.Line(grid_66_quad[26],grid_66_quad[27])
 Part.show(l42_43.toShape())
 
 #for p21 and p31
-l20_21=Part.Line(quad66_patch[12],quad66_patch[13])
-l11_21=Part.Line(quad66_patch[7],quad66_patch[13])
+l20_21=Part.Line(grid_66_quad[12],grid_66_quad[13])
+l11_21=Part.Line(grid_66_quad[7],grid_66_quad[13])
 Part.show(l20_21.toShape())
 Part.show(l11_21.toShape())
 
-l30_31=Part.Line(quad66_patch[18],quad66_patch[19])
-l41_31=Part.Line(quad66_patch[25],quad66_patch[19])
+l30_31=Part.Line(grid_66_quad[18],grid_66_quad[19])
+l41_31=Part.Line(grid_66_quad[25],grid_66_quad[19])
 Part.show(l30_31.toShape())
 Part.show(l41_31.toShape())
 
-l21_31=Part.Line(quad66_patch[13],quad66_patch[19])
+l21_31=Part.Line(grid_66_quad[13],grid_66_quad[19])
 Part.show(l21_31.toShape())
 
 
 #inner control points
 #22
-l21_22=Part.Line(quad66_patch[13],quad66_patch[14])
-l12_22=Part.Line(quad66_patch[8],quad66_patch[14])
+l21_22=Part.Line(grid_66_quad[13],grid_66_quad[14])
+l12_22=Part.Line(grid_66_quad[8],grid_66_quad[14])
 Part.show(l21_22.toShape())
 Part.show(l12_22.toShape())
 
 #23
-l24_23=Part.Line(quad66_patch[16],quad66_patch[15])
-l13_23=Part.Line(quad66_patch[9],quad66_patch[15])
+l24_23=Part.Line(grid_66_quad[16],grid_66_quad[15])
+l13_23=Part.Line(grid_66_quad[9],grid_66_quad[15])
 Part.show(l24_23.toShape())
 Part.show(l13_23.toShape())
 
 #32
-l42_32=Part.Line(quad66_patch[26],quad66_patch[20])
-l31_32=Part.Line(quad66_patch[19],quad66_patch[20])
+l42_32=Part.Line(grid_66_quad[26],grid_66_quad[20])
+l31_32=Part.Line(grid_66_quad[19],grid_66_quad[20])
 Part.show(l42_32.toShape())
 Part.show(l31_32.toShape())
 
 #33
-l43_33=Part.Line(quad66_patch[27],quad66_patch[21])
-l34_33=Part.Line(quad66_patch[22],quad66_patch[21])
+l43_33=Part.Line(grid_66_quad[27],grid_66_quad[21])
+l34_33=Part.Line(grid_66_quad[22],grid_66_quad[21])
 Part.show(l43_33.toShape())
 Part.show(l34_33.toShape())
 
 #inner square
-l22_23=Part.Line(quad66_patch[14],quad66_patch[15])
-l23_33=Part.Line(quad66_patch[15],quad66_patch[21])
-l22_32=Part.Line(quad66_patch[14],quad66_patch[20])
-l32_33=Part.Line(quad66_patch[20],quad66_patch[21])
+l22_23=Part.Line(grid_66_quad[14],grid_66_quad[15])
+l23_33=Part.Line(grid_66_quad[15],grid_66_quad[21])
+l22_32=Part.Line(grid_66_quad[14],grid_66_quad[20])
+l32_33=Part.Line(grid_66_quad[20],grid_66_quad[21])
 Part.show(l22_23.toShape())
 Part.show(l23_33.toShape())
 Part.show(l22_32.toShape())

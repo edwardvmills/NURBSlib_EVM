@@ -2,7 +2,7 @@ import Part
 from FreeCAD import Base
 from FreeCAD import Gui
 import math
-import BezCubic as BC
+import NURBSlib_EVM as Nl
 
 
 s=Gui.Selection.getSelection()
@@ -15,9 +15,8 @@ if (len(s)==3):
 	bez1=s[0].Shape.Curve
 	bez2=s[1].Shape.Curve
 	bez3=s[2].Shape.Curve
-	quad_patch1 = BC.tri_quad_patch(bez1,bez2,bez3)
-#	bezpatch1 = BC.BezCubic_patch(quad_patch1) # Part.BsplineSurface() based surface
-	bezpatch1 = BC.BezBiCubic_surf(quad_patch1)
+	grid_44 = Nl.grid_44_tri(bez1,bez2,bez3)
+	bezpatch1 = Nl.BezCubic_patch(grid_44) # Part.BsplineSurface() based surface
 	Part.show(bezpatch1.toShape())
 
 elif (len(s)==4):
@@ -25,7 +24,6 @@ elif (len(s)==4):
 	bez2=s[1].Shape.Curve
 	bez3=s[2].Shape.Curve
 	bez4=s[3].Shape.Curve
-	quad_patch1 = BC.quad_patch(bez1,bez2,bez3,bez4)
-#	bezpatch1 = BC.BezCubic_patch(quad_patch1) # Part.BsplineSurface() based surface
-	bezpatch1 = BC.BezCubic_patch(quad_patch1)
+	grid_44 = Nl.grid_44_quad(bez1,bez2,bez3,bez4)
+	bezpatch1 = Nl.BezCubic_patch(grid_44) # Part.BsplineSurface() based surface
 	Part.show(bezpatch1.toShape())

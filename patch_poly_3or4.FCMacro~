@@ -2,7 +2,7 @@ import Part
 from FreeCAD import Base
 from FreeCAD import Gui
 import math
-import BezCubic as BC
+import NURBSlib_EVM as Nl
 
 
 s=Gui.Selection.getSelection()
@@ -15,17 +15,17 @@ if (len(s)==3):
 	bez1=s[0].Shape.Curve
 	bez2=s[1].Shape.Curve
 	bez3=s[2].Shape.Curve
-	quad_patch = BC.tri_quad_patch(bez1,bez2,bez3)
-	mid_edge_poly = BC.mid_edge_poly(quad_patch)
-	for i in range(len(mid_edge_poly)):
-		Part.show(mid_edge_poly[i].toShape())
+	grid_44 = Nl.grid_44_tri(bez1,bez2,bez3)
+	poly_grid_44 = Nl.poly_grid_44(grid_44)
+	for i in range(len(poly_grid_44)):
+		Part.show(poly_grid_44[i].toShape())
 
 elif (len(s)==4):
 	bez1=s[0].Shape.Curve
 	bez2=s[1].Shape.Curve
 	bez3=s[2].Shape.Curve
 	bez4=s[3].Shape.Curve
-	quad_patch = BC.quad_patch(bez1,bez2,bez3,bez4)
-	mid_edge_poly = BC.mid_edge_poly(quad_patch)
-	for i in range(len(mid_edge_poly)):
-		Part.show(mid_edge_poly[i].toShape())
+	grid_44 = Nl.grid_44_quad(bez1,bez2,bez3,bez4)
+	poly_grid_44 = Nl.poly_grid_44(grid_44)
+	for i in range(len(poly_grid_44)):
+		Part.show(poly_grid_44[i].toShape())

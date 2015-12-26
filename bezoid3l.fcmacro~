@@ -2,7 +2,7 @@ import Part
 from FreeCAD import Base
 from FreeCAD import Gui
 import math
-import BezCubic as BC
+import NURBSlib_EVM as Nl
 
 
 #scratch pad for a 'bezoid' spline type with independent endpoint curvature. if this works well in practice, the new type will go to BezCubic.py
@@ -74,7 +74,7 @@ poles = [pole0, pole1, pole2, pole3, pole4, pole5]
 
 
 # create the cubice bezier curve from the poles (Part.BSplineCurve)
-curve = BC.SplineCubic6P_curve(poles)
+curve = Nl.SplineCubic6P_curve(poles)
 
 Part.show(curve.toShape())
 Part.show(ctrl1.toShape())

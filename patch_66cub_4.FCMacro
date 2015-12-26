@@ -10,16 +10,16 @@ s=Gui.Selection.getSelection()
 if (len(s)!=4):
 	print 'select four bezoid curves that form a loop counterclockwise'
 
-bez1=s[0].Shape.Curve
-bez2=s[1].Shape.Curve
-bez3=s[2].Shape.Curve
-bez4=s[3].Shape.Curve
+c1=s[0].Shape.Curve
+c2=s[1].Shape.Curve
+c3=s[2].Shape.Curve
+c4=s[3].Shape.Curve
 
 
-quad66_patch=Nl.quad66_patch(bez1,bez2,bez3,bez4)
-patch66=Nl.BezCubic66_patch(quad66_patch)
+grid_66=Nl.grid_66_quad(c1,c2,c3,c4)
+NURBS_Cubic_66_surf=Nl.NURBS_Cubic_66_surf(grid_66)
 
-Part.show(patch66.toShape())
+Part.show(NURBS_Cubic_66_surf.toShape())
 
 
 

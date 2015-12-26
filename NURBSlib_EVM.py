@@ -17,19 +17,42 @@ import math
 ## Pinned knot vector: k=Order, first k knots are equal, last k knots are equal
 
 # Bottom up view:
-# points, weights, as [[x,y,z],w] are the basic inputs. lists are probably not efficient, but until FreeCAD has fully integrated homogenous coordinates for all NURBS functions, this is easier for me :)
-# Bezier_Cubic_curve -  pinned cubic rational B spline -  Part.BSplineCurve() in cubic bezier form
-# NURBS_Cubic_6P_curve - pinned cubic rational Bspline - 6 control points, just enough to have independent endpoint curvature
-# Cubic_ddu - cubic derivative with u at curve start based on first two control points (no curve required)
-# Cubic_d2du2 - cubic second derivative with u at curve start based on first three control points (no curve required)
-# Cubic_curvature - curvature at curve start based on the first three control points (no curve required)
-# orient_a_to_b - a and b are lists of points that share one endpoint. if needed, this function reorders a so that a.end = b.start or b.end b is not modified
-# quad_patch - given four curves that form a closed loop, prepare a 4*4 nurbs control mesh
-# tri_quad_patch - prepare 4 x 4 control point patch from three curves. this is a degenerate pach. intersection of first and last curve is the singular point
-# mid_edge_poly - given a control patch, show the internal control mesh
-# BezCubic_patch - given a 4 x 4 control patch, build the bicubic bezier patch
+
+# poles = 3D points with weights, as [[x,y,z],w], or [x,y,z] (these are leftovers waiting to receive weights). 
+## These are the basic input data for all that follows. They are obtained from the FreeCAD functions .getPoles() and .getWeights()
+## NOTE: Poles in FreeCAD, such as returned by .getPoles(), refer only to xyz coordinates of a control point, THROUGHOUT the following functions, pole means [[x,y,z],w]
+## lists are probably not efficient, but until FreeCAD has fully integrated homogenous coordinates for all NURBS functions, this is easier for me :)
+## right now, the computation of my scripts is ridiculously fast compared to the time taken to generate the surfaces using the FreeCAD Part.BSplineSurface() function
 
 
+# Bezier_Cubic_curve([pole X 4]) -  pinned cubic rational B spline -  Part.BSplineCurve() in cubic bezier form
+
+# NURBS_Cubic_6P_curve([pole X 6]) - pinned cubic rational Bspline - 6 control points, just enough to have independent endpoint curvature
+
+# Cubic_ddu(poles1, pole2) - cubic derivative at curve start (pole1) based on first two poles (no curve required). Weights not included yet
+
+# Cubic_d2du2(poles1, pole2, pole3) - cubic second derivative at curve start (pole1) based on first three poles (no curve required). Weights not included yet
+
+# Cubic_curvature(poles1, pole2, pole3) - curvature at curve start (pole1) based on the first three poles (no curve required). Weights not included yet
+
+# orient_a_to_b(polesa,polesb) - polesa and polesb are lists of poles that share one endpoint. if needed, this function reorders a so that a.end = b.start or b.end b is never modified
+
+# grid_44_quad(c1,c2,c3,c4) - given four curves of 4 poles each that form a closed loop, prepare a 4*4 nurbs control grid
+
+# grid_44_tri(c2,c2,c3) - given three curves of 4 poles each that form a closed loop, prepare 4 x 4 control grid. 
+##this is a singular/degenerate pach. intersection of first and last curve is the singular point/edge
+
+# grid_66_quad(c1,c2,c3,c4) - given four curves of 6 poles each that form a closed loop, prepare a 6*6 nurbs control grid. Curve weights not assimilated yet
+
+# poly_grid_44(grid_44) - given a 4 X 4 control patch, show the internal control mesh
+
+# Bezier_Bicubic_surf(grid_44) - given a 4 x 4 control patch, build the bicubic bezier surface from a Part.BSplineSurface() !NOT! a Part.BezierSurface()
+
+# NURBS_Cubic_66_surf(grid_66) - given a 6 x 6 control patch, build the bicubic bezier surface from a Part.BSplineSurface().
+
+# isect_test(curve, surf, u)
+
+# isect_curve_surf(curve, surf)
 
 
 def Bezier_Cubic_curve(poles): 
@@ -112,7 +135,7 @@ def orient_a_to_b(polesa,polesb):
 		return 0
 
 
-def quad_patch(c1,c2,c3,c4): # prepare 4 x 4 control point patch from four curves
+def grid_44_quad(c1,c2,c3,c4): # prepare 4 x 4 control point patch from four curves
 	# extract curve poles
 	poles1=c1.getPoles()
 	poles2=c2.getPoles()
@@ -124,7 +147,7 @@ def quad_patch(c1,c2,c3,c4): # prepare 4 x 4 control point patch from four curve
 	weights3=c3.getWeights()
 	weights4=c4.getWeights()
 
-	# fix edge orientation, going counterclockwise from first curve (c1)
+	# fix edge orientations, going counterclockwise from first curve (c1)
 	quad_1_2 = orient_a_to_b(poles1,poles2)
 	quad_2_3 = orient_a_to_b(poles2,poles3)
 	quad_3_4 = orient_a_to_b(poles3,poles4)
@@ -192,13 +215,13 @@ def quad_patch(c1,c2,c3,c4): # prepare 4 x 4 control point patch from four curve
 	w21 = [p_2_1, weights3[2]*weights4[1]]
 	w22 = [p_2_2, weights2[2]*weights3[1]]
 
-	quad_patch = [w00 ,w01, w02, w03,
+	grid_44_quad = [w00 ,w01, w02, w03,
 				w10, w11, w12, w13,
 				w20, w21, w22, w23,
 				w30, w31, w32, w33]
-	return quad_patch
+	return grid_44_quad
 
-def tri_quad_patch(c1,c2,c3): 
+def grid_44_tri(c2,c2,c3): 
 # prepare 4 x 4 control point patch from three curves. 
 # this is a degenerate pach. 
 # intersection of first and last curve is the singular point
@@ -293,14 +316,14 @@ def tri_quad_patch(c1,c2,c3):
 
 
 
-	tri_quad_patch =  [w00 ,w01, w02, w03,
+	grid_44_tri =  [w00 ,w01, w02, w03,
 				w10, w11, w12, w13,
 				w20, w21, w22, w23,
 				w30, w31, w32, w33]
-	return tri_quad_patch
+	return grid_44_tri
 
 
-def quad66_patch(c1,c2,c3,c4): # prepare 6 x 6 control point patch from four curves
+def grid_66_quad(c1,c2,c3,c4): # prepare 6 x 6 control point patch from four curves
 	# extract curve poles
 	poles1=c1.getPoles()
 	poles2=c2.getPoles()
@@ -382,86 +405,86 @@ def quad66_patch(c1,c2,c3,c4): # prepare 6 x 6 control point patch from four cur
 	p33=(p33u+p33v).multiply(0.5)
 
 
-	quad66_patch = [p00, p01, p02, p03, p04, p05,
+	grid_66_quad = [p00, p01, p02, p03, p04, p05,
 				p10, p11, p12, p13, p14, p15,
 				p20, p21, p22, p23, p24, p25, 
 				p30, p31, p32, p33, p34, p35,
 				p40, p41, p42, p43, p44, p45,
 				p50, p51, p52, p53, p54, p55]
-	return quad66_patch
+	return grid_66_quad
 
 
 
 
 
-def mid_edge_poly(quad_patch):
+def poly_grid_44(grid_44):
 	# start around the perimeter
-	l_00_01 = Part.Line(quad_patch[0][0], quad_patch[1][0])
-	l_01_02 = Part.Line(quad_patch[1][0], quad_patch[2][0])
-	l_02_03 = Part.Line(quad_patch[2][0], quad_patch[3][0])
-	l_03_13 = Part.Line(quad_patch[3][0], quad_patch[7][0])
-	l_13_23 = Part.Line(quad_patch[7][0], quad_patch[11][0])
-	l_23_33 = Part.Line(quad_patch[11][0], quad_patch[15][0])
-	l_33_32 = Part.Line(quad_patch[15][0], quad_patch[14][0])
-	l_32_31 = Part.Line(quad_patch[14][0], quad_patch[13][0])
-	l_31_30 = Part.Line(quad_patch[13][0], quad_patch[12][0])
+	l_00_01 = Part.Line(grid_44[0][0], grid_44[1][0])
+	l_01_02 = Part.Line(grid_44[1][0], grid_44[2][0])
+	l_02_03 = Part.Line(grid_44[2][0], grid_44[3][0])
+	l_03_13 = Part.Line(grid_44[3][0], grid_44_quad[7][0])
+	l_13_23 = Part.Line(grid_44[7][0], grid_44[11][0])
+	l_23_33 = Part.Line(grid_44[11][0], grid_44[15][0])
+	l_33_32 = Part.Line(grid_44[15][0], grid_44[14][0])
+	l_32_31 = Part.Line(grid_44[14][0], grid_44[13][0])
+	l_31_30 = Part.Line(grid_44[13][0], grid_44[12][0])
 
 	# check for triangular patches - collapsed fourth edge
-	if quad_patch[0] != quad_patch[12]: #normal case, four sided patch
-		l_00_10=Part.Line(quad_patch[0][0], quad_patch[4][0])
-		l_10_20=Part.Line(quad_patch[4][0], quad_patch[8][0])
-		l_20_30=Part.Line(quad_patch[8][0], quad_patch[12][0])
+	if grid_44_quad[0] != grid_44_quad[12]: #normal case, four sided patch
+		l_00_10=Part.Line(grid_44[0][0], grid_44[4][0])
+		l_10_20=Part.Line(grid_44[4][0], grid_44[8][0])
+		l_20_30=Part.Line(grid_44[8][0], grid_44[12][0])
 	else: # triangle case
-		l_00_10=Part.Point(quad_patch[0][0])
-		l_10_20=Part.Point(quad_patch[0][0])
-		l_20_30=Part.Point(quad_patch[0][0])
+		l_00_10=Part.Point(grid_44[0][0])
+		l_10_20=Part.Point(grid_44[0][0])
+		l_20_30=Part.Point(grid_44[0][0])
 
 	# Internal controls
 
 	# check for triangular patches with collapsed fourth edge AND collpapsed fourth corner.
-	if quad_patch[1] != quad_patch[13]: #normal case, four sided patch, or unique tangents on triangle patch
-		l_01_11=Part.Line(quad_patch[1][0], quad_patch[5][0])
-		l_31_21=Part.Line(quad_patch[13][0], quad_patch[9][0])
+	if grid_44[1] != grid_44[13]: #normal case, four sided patch, or unique tangents on triangle patch
+		l_01_11=Part.Line(grid_44[1][0], grid_44[5][0])
+		l_31_21=Part.Line(grid_44[13][0], grid_44[9][0])
 	else: #triangle case, collapsed tangents
-		l_01_11=Part.Point(quad_patch[1][0])
-		l_31_21=Part.Point(quad_patch[13][0])
+		l_01_11=Part.Point(grid_44[1][0])
+		l_31_21=Part.Point(grid_44[13][0])
 
 
 	## l_01_11 above
-	l_10_11=Part.Line(quad_patch[4][0], quad_patch[5][0])
-	l_02_12=Part.Line(quad_patch[2][0], quad_patch[6][0])
-	l_13_12=Part.Line(quad_patch[7][0], quad_patch[6][0])
-	l_23_22=Part.Line(quad_patch[11][0], quad_patch[10][0])
-	l_32_22=Part.Line(quad_patch[14][0], quad_patch[10][0])
+	l_10_11=Part.Line(grid_44[4][0], grid_44[5][0])
+	l_02_12=Part.Line(grid_44[2][0], grid_44[6][0])
+	l_13_12=Part.Line(grid_44[7][0], grid_44[6][0])
+	l_23_22=Part.Line(grid_44[11][0], grid_44[10][0])
+	l_32_22=Part.Line(grid_44[14][0], grid_44[10][0])
 	## l_31_21
-	l_20_21=Part.Line(quad_patch[8][0], quad_patch[9][0])
+	l_20_21=Part.Line(grid_44[8][0], grid_44[9][0])
 
-	l_11_12=Part.Line(quad_patch[5][0], quad_patch[6][0])
-	l_12_22=Part.Line(quad_patch[6][0], quad_patch[10][0])
-	l_21_22=Part.Line(quad_patch[9][0], quad_patch[10][0])
-	l_11_21=Part.Line(quad_patch[5][0], quad_patch[9][0])
+	l_11_12=Part.Line(grid_44[5][0], grid_44[6][0])
+	l_12_22=Part.Line(grid_44[6][0], grid_44[10][0])
+	l_21_22=Part.Line(grid_44[9][0], grid_44[10][0])
+	l_11_21=Part.Line(grid_44[5][0], grid_44[9][0])
 
-	mid_edge_poly=[l_00_01, l_01_02, l_02_03,
+	poly_grid_44=[l_00_01, l_01_02, l_02_03,
 				l_03_13, l_13_23, l_23_33,
 				l_33_32, l_32_31, l_31_30,
 				l_20_30, l_10_20, l_00_10,
 				l_01_11, l_10_11, l_02_12, l_13_12, 
 				l_23_22, l_32_22, l_31_21, l_20_21,
 				l_11_12, l_12_22, l_21_22, l_11_21]
-	return mid_edge_poly
+	return poly_grid_44
 
 
-def BezBiCubic_surf(quad_patch):
+def BezBiCubic_surf(grid_44):	# obsolete - this was made to check against Bezier_Bicubic_surf(grid_44), and is not used for anything.
 	surf=Part.BezierSurface()
 	surf.increase(3,3)
 	n=0
 	for u in range(1,5):
 		for v in range(1,5):
-			surf.setPole(v,u,quad_patch[n])
+			surf.setPole(v,u,grid_44[n])
 			n=n+1
 	return surf
 
-def BezCubic_patch(quad_patch):
+def  Bezier_Bicubic_surf(grid_44):
 	# len(knot_u) := nNodes_u + degree_u + 1
 	# len(knot_v) := nNodes_v + degree_v + 1
 	degree_u=3
@@ -470,22 +493,22 @@ def BezCubic_patch(quad_patch):
 	nNodes_v=4
 	knot_u=[0,0,0,0,1,1,1,1]
 	knot_v=[0,0,0,0,1,1,1,1]
-	nurbs_quad_16=Part.BSplineSurface()
-	nurbs_quad_16.increaseDegree(degree_u,degree_v)
+	Bezier_Bicubic_surf=Part.BSplineSurface()
+	Bezier_Bicubic_surf.increaseDegree(degree_u,degree_v)
 	id=1
 	for i in range(0,len(knot_u)):    #-1):
-		nurbs_quad_16.insertUKnot(knot_u[i],id,0.0000001)
+		Bezier_Bicubic_surf.insertUKnot(knot_u[i],id,0.0000001)
 	id=1
 	for i in range(0,len(knot_v)):    #-1):
-		nurbs_quad_16.insertVKnot(knot_v[i],id,0.0000001)
+		Bezier_Bicubic_surf.insertVKnot(knot_v[i],id,0.0000001)
 	i=0
 	for jj in range(0,nNodes_v):
 		for ii in range(0,nNodes_u):
-			nurbs_quad_16.setPole(ii+1,jj+1,quad_patch[i][0], quad_patch[i][1]);
+			Bezier_Bicubic_surf.setPole(ii+1,jj+1,grid_44[i][0], grid_44[i][1]);
 			i=i+1;
-	return nurbs_quad_16
+	return Bezier_Bicubic_surf
 
-def BezCubic66_patch(quad66_patch):
+def NURBS_Cubic_66_surf(grid_66):
 	# len(knot_u) := nNodes_u + degree_u + 1
 	# len(knot_v) := nNodes_v + degree_v + 1
 	degree_u=3
@@ -494,23 +517,23 @@ def BezCubic66_patch(quad66_patch):
 	nNodes_v=6
 	knot_u=[0,0,0,0,0.3333,0.6666,1,1,1,1]
 	knot_v=[0,0,0,0,0.3333,0.6666,1,1,1,1]
-	nurbs_quad_36=Part.BSplineSurface()
-	nurbs_quad_36.increaseDegree(degree_u,degree_v)
+	NURBS_Cubic_66_surf=Part.BSplineSurface()
+	NURBS_Cubic_66_surf.increaseDegree(degree_u,degree_v)
 	id=1
 	for i in range(0,len(knot_u)):    #-1):
-		nurbs_quad_36.insertUKnot(knot_u[i],id,0.0000001)
+		NURBS_Cubic_66_surf.insertUKnot(knot_u[i],id,0.0000001)
 	id=1
 	for i in range(0,len(knot_v)):    #-1):
-		nurbs_quad_36.insertVKnot(knot_v[i],id,0.0000001)
+		NURBS_Cubic_66_surf.insertVKnot(knot_v[i],id,0.0000001)
 	i=0
 	for jj in range(0,nNodes_v):
 		for ii in range(0,nNodes_u):
-			nurbs_quad_36.setPole(ii+1,jj+1,quad66_patch[i],1);
+			NURBS_Cubic_66_surf.setPole(ii+1,jj+1,grid_66[i],1);
 			i=i+1;
-	return nurbs_quad_36
+	return  NURBS_Cubic_66_surf
 
 
-def test_isect(curve, surf, u):		# provides information about a curve point at parameter u as a surface intersection candidate.						
+def isect_test(curve, surf, u):		# provides information about a curve point at parameter u as a surface intersection candidate.						
 	test_point = curve.value(u)											# point on curve
 	test_proj_param = surf.parameter(test_point)							# parameter of projection of curve point onto surface
 	test_proj = surf.value(test_proj_param[0],test_proj_param[1])			# projection of curve point onto surface
@@ -522,12 +545,12 @@ def test_isect(curve, surf, u):		# provides information about a curve point at p
 	test_center = [test_point, test_error, error, testdot,test_proj_param]					# prepare list of results
 	return test_center
 
-def curve_surf_isect(curve, surf):
+def  isect_curve_surf(curve, surf):
 	tol= 0.00000001
 	# setup the parameter search span 
 	test_span = [curve.FirstParameter, curve.LastParameter]
 	# determine whether the curve grows from inside or outside the surface. this will govern how to split the search span
-	test_u_direction = test_isect(curve, surf, curve.FirstParameter) 	# project curve startpoint to determine if it is 'inside' or 'outside' the surface.
+	test_u_direction =  isect_test(curve, surf, curve.FirstParameter) 	# project curve startpoint to determine if it is 'inside' or 'outside' the surface.
 	if (test_u_direction[3] < 0):								# compare projection path to surface normal: dot product negative
 		direction = 1											# > curve grows 'into' the surface
 	elif (test_u_direction[3] > 0):								# compare projection path to surface normal: dot product positive
@@ -538,7 +561,7 @@ def curve_surf_isect(curve, surf):
 	loop_count = 0
 	while (error > tol  and loop_count < 100):
 		test_u = (test_span[1] + test_span[0]) / 2	# pick u in the center of the search span
-		test = test_isect(curve, surf, test_u)			# project curve(u) onto surface
+		test =  isect_test(curve, surf, test_u)			# project curve(u) onto surface
 		error = test[2]							# set current intersection error
 		if ((test[3]*direction) < 0):					# is the projection still coming from outside the surface?
 			test_span = [test_u, test_span[1]]		# > use second half of current span for the next search
@@ -548,10 +571,10 @@ def curve_surf_isect(curve, surf):
 	print 'step ', loop_count, '  u ', test_u, '  error ', test[2]
 	if error > tol:
 		print 'no intersection found within ', tol
-		curve_surf_isect = 'NONE'
+		isect_curve_surf = 'NONE'
 	else:
-		curve_surf_isect = [test[0], test_u, test[4]]
-	return curve_surf_isect
+		isect_curve_surf = [test[0], test_u, test[4]]
+	return  isect_curve_surf
 
 
 

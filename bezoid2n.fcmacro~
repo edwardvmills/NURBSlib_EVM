@@ -46,7 +46,7 @@ poles = [pole0, pole1, pole2, pole3, pole4, pole5]
 
 
 # create the cubic bezier curve from the poles (Part.BSplineCurve)
-curve = BC.SplineCubic6P_curve(poles)
+curve = Nl.SplineCubic6P_curve(poles)
 
 Part.show(curve.toShape())
 Part.show(ctrl1.toShape())
