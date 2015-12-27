@@ -15,7 +15,10 @@
    id="svg2985"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="Bezier_cubic_surface_split.svg">
+   sodipodi:docname="Bezier_cubic_surface_split.svg"
+   inkscape:export-filename="/home/edward/Desktop/NURBSlib_EVM /icons/Bezier_cubic_surface_split.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
   <defs
      id="defs2987">
     <linearGradient
@@ -46,7 +49,7 @@
      pagecolor="#888888"
      bordercolor="#666666"
      borderopacity="1.0"
-     inkscape:pageopacity="1"
+     inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:zoom="7.7781746"
      inkscape:cx="41.342965"
@@ -55,9 +58,9 @@
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
-     inkscape:window-width="1871"
+     inkscape:window-width="1875"
      inkscape:window-height="1056"
-     inkscape:window-x="49"
+     inkscape:window-x="45"
      inkscape:window-y="24"
      inkscape:window-maximized="1"
      inkscape:snap-global="false" />
