@@ -81,15 +81,18 @@ You can read more about the project <a href="README.md">here</a></p>
 In the picture below:<br>
 -select the arc, then hit<br>
 <img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/icon_bitmaps/Arc_to_rational_bezier.png?raw=true" alt="Arc_to_rational_bezier"><br>
-This converts a sketch arc to a <strong>cubic</strong> <strong>rational</strong> bezier curve, formulated from a full NURBS.<br>
--select the three lines from the single sketch in order, then hit<br>
+This converts a sketch arc to a <strong>cubic</strong> <strong>rational</strong> bezier curve, formulated from a full NURBS.   </p>
+
+<p>-select the three lines from the single sketch in order, then hit<br>
 <img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/icon_bitmaps/Bezier_Cubic_3_lines.png?raw=true" alt="Bezier_Cubic_3_lines"><br>
-This creates a cubic bezier curve, formulated from a full NURBS. The weights are all 1, so it's not rational <em>in practice</em>, but the weights are there, and in the future, we may modify them.<br>
--from one node, select the circle, then the line end point, then another node, select a line endpoint, then the circle. hit<br>
+This creates a cubic bezier curve, formulated from a full NURBS. The weights are all 1, so it's not rational <em>in practice</em>, but the weights are there, and in the future, we may modify them.   </p>
+
+<p>-from one node, select the circle, then the line end point, then <em>from another node</em>, select a line endpoint, then the circle. hit<br>
 <img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/icon_bitmaps/Bezier_Cubic_2_nodes.png?raw=true" alt="Bezier_Cubic_2_nodes"><br>
 Same type of curve as above.   </p>
 
-<p>Why the funky selection order with nodes? The circles represent curve endpoints, and the lines radiating from them represent the tangents. The multiple lines give hints as to the intended topology. This is a 3D bezier control, and picking a circle is WAY easier than trying to explain to FreeCAD which point i want when there are many lines connecting at a point. [TODO, maybe: adapt the macro so the selection goes: circle&gt;line&gt;cirle&gt;line, extract the line endpoints, and reorder automatically)</p>
+<p>Why the funky selection order with nodes? The circles represent curve endpoints, and the lines radiating from them represent the tangents. The multiple lines give hints as to the intended topology. This is a 3D bezier control, and picking a circle is WAY easier than trying to explain to FreeCAD which point i want when there are many lines connecting at a point.<br>
+[TODO, maybe: adapt the macro so the selection goes: circle&gt;line&gt;cirle&gt;line, extract the line endpoints, and reorder automatically)</p>
 
 <p><img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/site_stuff/basic_usage/_02%20curves%20from%20sketches.png?raw=true" alt="curves from sketches"><br>
 The new arc is right on top of the sketch arc, so it looks funny.</p>
@@ -98,8 +101,9 @@ The new arc is right on top of the sketch arc, so it looks funny.</p>
 If you need to join two curves that are tangent where they meet, you need two surfaces. At least for now, for these scripts.</p>
 
 <p><strong>Making surfaces from the curves</strong><br>
-The surface macros need to be given 3 or 4 curves of the <em>same type</em> (degree, number of poles, knot vector). This is why we had to convert the arc.<br>
-There are two types of surface right now:<br>
+The surface macros need to be given 3 or 4 curves of the <em>same type</em> (degree, number of poles, knot vector). This is why we had to convert the arc.  </p>
+
+<p>There are two types of surface right now:<br>
 -rational bezier (accepts 3 or 4 cubic rational bezier curves)<br>
 -6 pole by 6 pole NURBS (accepts 4 NURBS curves with 6 control points and a specific knot vector)</p>
 
@@ -107,30 +111,48 @@ There are two types of surface right now:<br>
 
 <p>Select 3/4 curves in a loop counterclockwise (surface normal will then point towards you), hit<br>
 <img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/icon_bitmaps/Bezier_cubic_4_sided_surface.png?raw=true" alt="Bezier_cubic_4_sided_surface"><br>
-This takes a while. Expect FreeCAD to lock up for a bit. Adjust your tesselation in Preferences&gt;Part design&gt; Shape view until you have a balance of speed and surface resolution. If a single surface by itself looks rough, you need finer tesselation. I have no control over this, it's all FreeCAD internal as far as i know.</p>
+ANd then wait...<br>
+This takes a while. Expect FreeCAD to lock up for a bit. Adjust your tesselation in Preferences&gt;Part design&gt; Shape view until you have a balance of speed and surface resolution. If a single surface by itself looks rough, you need finer tesselation. I have no control over this, it's all FreeCAD internals as far as i know.</p>
 
 <p>This creates a rational bezier surface.<br>
 <img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/site_stuff/basic_usage/_04%20surfaces%20from%20curves.png?raw=true" alt="bezier surfaces from bezier curves"><br>
 <img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/site_stuff/basic_usage/_05%20surfaces%20from%20curves%2002.png?raw=true" alt="surface from curves, other side"> 
 Note that the arc edge is still a <em>true arc</em>, so we should be able to make good FreeCAD shells that join this surface type to other FreeCAD surfaces.  </p>
 
-<p>If you're not sure the curves are correct don't want to waste the time to generate the surface, you can preview the control grid. [warning, generates a bazillion lines in your object tree. SO organize your model and stick these lines in their own folder!]<br>
--select the curves the way you would for a surface, then hit<br>
-<img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/Bezier_cubic_4_sided_grid.svg?raw=true" alt="Bezier_cubic_4_sided_grid"><br>
-This generates the grid that will be used for the surface<br>
-<img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/site_stuff/basic_usage/_03%20control%20grid%20preview%20from%20curves.png?raw=true" alt="control grid preview"></p>
+<p>If you're not sure the curves are correct and don't want to waste the time to generate the surface, you can preview the control grid. [warning, generates a bazillion lines in your object tree. So organize your model tree and stick these lines in their own folder!]   </p>
 
-<p>Many times, a surface will look good when created, but when we set the display to shaded and hide the edge, the seam between two surfaces looks just absolutely awful. This is why G1 (tangency matching) is not enough. Using bezier curves/surfaces, direct G2 matching is obtained at the expense of tangent control, so that's just useless.
---link placeholder to talk about bezier and G2<br>
-Even maintaining G1 is way harder than it <em>seems</em> it ought to be.
+<p>-select the curves the way you would for a surface, then hit<br>
+<img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/Bezier_cubic_4_sided_grid.png?raw=true" alt="Bezier_cubic_4_sided_grid"><br>
+This generates the grid that will be used for the surface<br>
+<img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/site_stuff/basic_usage/_03%20control%20grid%20preview%20from%20curves.png?raw=true" alt="control grid preview">   </p>
+
+<p>So what does that grid tell us? How would we know if it's a bad grid from bad curves? It just takes a little practice. The biggest problem is if the grid crosses itself, then the surface could double back on itself. The next problem is if one part of the grid is stretched out and almost pinches into a point. This will make FreeCAD's nurbs tesselation routine go crazy, lock up the program for a long time, and produce an ugly surface, if it makes it at all.</p>
+
+<p>In the picture, on the left, you can see that all the 'squares' are roughly the same size, and the angles between lines are never less than 70 degrees or so. This is a reasonable grid.</p>
+
+<p>On the right side, for the three curve grid, you can see a sliver of a triangle, this is not very good. This was my first try at a NURBS triangle, and it is not ideal. I have a very good idea how to fix it, now that i have incorporated the curve weights into the surfaces. Soon it will be much better. An imperfect triangle surface now is better than than a perfect triangle later, so i included it in the first release.<br>
+--link placeholder to talk about degenerate NURBS patches</p>
+
+<p>Many times, a surface will look good when created, but when we set the display to shaded and hide the edge, the seam between two surfaces looks just absolutely awful. This is why G1 (tangency matching) is not enough. Using bezier curves/surfaces, direct G2 matching is obtained at the expense of tangent control, so that's just useless.<br>
+--link placeholder to talk about bezier and G2   </p>
+
+<p>Even maintaining G1 is way harder than it <em>seems</em> it ought to be.<br>
 --link placeholder to go over the rules for curve making to obtain G1 across seams</p>
 
-<p>Tutorials on the way:
--'growing' two surfaces on one side of a single surface: local refinement within a non singular NURBS topology</p>
+<h3>
+<a id="tutorials-on-the-way" class="anchor" href="#tutorials-on-the-way" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tutorials on the way:</h3>
 
-<p>-the 6 point cubic NURBS. Now we can match curvature independently at each curve endpoint.
--the surface made from groups of 6 point cubic NURBS.
--the sketch placer tool</p>
+<p>-the 4 point bezier curve, for when the types of sketches shown above just aren't enough.   </p>
+
+<p>-the 6 point cubic NURBS. Now we can match curvature independently at each curve endpoint.   </p>
+
+<p>-the surface made from groups of 6 point cubic NURBS.   </p>
+
+<p>-'growing' two surfaces on one side of a single surface: local refinement within a non singular NURBS topology<br>
+<img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/site_stuff/current_state/insert_uv%20round%2002.png" alt="local refinement"><br>
+If i may say so myself, this is gonna be <em>very</em> cool!   </p>
+
+<p>-the sketch placer tool to put nodes wherever you want them.   </p>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/edwardvmills">edwardvmills</a></p>
