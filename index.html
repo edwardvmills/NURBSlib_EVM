@@ -44,7 +44,7 @@ If/when the surface creation methods reach my minimum goals, i intend to make th
 All models in this repository are offered under the terms of 
 <a href="http://creativecommons.org/licenses/by/2.0/">CC-BY</a>   </p>
 
-<p>For the time being, this page is intended to give a quick explanation of tool along with pictures. 
+<p>For the time being, this page is intended to give a quick explanation of each tool along with pictures. 
 You can read more about the project <a href="README.md">here</a></p>
 
 <h3>
@@ -54,7 +54,7 @@ You can read more about the project <a href="README.md">here</a></p>
 -put them somewhere FreeCAD can find them<br>
 -link the fcmacro scripts to icons, descriptions(use macro name), tooltips (use macro name), etc.<br>
 -put all those GUI macros in toolbars.<br>
--add that toolbar to the PartDesign workbench. The raw material will be PartDesign sketches, so this is a good place to put the toolbars for the time being. </p>
+-add those toolbars to the PartDesign workbench. The raw material will be PartDesign sketches, so this is a good place to put the toolbars for the time being. </p>
 
 <p>Here is a picture of how i like to group them:
 <img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/site_stuff/basic_usage/setting%20up%20the%20toolbars.png?raw=true" alt="toolbar setup"></p>
@@ -62,22 +62,21 @@ You can read more about the project <a href="README.md">here</a></p>
 <h3>
 <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h3>
 
-<p>Draw sketches of lines/circles (check each curve macro to see what inputs it wants)<br>
-In the picture below we see:<br>
+<p>Draw sketches of lines/circles (check each curve macro to see what inputs it wants). In the picture below we see:<br>
 -a sketcher arc<br>
 -a sketch of three lines connected end to end<br>
 -three 'node' sketches. A node is one circle + any number of lines that start at the circle center
 <img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/site_stuff/basic_usage/_01%20sketches%20as%20inputs.png?raw=true" alt="sketches as inputs"></p>
 
-<p>Select those lines/circles in the order specified by the macro, then hit the macro button &gt; curve is created.
+<p>Select those lines/circles in the order specified by the macro, then hit the macro button &gt; the curve is created.
 In the picture below:<br>
 -select the arc, then hit<br>
-<img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/icon_bitmaps/Arc_to_rational_bezier.png?raw=true" alt="Arc_to_rational_bezier icon">
+<img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/icon_bitmaps/Arc_to_rational_bezier.png?raw=true" alt="Arc_to_rational_bezier icon"><br>
 -select the three lines from the single sketch in order, then hit<br>
 <img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/icon_bitmaps/Bezier_Cubic_3_lines.png?raw=true" alt="Bezier_Cubic_3_lines icon"><br>
 -from one node, select the circle, then the line end point, then another node, select a line endpoint, then the circle. hit<br>
-<img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/icon_bitmaps/Bezier_Cubic_2_nodes.png?raw=true" alt="Bezier_Cubic_2_nodes icon">
-Why the funky selection order? the circles represent curve endpoints, and the lines radiating from them represent the tangents. This is a 3D bezier control, and picking a circle is WAY easier than tryin to explain to FreeCAD which point i want when there are many lines connecting at a point.
+<img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/icon_bitmaps/Bezier_Cubic_2_nodes.png?raw=true" alt="Bezier_Cubic_2_nodes icon"><br>
+Why the funky selection order? The circles represent curve endpoints, and the lines radiating from them represent the tangents. This is a 3D bezier control, and picking a circle is WAY easier than trying to explain to FreeCAD which point i want when there are many lines connecting at a point. [TODO: adapt the macro so the selection goes: circle&gt;line&gt;cirle&gt;line, and extract the line endpoints, reorder automatically)<br>
 <img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/site_stuff/basic_usage/_02%20curves%20from%20sketches.png?raw=true" alt="cruves from sketches"></p>
 
 <p>-select 3/4 curves in a loop counterclockwise (surface normal will then point towards you), hit the surface macro button &gt; surface is created.</p>
