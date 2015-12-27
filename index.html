@@ -148,7 +148,9 @@ This generates the grid that will be used for the surface   </p>
 <p><img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/site_stuff/current_state/Bezier%20G2%20transition.png?raw=true" alt="G2 bezier"></p>
 
 <p>Even maintaining G1 is way harder than it <em>seems</em> it ought to be.<br>
---link placeholder to go over the rules for curve making to obtain G1 across seams</p>
+--link placeholder to go over the rules for curve making to obtain G1 across seams.   </p>
+
+<p>In theory, we could set up a nonlinear solver that plays around with tangents and weights to seek G2, but this may not work. Even if it did, we would never have local control. Any change in any part would mean modifying everything everywhere. </p>
 
 <p>So this is about as far as the bezier formulation of NURBS will get us. We can fill a few holes, and join a small number of surfaces if we are extremely careful. Time to break away from bezier! Let's keep the idea of control with endpoints and tangents, and toss away the rest.</p>
 
@@ -157,15 +159,22 @@ This generates the grid that will be used for the surface   </p>
 
 <p>-the 4 point bezier curve, for when the types of sketches shown above just aren't enough.   </p>
 
-<p>-the 6 point cubic NURBS. Now we can match curvature, and more, independently at each curve endpoint.   </p>
+<p>-the 6 point cubic NURBS. Now we can match curvature, and more, independently at each curve endpoint.  </p>
 
-<p>-the surface made from groups of 6 point cubic NURBS.   </p>
+<p>-working in bezier and converting to 6 point cubic NURBS   </p>
+
+<p>-the surface made from groups of 6 point cubic NURBS.<br>
+<img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/site_stuff/current_state/G2%20join%2066%20surfaces%2009.png?raw=true" alt="G2 66 surfaces"></p>
 
 <p>-'growing' two surfaces on one side of a single surface: local refinement within a non singular NURBS topology<br>
-<img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/site_stuff/current_state/insert_uv%20round%2002.png" alt="local refinement"><br>
-If i may say so myself, this is gonna be <em>very</em> cool!   </p>
+<img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/site_stuff/current_state/insert_uv%20round%2002.png?raw=true" alt="local refinement"><br>
+If i may say so myself, <strong>this</strong> is gonna be <em>very</em> cool!   </p>
 
 <p>-the sketch placer tool to put nodes wherever you want them.   </p>
+
+<p>-the sketch based curvature prediction tool (very incomplete)</p>
+
+<p>-query curve type</p>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/edwardvmills">edwardvmills</a></p>
