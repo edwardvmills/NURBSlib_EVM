@@ -221,7 +221,7 @@ def grid_44_quad(c1,c2,c3,c4): # prepare 4 x 4 control point patch from four cur
 				w30, w31, w32, w33]
 	return grid_44_quad
 
-def grid_44_tri(c2,c2,c3): 
+def grid_44_tri(c1,c2,c3): 
 # prepare 4 x 4 control point patch from three curves. 
 # this is a degenerate pach. 
 # intersection of first and last curve is the singular point
@@ -422,7 +422,7 @@ def poly_grid_44(grid_44):
 	l_00_01 = Part.Line(grid_44[0][0], grid_44[1][0])
 	l_01_02 = Part.Line(grid_44[1][0], grid_44[2][0])
 	l_02_03 = Part.Line(grid_44[2][0], grid_44[3][0])
-	l_03_13 = Part.Line(grid_44[3][0], grid_44_quad[7][0])
+	l_03_13 = Part.Line(grid_44[3][0], grid_44[7][0])
 	l_13_23 = Part.Line(grid_44[7][0], grid_44[11][0])
 	l_23_33 = Part.Line(grid_44[11][0], grid_44[15][0])
 	l_33_32 = Part.Line(grid_44[15][0], grid_44[14][0])
@@ -430,7 +430,7 @@ def poly_grid_44(grid_44):
 	l_31_30 = Part.Line(grid_44[13][0], grid_44[12][0])
 
 	# check for triangular patches - collapsed fourth edge
-	if grid_44_quad[0] != grid_44_quad[12]: #normal case, four sided patch
+	if grid_44[0] != grid_44[12]: #normal case, four sided patch
 		l_00_10=Part.Line(grid_44[0][0], grid_44[4][0])
 		l_10_20=Part.Line(grid_44[4][0], grid_44[8][0])
 		l_20_30=Part.Line(grid_44[8][0], grid_44[12][0])
