@@ -34,7 +34,10 @@
 <p>My python scripts for creating surfaces in <a href="http://freecadweb.org/">FreeCAD</a>.<br>
 Extremely early release. Makes alphas look polished :)</p>
 
-<p><img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/site_stuff/current_state/G2%20join%2066%20surfaces%2005.png?raw=true" alt="A semi decent G2 seam between two surfaces"></p>
+<p>I am not an expert in any of this. I am enjoying myself while re-inventing the wheel!</p>
+
+<p><img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/site_stuff/current_state/G2%20join%2066%20surfaces%2005.png?raw=true" alt="A semi decent G2 seam between two surfaces"><br>
+[This image made with tools that are released, but not yet explained below]</p>
 
 <p>At this time, none of the entities created by these scripts are parametric. 
 This is the rough workflow prototyping phase. 
@@ -51,7 +54,7 @@ You can read more about the project <a href="README.md">here</a></p>
 <h3>
 <a id="setup" class="anchor" href="#setup" aria-hidden="true"><span class="octicon octicon-link"></span></a>Setup</h3>
 
-<p>There is a release, or you grab from master.</p>
+<p>There is a release, or you can grab from master.</p>
 
 <p>-from <a href="https://github.com/edwardvmills/NURBSlib_EVM/tree/master/NURBSlib_EVM_python">NURBSlib_EVM_python</a>, take NURBSlib_EVM.py, all *.fcmacro files<br>
 -grab the <a href="https://github.com/edwardvmills/NURBSlib_EVM/tree/master/icons">icons</a><br>
@@ -91,10 +94,11 @@ Same type of curve as above.   </p>
 <p><img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/site_stuff/basic_usage/_02%20curves%20from%20sketches.png?raw=true" alt="curves from sketches"><br>
 The new arc is right on top of the sketch arc, so it looks funny.</p>
 
-<p><strong>IMPORTANT NOTE ABOUT NURBS:</strong> the curves within a single surface 'patch' <em>cannot</em> be aligned at the corners! The corners <em>must</em> pinch at least a little bit. If you need to join two curves that are tangent where they meet, you need two surfaces. At least for now, for these scripts.</p>
+<p><strong>IMPORTANT NOTE ABOUT NURBS:</strong> the curves within a single surface 'patch' <em>cannot</em> be aligned at the corners! The corners <em>must</em> pinch at least a little bit. Otherwise, the surface may build, but the tangency controls will vanish. For my intentions, that makes the surface unusable.<br>
+If you need to join two curves that are tangent where they meet, you need two surfaces. At least for now, for these scripts.</p>
 
-<p><strong>Make surfaces from the curves</strong><br>
-The surface macros need to be given 3 or 4 curves of the <em>same type</em>. This is why we had to convert the arc.<br>
+<p><strong>Making surfaces from the curves</strong><br>
+The surface macros need to be given 3 or 4 curves of the <em>same type</em> (degree, number of poles, knot vector). This is why we had to convert the arc.<br>
 There are two types of surface right now:<br>
 -rational bezier (accepts 3 or 4 cubic rational bezier curves)<br>
 -6 pole by 6 pole NURBS (accepts 4 NURBS curves with 6 control points and a specific knot vector)</p>
@@ -103,10 +107,30 @@ There are two types of surface right now:<br>
 
 <p>Select 3/4 curves in a loop counterclockwise (surface normal will then point towards you), hit<br>
 <img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/icon_bitmaps/Bezier_cubic_4_sided_surface.png?raw=true" alt="Bezier_cubic_4_sided_surface"><br>
-This creates a rational bezier surface.<br>
+This takes a while. Expect FreeCAD to lock up for a bit. Adjust your tesselation in Preferences&gt;Part design&gt; Shape view until you have a balance of speed and surface resolution. If a single surface by itself looks rough, you need finer tesselation. I have no control over this, it's all FreeCAD internal as far as i know.</p>
+
+<p>This creates a rational bezier surface.<br>
 <img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/site_stuff/basic_usage/_04%20surfaces%20from%20curves.png?raw=true" alt="bezier surfaces from bezier curves"><br>
 <img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/site_stuff/basic_usage/_05%20surfaces%20from%20curves%2002.png?raw=true" alt="surface from curves, other side"> 
-Note that the arc edge is still a <em>true arc</em>, so we should be able to make good FreeCAD shells that join this surface type to other FreeCAD surfaces.</p>
+Note that the arc edge is still a <em>true arc</em>, so we should be able to make good FreeCAD shells that join this surface type to other FreeCAD surfaces.  </p>
+
+<p>If you're not sure the curves are correct don't want to waste the time to generate the surface, you can preview the control grid. [warning, generates a bazillion lines in your object tree. SO organize your model and stick these lines in their own folder!]<br>
+-select the curves the way you would for a surface, then hit<br>
+<img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/Bezier_cubic_4_sided_grid.svg?raw=true" alt="Bezier_cubic_4_sided_grid"><br>
+This generates the grid that will be used for the surface<br>
+<img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/site_stuff/basic_usage/_03%20control%20grid%20preview%20from%20curves.png?raw=true" alt="control grid preview"></p>
+
+<p>Many times, a surface will look good when created, but when we set the display to shaded and hide the edge, the seam between two surfaces looks just absolutely awful. This is why G1 (tangency matching) is not enough. Using bezier curves/surfaces, direct G2 matching is obtained at the expense of tangent control, so that's just useless.
+--link placeholder to talk about bezier and G2<br>
+Even maintaining G1 is way harder than it <em>seems</em> it ought to be.
+--link placeholder to go over the rules for curve making to obtain G1 across seams</p>
+
+<p>Tutorials on the way:
+-'growing' two surfaces on one side of a single surface: local refinement within a non singular NURBS topology</p>
+
+<p>-the 6 point cubic NURBS. Now we can match curvature independently at each curve endpoint.
+-the surface made from groups of 6 point cubic NURBS.
+-the sketch placer tool</p>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/edwardvmills">edwardvmills</a></p>
