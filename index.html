@@ -78,8 +78,9 @@ You can read more about the project <a href="README.md">here</a></p>
 <img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/site_stuff/basic_usage/_01%20sketches%20as%20inputs.png?raw=true" alt="sketches as inputs"></p>
 
 <p>Select those lines/circles <em>in the order specified by the macro</em>, then hit the macro button. A curve is created.
-In the picture below:<br>
--select the arc, then hit<br>
+In the picture below:   </p>
+
+<p>-select the arc, then hit<br>
 <img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/icon_bitmaps/Arc_to_rational_bezier.png?raw=true" alt="Arc_to_rational_bezier"><br>
 This converts a sketch arc to a <strong>cubic</strong> <strong>rational</strong> bezier curve, formulated from a full NURBS.   </p>
 
@@ -109,9 +110,9 @@ The surface macros need to be given 3 or 4 curves of the <em>same type</em> (deg
 
 <p>First, lets stay with bezier (icons are mostly red)</p>
 
-<p>Select 3/4 curves in a loop counterclockwise (surface normal will then point towards you), hit<br>
+<p>Select 3/4 curves in a loop counterclockwise (surface normal will then point towards you), and hit<br>
 <img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/icon_bitmaps/Bezier_cubic_4_sided_surface.png?raw=true" alt="Bezier_cubic_4_sided_surface"><br>
-ANd then wait...<br>
+And then wait...<br>
 This takes a while. Expect FreeCAD to lock up for a bit. Adjust your tesselation in Preferences&gt;Part design&gt; Shape view until you have a balance of speed and surface resolution. If a single surface by itself looks rough, you need finer tesselation. I have no control over this, it's all FreeCAD internals as far as i know.</p>
 
 <p>This creates a rational bezier surface.<br>
@@ -122,29 +123,41 @@ Note that the arc edge is still a <em>true arc</em>, so we should be able to mak
 <p>If you're not sure the curves are correct and don't want to waste the time to generate the surface, you can preview the control grid. [warning, generates a bazillion lines in your object tree. So organize your model tree and stick these lines in their own folder!]   </p>
 
 <p>-select the curves the way you would for a surface, then hit<br>
-<img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/Bezier_cubic_4_sided_grid.png?raw=true" alt="Bezier_cubic_4_sided_grid"><br>
-This generates the grid that will be used for the surface<br>
-<img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/site_stuff/basic_usage/_03%20control%20grid%20preview%20from%20curves.png?raw=true" alt="control grid preview">   </p>
+<img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/icon_bitmaps/Bezier_cubic_4_sided_grid.png?raw=true" alt="Bezier_cubic_4_sided_grid"><br>
+This generates the grid that will be used for the surface   </p>
+
+<p><img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/site_stuff/basic_usage/_03%20control%20grid%20preview%20from%20curves.png?raw=true" alt="control grid preview">   </p>
 
 <p>So what does that grid tell us? How would we know if it's a bad grid from bad curves? It just takes a little practice. The biggest problem is if the grid crosses itself, then the surface could double back on itself. The next problem is if one part of the grid is stretched out and almost pinches into a point. This will make FreeCAD's nurbs tesselation routine go crazy, lock up the program for a long time, and produce an ugly surface, if it makes it at all.</p>
 
 <p>In the picture, on the left, you can see that all the 'squares' are roughly the same size, and the angles between lines are never less than 70 degrees or so. This is a reasonable grid.</p>
 
-<p>On the right side, for the three curve grid, you can see a sliver of a triangle, this is not very good. This was my first try at a NURBS triangle, and it is not ideal. I have a very good idea how to fix it, now that i have incorporated the curve weights into the surfaces. Soon it will be much better. An imperfect triangle surface now is better than than a perfect triangle later, so i included it in the first release.<br>
+<p>On the right side, for the three curve grid, you can see a sliver of a triangle, this is not very good. This was my first try at a NURBS triangle, and it is not ideal. I have a very good idea how to fix it, and now that i have incorporated the curve weights into the surfaces, i can implement it. Soon it will be much better. An imperfect triangle surface now is better than than a perfect triangle surface later, so i included it in the first release.<br>
 --link placeholder to talk about degenerate NURBS patches</p>
 
-<p>Many times, a surface will look good when created, but when we set the display to shaded and hide the edge, the seam between two surfaces looks just absolutely awful. This is why G1 (tangency matching) is not enough. Using bezier curves/surfaces, direct G2 matching is obtained at the expense of tangent control, so that's just useless.<br>
+<p>Many times, a surface will look good when created, but when we set the display to shaded and hide the edge, the seam between two surfaces looks just absolutely awful. Here is a very crappy 'loft with rails'    </p>
+
+<p><img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/site_stuff/current_state/loft%20with%20rails%20-%20very%20crude.png?raw=true" alt="crappy loft with rails"><br>
+<img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/site_stuff/current_state/lofting%20with%20rails%20-%20Bezier%20G1%20is%20not%20enough.png?raw=true" alt="G1 is not enough"></p>
+
+<p>This is why G1 (tangency matching) is not enough. Using bezier curves/surfaces, direct G2 matching is obtained at the expense of tangent control, so that's just useless.<br>
 --link placeholder to talk about bezier and G2   </p>
+
+<p>Here is what i mean: in the picture below, i have massaged bezier surfaces to obtain G2 (curvature continuity) to a flat plate, but now i can <em>only control the position of the bottom curved edge</em>. I can make touch another edge, but i can't match tangents.   </p>
+
+<p><img src="https://github.com/edwardvmills/NURBSlib_EVM/blob/master/site_stuff/current_state/Bezier%20G2%20transition.png?raw=true" alt="G2 bezier"></p>
 
 <p>Even maintaining G1 is way harder than it <em>seems</em> it ought to be.<br>
 --link placeholder to go over the rules for curve making to obtain G1 across seams</p>
+
+<p>So this is about as far as the bezier formulation of NURBS will get us. We can fill a few holes, and join a small number of surfaces if we are extremely careful. Time to break away from bezier! Let's keep the idea of control with endpoints and tangents, and toss away the rest.</p>
 
 <h3>
 <a id="tutorials-on-the-way" class="anchor" href="#tutorials-on-the-way" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tutorials on the way:</h3>
 
 <p>-the 4 point bezier curve, for when the types of sketches shown above just aren't enough.   </p>
 
-<p>-the 6 point cubic NURBS. Now we can match curvature independently at each curve endpoint.   </p>
+<p>-the 6 point cubic NURBS. Now we can match curvature, and more, independently at each curve endpoint.   </p>
 
 <p>-the surface made from groups of 6 point cubic NURBS.   </p>
 
