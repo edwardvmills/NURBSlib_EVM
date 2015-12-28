@@ -112,7 +112,7 @@ def Cubic_d2du2(pole1, pole2, pole3): # second derivative with respect to parame
 def Cubic_curvature(pole1, pole2, pole3): # curvature, returns value at first pole given
 	ddu = Cubic_ddu(pole1, pole2)
 	d2du2 = Cubic_d2du2(pole1, pole2, pole3)
-	BezCubic_curvature = ddu.cross(d2du2).Length/ddu.Length.__pow__(3)
+	Cubic_curvature = ddu.cross(d2du2).Length/ddu.Length.__pow__(3)
 	return Cubic_curvature
 
 
@@ -322,6 +322,104 @@ def grid_44_tri(c1,c2,c3):
 				w30, w31, w32, w33]
 	return grid_44_tri
 
+def grid_44_tri_alt(c1,c2,c3): 
+# prepare 4 x 4 control point patch from three curves. 
+# this is a degenerate pach. 
+# intersection of first and last curve is the singular point
+# new strategy: let the inner control points at the degenerate corner coincide (p11 and p21), 
+# cancel effect of 'doubling up' the control point by setting a reduced weight on
+# the inner control points of the degenerate edge (p10 and p20).
+
+
+
+# extract curve poles
+	poles1=c1.getPoles()
+	poles2=c2.getPoles()
+	poles3=c3.getPoles()
+
+	weights1=c1.getWeights()
+	weights2=c2.getWeights()
+	weights3=c3.getWeights()
+
+
+	# fix edge orientation, going counterclockwise from first curve (c1)
+	quad_1_2 = orient_a_to_b(poles1,poles2)
+	quad_2_3 = orient_a_to_b(poles2,poles3)
+	quad_3_1 = orient_a_to_b(poles3,poles1)
+
+	# flip weights of flipped edges - maybe this should go into 'orient_a_to_b()'
+	if quad_1_2[0]!=poles1[0] and quad_1_2[0]==poles1[-1]:
+		weights1=weights1[::-1]
+	if quad_2_3[0]!=poles2[0] and quad_2_3[0]==poles2[-1]:
+		weights2=weights2[::-1]
+	if quad_3_1[0]!=poles3[0] and quad_3_1[0]==poles3[-1]:
+		weights3=weights3[::-1]
+
+
+	# make sure this is a degenerate quadrangle, i.e. a triangle
+	if (quad_3_1[3] != quad_1_2[0]):
+		print 'edge loop does not form a triangle'
+		return 0
+
+	# bottom edge, left to right
+	p_0_0 = quad_1_2[0]
+	p_0_1 = quad_1_2[1]
+	p_0_2 = quad_1_2[2]	
+	p_0_3 = quad_1_2[3]
+
+	# right edge, bottom to top, SKIP starting corner
+	p_1_3 = quad_2_3[1]
+	p_2_3 = quad_2_3[2]
+	p_3_3 = quad_2_3[3]
+
+	# top edge, right to left, SKIP starting corner
+	p_3_2 = quad_3_1[1]
+	p_3_1 = quad_3_1[2]
+	p_3_0 = p_0_0
+
+	# left edge, top to bottom, degenerate. SKIP both corners
+	p_2_0 = p_0_0
+	p_1_0 = p_0_0
+
+	# calculate inner control points
+
+	p_1_1 = p_0_1 +  (p_3_1 - p_0_0)   					# degenerate
+	p_1_2 = p_0_3 + (p_0_2 - p_0_3) +  (p_1_3 - p_0_3)	# keep standard
+	p_2_1 = p_3_1 + (p_0_1 - p_0_0)						# degenerate, identical to p_1_1, let them double up!
+	p_2_2 = p_3_3 + (p_2_3 - p_3_3) +  (p_3_2 - p_3_3)	# keep standard
+
+	# set weights, assign to control points, final format is [[x,y,z],w]. The patch will be a 4x4 matrix arranged as a list of 16 of these control format.
+	# original edges
+	w00 = [p_0_0, weights1[0]]
+	w01 = [p_0_1, weights1[1]]
+	w02 = [p_0_2, weights1[2]]
+	w03 = [p_0_3, weights1[3]]
+
+	w13 = [p_1_3, weights2[1]]
+	w23 = [p_2_3, weights2[2]]
+	w33 = [p_3_3, weights2[3]]
+
+	w32 = [p_3_2, weights3[2]]
+	w31 = [p_3_1, weights3[1]]
+	w30 = [p_3_0, weights3[0]]
+
+	w20 = [p_0_0, 0.5]	# correction for degenerate corner
+	w10 = [p_0_0, 0.5]	# correction for degenerate corner
+
+	# calculate inner weights
+	# multiply neighbors across the grid? this makes a good cylinder, but bad tori and spheres...lets blame the inner control points!
+	w11 = [p_1_1, weights1[1]*0.5]
+	w12 = [p_1_2, weights1[2]*weights2[1]]
+	w21 = [p_2_1, weights3[2]*0.5]
+	w22 = [p_2_2, weights2[2]*weights3[1]]
+
+
+
+	grid_44_tri_alt =  [w00 ,w01, w02, w03,
+				w10, w11, w12, w13,
+				w20, w21, w22, w23,
+				w30, w31, w32, w33]
+	return grid_44_tri_alt
 
 def grid_66_quad(c1,c2,c3,c4): # prepare 6 x 6 control point patch from four curves
 	# extract curve poles
@@ -462,7 +560,11 @@ def poly_grid_44(grid_44):
 	l_11_12=Part.Line(grid_44[5][0], grid_44[6][0])
 	l_12_22=Part.Line(grid_44[6][0], grid_44[10][0])
 	l_21_22=Part.Line(grid_44[9][0], grid_44[10][0])
-	l_11_21=Part.Line(grid_44[5][0], grid_44[9][0])
+
+	if (grid_44[5][0]==grid_44[9][0]):
+		l_11_21=Part.Point(grid_44[5][0])
+	else:
+		l_11_21=Part.Line(grid_44[5][0], grid_44[9][0])
 
 	poly_grid_44=[l_00_01, l_01_02, l_02_03,
 				l_03_13, l_13_23, l_23_33,
