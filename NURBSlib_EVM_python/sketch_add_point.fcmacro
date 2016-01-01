@@ -20,6 +20,7 @@ sketch=s[0].Object
 sketch_name=s[0].ObjectName
 point=s[1].PickedPoints[0]
 
+### not functional yet.
 
 sk_mat_inverse=sketch_matrix.inverse()
 sk_u=sk_mat_inverse.multiply(pos+x)
