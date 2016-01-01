@@ -96,20 +96,20 @@ def NURBS_Cubic_6P_curve(poles):
 	return bs
 
 
-def Cubic_ddu(pole1, pole2):   # first derivative with respect to parameter, returns value at first pole given
+def Cubic_ddu(pole1, pole2):   # first derivative with respect to parameter, returns value at first pole given. weights not inlcuded!
 	P1=Base.Vector(pole1)
 	P2=Base.Vector(pole2)
 	Cubic_ddu = (P2 - P1)*3
 	return Cubic_ddu
 
-def Cubic_d2du2(pole1, pole2, pole3): # second derivative with respect to parameter, returns value at first pole given
+def Cubic_d2du2(pole1, pole2, pole3): # second derivative with respect to parameter, returns value at first pole given. weights not inlcuded!
 	P1=Base.Vector(pole1)
 	P2=Base.Vector(pole2)
 	P3=Base.Vector(pole3)	
 	Cubic_d2du2 = (P1- P2*2 + P3)*6
 	return Cubic_d2du2
 
-def Cubic_curvature(pole1, pole2, pole3): # curvature, returns value at first pole given
+def Cubic_curvature(pole1, pole2, pole3): # curvature, returns value at first pole given. weights not inlcuded!
 	ddu = Cubic_ddu(pole1, pole2)
 	d2du2 = Cubic_d2du2(pole1, pole2, pole3)
 	Cubic_curvature = ddu.cross(d2du2).Length/ddu.Length.__pow__(3)

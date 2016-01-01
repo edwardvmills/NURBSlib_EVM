@@ -5,6 +5,15 @@ from PySide import QtGui
 import math
 
 
+# from two tangency lines, l0, l1, meeting at a surface/grid corner, compute the normal vector.
+# create and place a sketch such that the origin is at the intersection of l0 and l1, x is along l0, and y is along the normal vector
+# this is called the 'edge_normal' plane/sketch for that intersection. For a standard NURBS connection, there are two such planes:
+# one that is tangent to the U curves and another that is tangent to the V curves.
+
+# projecting the curve control polygon of the curve (U or V as appropriate) onto this edge_normal plane/sketch 
+# gives us the proper context to analyse surface curvature (in the U or V direction)
+
+
 # selection below works when the lines are both are Part.Line, are in different sketches, and in the same sketch
 s=Gui.Selection.getSelectionEx()
 if len(s)==2:
@@ -13,6 +22,7 @@ if len(s)==2:
 elif len(s)==1:
 	line1=s[0].SubObjects[0].Curve
 	line2=s[0].SubObjects[1].Curve
+
 name=QtGui.QInputDialog.getText(None, "Name the sketch", "a unique string such as AA, AB, AC:")[0]
 
 p1=line1.StartPoint
@@ -36,10 +46,14 @@ x_copy=Base.Vector(x)
 yish_copy=Base.Vector(yish)
 
 
-sketch_x=x_copy.normalize()								# the actual x direction of the sketch
-sketch_y_temp=yish_copy.normalize()						# something vaguely in the sketch's y direction
-sketch_z=(sketch_x.cross(sketch_y_temp)).normalize()	# the actual z direction of the sketch
-sketch_y=(sketch_z.cross(sketch_x)).normalize()			# the actual sketch's y direction
+selection_x=x_copy.normalize()								# the actual x direction of the selection: the 'edge' in 'edge_normal'
+selection_y_temp=yish_copy.normalize()						# something vaguely in the selection's y direction
+selection_z=(selection_x.cross(selection_y_temp)).normalize()	# the actual z direction of the selection, the 'normal' in 'edge_normal'
+selection_y=(selection_z.cross(selection_x)).normalize()			# the actual selection's y direction
+
+sketch_x=selection_x
+sketch_y=selection_z
+sketch_z=Base.Vector(sketch_x).cross(Base.Vector(sketch_y))
 
 '''
 ##############################################################################
@@ -53,13 +67,7 @@ Part.show(s_z.toShape())
 #end test section
 ##############################################################################
 '''
-'''
-sketch_matrix=App.Matrix(sketch_x.x,sketch_x.y,sketch_x.z,pos.x,
-						sketch_y.x,sketch_y.y,sketch_y.z,pos.y,
-						sketch_z.x,sketch_z.y,sketch_z.z,pos.z,
-						0,0,0,1)
-'''
-#try flipping row/column of the rotation part of the matrix? the position part works above
+
 sketch_matrix=App.Matrix(sketch_x.x,sketch_y.x,sketch_z.x,pos.x,
 						sketch_x.y,sketch_y.y,sketch_z.y,pos.y,
 						sketch_x.z,sketch_y.z,sketch_z.z,pos.z,
@@ -67,9 +75,10 @@ sketch_matrix=App.Matrix(sketch_x.x,sketch_y.x,sketch_z.x,pos.x,
 
 sk_mat_inverse=sketch_matrix.inverse()
 sk_u=sk_mat_inverse.multiply(pos+x)
-sk_v=sk_mat_inverse.multiply(pos+yish)
 
-name_sk= name+'_sketch_2_lines'
+
+
+name_sk= name+'_sketch_edge_normal'
 
 # shorter method to access the sketch from Yorik
 #myObject = App.activeDocument().addObject('Sketcher::SketchObject',name_A)
@@ -77,7 +86,8 @@ node_sk=App.activeDocument().addObject('Sketcher::SketchObject', name_sk)
 node_sk.Placement=App.Placement(sketch_matrix)
 node_sk.addGeometry(Part.Circle())
 node_sk.addGeometry(Part.Line(Base.Vector(0,0,0),sk_u))
-node_sk.addGeometry(Part.Line(Base.Vector(0,0,0),sk_v))
+
+
 
 
 

@@ -1,0 +1,41 @@
+import Part
+from FreeCAD import Base
+from FreeCAD import Gui
+from PySide import QtGui
+import math
+
+
+# from two tangency lines, l0, l1, meeting at a surface/grid corner, compute the normal vector.
+# create and place a sketch such that the origin is at the intersection of l0 and l1, x is along l0, and y is along the normal vector
+# this is called the 'edge_normal' plane/sketch for that intersection. For a standard NURBS connection, there are two such planes:
+# one that is tangent to the U curves and another that is tangent to the V curves.
+
+# projecting the curve control polygon of the curve (U or V as appropriate) onto this edge_normal plane/sketch 
+# gives us the proper context to analyse surface curvature (in the U or V direction)
+
+
+# selection below works when the lines are both are Part.Line, are in different sketches, and in the same sketch
+s=Gui.Selection.getSelectionEx()
+sketch=s[0].Object
+sketch_name=s[0].ObjectName
+point=s[1].PickedPoints[0]
+
+
+sk_mat_inverse=sketch_matrix.inverse()
+sk_u=sk_mat_inverse.multiply(pos+x)
+
+
+
+name_sk= name+'_sketch_edge_normal'
+
+# shorter method to access the sketch from Yorik
+#myObject = App.activeDocument().addObject('Sketcher::SketchObject',name_A)
+node_sk=App.activeDocument().addObject('Sketcher::SketchObject', name_sk)
+node_sk.Placement=App.Placement(sketch_matrix)
+node_sk.addGeometry(Part.Circle())
+node_sk.addGeometry(Part.Line(Base.Vector(0,0,0),sk_u))
+
+
+
+
+
