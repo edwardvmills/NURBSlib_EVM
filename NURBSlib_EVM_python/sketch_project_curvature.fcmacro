@@ -1,0 +1,129 @@
+import Part
+from FreeCAD import Base
+from FreeCAD import Gui
+from PySide import QtGui
+import math
+import NURBSlib_EVM as NL
+
+### not functional yet.
+
+
+# the 'source' curve is the one which will stay the same. The target curve will have its third point modified,
+# such that its starting curvature matches the end curvature of the 'source' curve. 
+# by leaving the first and second point of the target curve unmodifed, we maintain G1 across the join, if it was G1 to begin with.
+# when this is applied to a cubic bezier curve, this means we are changing the endpoint tangent of the target curve, 
+# and this is pretty much guaranteed to break G1, if it was G1 to begin with.
+
+# in order to move ahead with testing, the following pre-work has been done to simplify selection:
+
+# - in one 'sketch_place_edge_normal', the 'source' curve's endpoint, endpoint-1, and endpoint-2 have been projected. 
+#   source end and target start should already be at sketch (0,0)
+# - in the same sketch, the 'target' curve's startpoint, startpoint+1, and startpoint+2 have been projected.
+# - a curvature Part.Circle has been created from the 'source' curve's endpoint, endpoint-1, and endpoint-2. 
+#   this is the 'source' curvature we wish to have on the target curve's start point.
+
+# all this pre-work is to enable debugging within the 'sketch_place_edge_normal' plane.
+# in the future, we would just pick the source curve, target curve, and any reference that can pin down the normal.
+
+# current usage target:
+# pick the circle, then pick the target's projected startpoint+1, and startpoint+2, and endpoint
+# (endpoint is only for cubic bezier prototype only).
+
+### not functional yet.
+
+
+
+# process the selection
+s = Gui.Selection.getSelectionEx()
+curvature_source = s[0].Object.Shape.Curve
+edge_normal_sketch = s[1].Object
+p1_w = s[1].PickedPoints[0]  # the world coordinates of p1 (of target curve).
+p2_w = s[2].PickedPoints[0]  # the world coordinates of p2 (of target curve).
+p3_w = s[2].PickedPoints[1]  # the world coordinates of p3 (of target curve). Only used to draw a new bezier. not used in setting curvature
+
+# determine the curvature from the circle, 
+# and the center of curvature.
+source_radius = curvature_source.Radius
+if source_radius != 0:
+	source_curvature = 1 / source_radius
+elif source_radius == 0:					#placeholder for future radius input methods
+	source_curvature = 'degenerate'
+elif source_radius == 'infinity':				#placeholder for future radius input methods
+	source_curvature = 0
+
+source_orientation_w = curvature_source.Center # source center of curvature in world coordinates
+
+# get the matrix we need to convert world coords to the sketch's coordinate system.
+edge_normal_matrix = edge_normal_sketch.Placement.toMatrix()
+edge_normal_inverse = edge_normal_matrix.inverse()
+
+# convert all points to local sketch coordinate system.
+p1_s = edge_normal_inverse.multiply(p1_w)
+p2_s = edge_normal_inverse.multiply(p2_w)
+source_orientation_s = edge_normal_inverse.multiply(source_orientation_w)
+
+# test sketch projections
+#edge_normal_sketch.addGeometry(Part.Circle(p1_s, Base.Vector(0,0,1),5))
+#edge_normal_sketch.addGeometry(Part.Circle(p2_s, Base.Vector(0,0,1), 15))
+
+
+# get p1 length
+l1 = p1_s.x
+
+# determine concavity
+if source_orientation_s.y >0:
+	source_orientation = 1		#concave up
+
+if source_orientation_s.y <0:
+	source_orientation = -1	#concavity
+
+if source_orientation_s.y ==0:
+	print 'picked circle cannot be used on this edge_normal_sketch'
+
+# determine p2_G2 sketch y value
+y2_G2 = 4.5*source_curvature*math.pow(l1,2)*source_orientation
+
+# in sketch p2_G2 with y correction
+p2_G2_s_no_z = Base.Vector(p2_s.x, y2_G2,0)
+
+
+''' # tested, works
+# show the corrected point in the sketch
+edge_normal_sketch.addGeometry(Part.Line(p2_s,p2_G2_s_no_z))
+'''
+
+# put the height back in, revert to world coordinates
+p2_G2_s = Base.Vector(p2_s.x, y2_G2,p2_s.z)
+p2_G2_w = edge_normal_matrix.multiply(p2_G2_s)
+
+##########################################
+# section below is only for cubic bezier, to wrap up the prototype.
+##########################################
+
+
+#extract p0, the sketch origin.
+p0_s = Base.Vector(0,0,0)
+p0_w = edge_normal_matrix.multiply(p0_s)
+
+
+''' # tested, works
+# show the control polygon
+leg1=Part.Line(p0_w, p1_w)
+leg2=Part.Line(p1_w, p2_G2_w)
+leg3=Part.Line(p2_G2_w, p3_w)
+
+Part.show(leg1.toShape())
+Part.show(leg2.toShape())
+Part.show(leg3.toShape())
+'''
+
+# prepare pole list for cubic bezier. wieghts assumed to all equal 1 for now
+pole0=[p0_w,1]
+pole1=[p1_w,1]
+pole2=[p2_G2_w,1]
+pole3=[p3_w,1]
+poles=[pole0,pole1,pole2,pole3]
+
+target_G2_bezier=NL.Bezier_Cubic_curve(poles)
+
+Part.show(target_G2_bezier.toShape())

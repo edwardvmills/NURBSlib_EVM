@@ -1,0 +1,32 @@
+import Part
+from FreeCAD import Base
+from FreeCAD import Gui
+from PySide import QtGui
+import math
+
+### not functional yet.
+
+# project a point to a sketch. helper method, not really meant to be used directly. 
+# The logic will be used to project curve control polygons onto edge_normal sketches.
+
+s=Gui.Selection.getSelectionEx()
+sketch = s[0].Object
+sketch_name = s[0].ObjectName
+target_sketch = App.ActiveDocument.getObject(sketch_name)
+
+point = s[1].PickedPoints[0]
+
+
+
+sketch_matrix = sketch.Placement.toMatrix()
+sketch_inverse = sketch_matrix.inverse()
+point_in_sketch_coords = sketch_inverse.multiply(point)
+sketch_point = Base.Vector(point_in_sketch_coords.x, point_in_sketch_coords.y, 0)
+
+
+
+target_sketch.addGeometry(Part.Point(sketch_point))
+
+#sketch.addGeometry(Part.Point(sketch_point))
+
+
