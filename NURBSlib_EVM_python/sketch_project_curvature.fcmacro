@@ -88,10 +88,10 @@ y2_G2 = 1.5*source_curvature*math.pow(l1,2)*source_orientation
 p2_G2_s_no_z = Base.Vector(p2_s.x, y2_G2,0)
 
 
-# tested, works
+''' # tested, works
 # show the corrected point in the sketch
 edge_normal_sketch.addGeometry(Part.Line(p2_s,p2_G2_s_no_z))
-
+'''
 
 # put the height back in, revert to world coordinates
 p2_G2_s = Base.Vector(p2_s.x, y2_G2,p2_s.z)
