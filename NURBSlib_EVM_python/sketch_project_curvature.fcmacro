@@ -16,9 +16,10 @@ import NURBSlib_EVM as NL
 
 # in order to move ahead with testing, the following pre-work has been done to simplify selection:
 
-# - in one 'sketch_place_edge_normal', the 'source' curve's endpoint, endpoint-1, and endpoint-2 have been projected. 
+# - in one 'sketch_place_edge_normal', the 'source' curve's endpoint, endpoint-1, and endpoint-2 have been projected (or simply were drawn in the plane). 
 #   source end and target start should already be at sketch (0,0)
-# - in the same sketch, the 'target' curve's startpoint, startpoint+1, and startpoint+2 have been projected.
+# - in the same sketch, the 'target' curve's startpoint, and startpoint+1 have been projected.
+# - in a second sketch, the target curve's startpoint+2 has been projected. this is the point we manipulate to control curvature. 
 # - a curvature Part.Circle has been created from the 'source' curve's endpoint, endpoint-1, and endpoint-2. 
 #   this is the 'source' curvature we wish to have on the target curve's start point.
 
@@ -81,16 +82,16 @@ if source_orientation_s.y ==0:
 	print 'picked circle cannot be used on this edge_normal_sketch'
 
 # determine p2_G2 sketch y value
-y2_G2 = 4.5*source_curvature*math.pow(l1,2)*source_orientation
+y2_G2 = 1.5*source_curvature*math.pow(l1,2)*source_orientation
 
 # in sketch p2_G2 with y correction
 p2_G2_s_no_z = Base.Vector(p2_s.x, y2_G2,0)
 
 
-''' # tested, works
+# tested, works
 # show the corrected point in the sketch
 edge_normal_sketch.addGeometry(Part.Line(p2_s,p2_G2_s_no_z))
-'''
+
 
 # put the height back in, revert to world coordinates
 p2_G2_s = Base.Vector(p2_s.x, y2_G2,p2_s.z)
