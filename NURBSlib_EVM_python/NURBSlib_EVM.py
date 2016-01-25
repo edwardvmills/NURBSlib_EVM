@@ -421,7 +421,7 @@ def grid_44_tri_alt(c1,c2,c3):
 				w30, w31, w32, w33]
 	return grid_44_tri_alt
 
-def grid_66_quad(c1,c2,c3,c4): # prepare 6 x 6 control point patch from four curves
+def grid_66_quad_01(c1,c2,c3,c4): # prepare 6 x 6 control point patch from four curves
 	# extract curve poles
 	poles1=c1.getPoles()
 	poles2=c2.getPoles()
@@ -511,6 +511,86 @@ def grid_66_quad(c1,c2,c3,c4): # prepare 6 x 6 control point patch from four cur
 				p50, p51, p52, p53, p54, p55]
 	return grid_66_quad
 
+
+def grid_66_quad(c1,c2,c3,c4): # prepare 6 x 6 control point patch from four curves.
+	# all inner poles will now be tied to one corner of the patch. Trying to improve curvature matching along seams.
+
+	# extract curve poles
+	poles1=c1.getPoles()
+	poles2=c2.getPoles()
+	poles3=c3.getPoles()
+	poles4=c4.getPoles()
+
+	# fix edge orientation, going counterclockwise from first curve (c1)
+	sext_1_2 = orient_a_to_b(poles1,poles2)
+	sext_2_3 = orient_a_to_b(poles2,poles3)
+	sext_3_4 = orient_a_to_b(poles3,poles4)
+	sext_4_1 = orient_a_to_b(poles4,poles1)	
+
+	# bottom edge, left to right
+	p00 = sext_1_2[0]
+	p01 = sext_1_2[1]
+	p02 = sext_1_2[2]	
+	p03 = sext_1_2[3]
+	p04 = sext_1_2[4]
+	p05 = sext_1_2[5]
+
+	# right edge, bottom to top, SKIP starting corner
+	p15 = sext_2_3[1]
+	p25 = sext_2_3[2]
+	p35 = sext_2_3[3]
+	p45 = sext_2_3[4]
+	p55 = sext_2_3[5]
+
+	# top edge, right to left, SKIP starting corner
+	p54 = sext_3_4[1]
+	p53 = sext_3_4[2]
+	p52 = sext_3_4[3]
+	p51 = sext_3_4[4]
+	p50 = sext_3_4[5]
+
+	# left edge, top to bottom, SKIP both corners
+	p40 = sext_4_1[1]
+	p30 = sext_4_1[2]
+	p20 = sext_4_1[3]
+	p10 = sext_4_1[4]
+
+	# calculate inner corner control points
+	p11 = p01 +  (p10 - p00) #
+	p14 = p04 +  (p15 - p05) #
+	p41 = p51 +  (p40 - p50) #
+	p44 = p45 +  (p54 - p55) #
+
+	# calculate edge inner control points
+	
+	p12 = p02 + (p10 - p00)
+	p13 = p03 + (p15 - p05)
+	
+	p24 = p25 + (p04 - p05)
+	p34 = p35 + (p54 - p55)
+	
+	p42 = p52 + (p40 - p50)
+	p43 = p53 + (p45 - p55)
+
+	p21 = p20 + (p01 - p00)
+	p31 = p30 + (p51 - p50)
+
+
+	# calculate inner control points
+
+	p22 = p12 + (p20 - p10)
+	p23 = p13 + (p25 - p15)
+
+	p32 = p42 + (p30 - p40)
+	p33 = p43 + (p35 - p45)
+
+	grid_66_quad = [p00, p01, p02, p03, p04, p05,
+				p10, p11, p12, p13, p14, p15,
+				p20, p21, p22, p23, p24, p25, 
+				p30, p31, p32, p33, p34, p35,
+				p40, p41, p42, p43, p44, p45,
+				p50, p51, p52, p53, p54, p55]
+	return grid_66_quad
 
 
 
