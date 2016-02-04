@@ -1,0 +1,108 @@
+import Part
+from FreeCAD import Base
+from FreeCAD import Gui
+from PySide import QtGui
+import math
+
+### calculating endpoint derivatives of the NURBS_Cubic_6P_curve with respect to control points
+### this is intentionally drawn out and inefficient. 
+### the only point is to expose the intermediary steps and see the details of the calcs.
+
+### all formulas from Piegl and Tiller
+
+# knot vector
+a=1.0/3
+b=2.0/3
+U=[0,0,0,0,a,b,1,1,1,1]
+# degree
+p=3
+# parameter of interest
+u=0.5
+
+# basis function definitions
+# degree 0
+def Ni0(i,U,u):
+	if u>=U[i] and u<U[i+1]:
+		Ni0 = 1.0
+	else:
+		Ni0 = 0.0
+	return Ni0
+
+
+# degree +1
+def Nip(i,p,U,u,Nipminus1):
+	numerleft = (u-U[i])
+	denomleft = (U[i+p]-U[i])
+	if denomleft == 0.0:
+		left = 0.0
+	else:
+		left = numerleft/denomleft
+
+	numerright = (U[i+p+1]-u)
+	denomright = (U[i+p+1]-U[i+1])
+	if denomright == 0.0:
+		right = 0.0
+	else:
+		right = numerright/denomright
+
+	Nip= left*Nipminus1[i] + right*Nipminus1[i+1]
+	return Nip
+
+# degree 0 basis functions
+N00 = Ni0(0,U,u) 
+N10 = Ni0(1,U,u) 
+N20 = Ni0(2,U,u) 
+N30 = Ni0(3,U,u) 
+N40 = Ni0(4,U,u) 
+N50 = Ni0(5,U,u) 
+N60 = Ni0(6,U,u) 
+N70 = Ni0(7,U,u) 
+N80 = Ni0(8,U,u) 
+
+Ni0=[N00,N10,N20,N30,N40,N50,N60,N70,N80]
+#Ni0 # [0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+# degree 1 basis functions
+N01=Nip(0,1,U,u,Ni0)
+N11=Nip(1,1,U,u,Ni0)
+N21=Nip(2,1,U,u,Ni0)
+N31=Nip(3,1,U,u,Ni0)
+N41=Nip(4,1,U,u,Ni0)
+N51=Nip(5,1,U,u,Ni0)
+N61=Nip(6,1,U,u,Ni0)
+N71=Nip(7,1,U,u,Ni0)
+
+Ni1=[N01,N11,N21,N31,N41,N51,N61,N71]
+#Ni1 # [0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+#degree 2 basis functions
+N02=Nip(0,2,U,u,Ni1)
+N12=Nip(1,2,U,u,Ni1)
+N22=Nip(2,2,U,u,Ni1)
+N32=Nip(3,2,U,u,Ni1)
+N42=Nip(4,2,U,u,Ni1)
+N52=Nip(5,2,U,u,Ni1)
+N62=Nip(6,2,U,u,Ni1)
+
+Ni2=[N02,N12,N22,N32,N42,N52,N62]
+#Ni2 #[0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+# degree 3 basis functions
+N03=Nip(0,3,U,u,Ni2)
+N13=Nip(1,3,U,u,Ni2)
+N23=Nip(2,3,U,u,Ni2)
+N33=Nip(3,3,U,u,Ni2)
+N43=Nip(4,3,U,u,Ni2)
+N53=Nip(5,3,U,u,Ni2)
+
+Ni3=[N03,N13,N23,N33,N43,N53]
+#Ni3 # [1.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+Ni0
+Ni1
+Ni2
+Ni3
+
+
+
+
