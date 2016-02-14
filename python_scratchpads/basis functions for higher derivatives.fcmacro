@@ -1,25 +1,57 @@
-import Part
-from FreeCAD import Base
-from FreeCAD import Gui
-from PySide import QtGui
-import math
+import numpy as np
 
-### calculating endpoint derivatives of the NURBS_Cubic_6P_curve with respect to control points
-### this is intentionally drawn out and inefficient. 
-### the only point is to expose the intermediary steps and see the details of the calcs.
+### calculating derivatives of the NURBS curves. 
+### for any point at parameter u. the derivatives are a sum of basis functions associated with control points. The basis functions
+### form ratios of control points that control tangency, curvature, etc
+### these ratios will allow tangency matching (trivial) and curvature matching (less trivial)
+### across NURBs patches. Eventually, flow of curvature matching (not trivial at all) and all higher derivative continuity may follow.
 
-### all formulas from Piegl and Tiller
+### all formulas adapted from Piegl and Tiller. dersbasisfun algorithm would be better, but my implementation appears to give bad results.
+### until i can fix dersbasisfuns, the less efficient version here will have to do. dersbasisfuns is probably buried deep inside FreeCAD already
+### all basis functions and derivatives are calculated, even if they are guaranteed to be zero in the knot span. 
+### knot difference denominators are recalculated each time
 
+### the functions so far
+
+# single basis function definition
+# degree 0
+# Ni0(i,U,u)
+
+# single basis function of next degree
+# Nip(i,p,U,u,Nipminus1)
+# where Nipminus1 is a complete list of all basis functions of degree p-1
+
+# all basis functions
+# def Nips(p,U,u)
+# return an array
+# [	[ N00, N01, ..., N0p ],
+# 	[ N10, N11, ..., N1p ],
+#	...
+#	[ Ni0, Ni1, ..., Nip ] ]
+
+# derivative of single basis function. requires next lower derivatives to be available
+#def dNipdu_(i,p,U,Nipminus1):
+# for a first derivative of Ni,p, Nipminus1 is Ni,p-1
+# for a higher derivative of Ni,p such as d(n)Ni(p)du(n), Nipminus1 is d(n-1)Ni(p-1)du(n-1)
+
+# all derivatives. in progress
+# dNipdus(p,U,u)
+# spits out Nips as d0Nipsdu0s, then d1Nipdu1s, then d2Nipdu2s, and finally d3Nipdu3s. compaction to follow shortly.
+
+# defining characteristics of the NURBS_Cubic_6P_curve type
 # knot vector
 a=1.0/3
 b=2.0/3
-U=[0,0,0,0,a,b,1,1,1,1]
+#U=[0,0,0,0,a,b,1,1,1,1]
+U=[0,0,0,0,1,1,1,1]
 # degree
 p=3
-# parameter of interest
-u=0.5
 
-# basis function definitions
+# parameter of interest. for endpoint analyis, either 0 or 0.999999 will do.
+u=0.0
+
+
+# single basis function definition
 # degree 0
 def Ni0(i,U,u):
 	if u>=U[i] and u<U[i+1]:
@@ -27,7 +59,6 @@ def Ni0(i,U,u):
 	else:
 		Ni0 = 0.0
 	return Ni0
-
 
 # degree +1
 def Nip(i,p,U,u,Nipminus1):
@@ -37,72 +68,180 @@ def Nip(i,p,U,u,Nipminus1):
 		left = 0.0
 	else:
 		left = numerleft/denomleft
-
 	numerright = (U[i+p+1]-u)
 	denomright = (U[i+p+1]-U[i+1])
 	if denomright == 0.0:
 		right = 0.0
 	else:
 		right = numerright/denomright
-
 	Nip= left*Nipminus1[i] + right*Nipminus1[i+1]
 	return Nip
 
-# degree 0 basis functions
-N00 = Ni0(0,U,u) 
-N10 = Ni0(1,U,u) 
-N20 = Ni0(2,U,u) 
-N30 = Ni0(3,U,u) 
-N40 = Ni0(4,U,u) 
-N50 = Ni0(5,U,u) 
-N60 = Ni0(6,U,u) 
-N70 = Ni0(7,U,u) 
-N80 = Ni0(8,U,u) 
+# all basis functions
+def Nips(p,U,u):
+	Nips = np.zeros((len(U)-1,p+1))
+	# degree 0 basis functions
+	for i in range(len(U)-1):
+		Nips[i][0]=Ni0(i,U,u)
+	for j in range(1,p+1):
+		for i in range(len(U)-(1+j)):
+			Nips[i][j]=Nip(i,j,U,u,Nips[:,j-1])
+	return Nips
 
-Ni0=[N00,N10,N20,N30,N40,N50,N60,N70,N80]
-#Ni0 # [0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+# derivative of single basis function. requires all lower derivatives to be available
+def dNipdu(i,p,U,Nipminus1):
+	# for a first derivative of Ni,p, Nipminus1 is Ni,p-1
+	# for a higher derivative of Ni,p such as d(n)Ni(p)du(n), Nipminus1 is d(n-1)Ni(p-1)du(n-1)
+	numerleft = p 
+	denomleft = (U[i+p]-U[i])
+	if denomleft == 0.0:
+		left = 0.0
+	else:
+		left = numerleft/denomleft
+	numerright = p 
+	denomright = (U[i+p+1]-U[i+1])
+	if denomright == 0.0:
+		right = 0.0
+	else:
+		right = numerright/denomright
+	dNipdu = left * Nipminus1[i] - right * Nipminus1[i+1]
+	return dNipdu
+#########################
 
-# degree 1 basis functions
-N01=Nip(0,1,U,u,Ni0)
-N11=Nip(1,1,U,u,Ni0)
-N21=Nip(2,1,U,u,Ni0)
-N31=Nip(3,1,U,u,Ni0)
-N41=Nip(4,1,U,u,Ni0)
-N51=Nip(5,1,U,u,Ni0)
-N61=Nip(6,1,U,u,Ni0)
-N71=Nip(7,1,U,u,Ni0)
-
-Ni1=[N01,N11,N21,N31,N41,N51,N61,N71]
-#Ni1 # [0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-
-#degree 2 basis functions
-N02=Nip(0,2,U,u,Ni1)
-N12=Nip(1,2,U,u,Ni1)
-N22=Nip(2,2,U,u,Ni1)
-N32=Nip(3,2,U,u,Ni1)
-N42=Nip(4,2,U,u,Ni1)
-N52=Nip(5,2,U,u,Ni1)
-N62=Nip(6,2,U,u,Ni1)
-
-Ni2=[N02,N12,N22,N32,N42,N52,N62]
-#Ni2 #[0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-
-# degree 3 basis functions
-N03=Nip(0,3,U,u,Ni2)
-N13=Nip(1,3,U,u,Ni2)
-N23=Nip(2,3,U,u,Ni2)
-N33=Nip(3,3,U,u,Ni2)
-N43=Nip(4,3,U,u,Ni2)
-N53=Nip(5,3,U,u,Ni2)
-
-Ni3=[N03,N13,N23,N33,N43,N53]
-#Ni3 # [1.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-
-Ni0
-Ni1
-Ni2
-Ni3
+# derivatives. compaction in progress
 
 
+def dNipdus(p,U,u):
+	# get the basis functions
+	d0Nipdu0s = Nips(p,U,u)
+	print 'd0Nipdu0s= \n', d0Nipdu0s, '\n'
+	# initialize an array for the first derivatives
+	d1Nipdu1s = np.zeros((len(U)-1-1,p+1-1))
+	for n in range(1,p+1):
+		for i in range(len(U)-1-n):
+			d1Nipdu1s[i][n-1]=dNipdu(i,n,U,d0Nipdu0s[:,n-1])
+	print 'd1Nipdu1s= \n', d1Nipdu1s,  '\n'
+	
+	d2Nipdu2s = np.zeros((len(U)-1-2,p+1-2))
+	for n in range(2,p+1):
+		for i in range(len(U)-1-n):
+			d2Nipdu2s[i][n-2]=dNipdu(i,n,U,d1Nipdu1s[:,n-2])
+	print 'd2Nipdu2s= \n', d2Nipdu2s,  '\n'
+
+	d3Nipdu3s = np.zeros((len(U)-1-3,p+1-3))
+	for n in range(3,p+1):
+		for i in range(len(U)-1-n):
+			d3Nipdu3s[i][n-3]=dNipdu(i,n,U,d2Nipdu2s[:,n-3])
+	print 'd3Nipdu3s= \n', d3Nipdu3s,  '\n'
 
 
+'''
+cubic bezier test:
+
+>>> dNipdus(p,U,u)
+d0Nipdu0s= 
+[[ 0.  0.  0.  1.]
+ [ 0.  0.  1.  0.]
+ [ 0.  1.  0.  0.]
+ [ 1.  0.  0.  0.]
+ [ 0.  0.  0.  0.]
+ [ 0.  0.  0.  0.]
+ [ 0.  0.  0.  0.]]
+
+d1Nipdu1s= 
+[[ 0.  0. -3.]
+ [ 0. -2.  3.]
+ [-1.  2.  0.]
+ [ 1.  0.  0.]
+ [ 0.  0.  0.]
+ [ 0.  0.  0.]]
+
+d2Nipdu2s= 
+[[  0.   6.]
+ [  2. -12.]
+ [ -4.   6.]
+ [  2.   0.]
+ [  0.   0.]]
+
+d3Nipdu3s= 
+[[ -6.]
+ [ 18.]
+ [-18.]
+ [  6.]]
+
+ NURBS_Cubic_6P_curve
+
+# knot vector
+a=1.0/3
+b=2.0/3
+U=[0,0,0,0,a,b,1,1,1,1]
+# degree
+p=3
+
+# parameter of interest. for endpoint analyis, either 0 or 0.999999 will do.
+u=0.0
+
+>>> Nips(p,U,0)
+array([[ 0.,  0.,  0.,  1.],
+       [ 0.,  0.,  1.,  0.],
+       [ 0.,  1.,  0.,  0.],
+       [ 1.,  0.,  0.,  0.],
+       [ 0.,  0.,  0.,  0.],
+       [ 0.,  0.,  0.,  0.],
+       [ 0.,  0.,  0.,  0.],
+       [ 0.,  0.,  0.,  0.],
+       [ 0.,  0.,  0.,  0.]])
+
+
+>>> Nips(p,U,.5)
+array([[ 0.     ,  0.     ,  0.     ,  0.     ],
+       [ 0.     ,  0.     ,  0.     ,  0.03125],
+       [ 0.     ,  0.     ,  0.125  ,  0.46875],
+       [ 0.     ,  0.5    ,  0.75   ,  0.46875],
+       [ 1.     ,  0.5    ,  0.125  ,  0.03125],
+       [ 0.     ,  0.     ,  0.     ,  0.     ],
+       [ 0.     ,  0.     ,  0.     ,  0.     ],
+       [ 0.     ,  0.     ,  0.     ,  0.     ],
+       [ 0.     ,  0.     ,  0.     ,  0.     ]])
+
+
+>>> dNipdus(p,U,u)
+d0Nipdu0s= 
+[[ 0.  0.  0.  1.]
+ [ 0.  0.  1.  0.]
+ [ 0.  1.  0.  0.]
+ [ 1.  0.  0.  0.]
+ [ 0.  0.  0.  0.]
+ [ 0.  0.  0.  0.]
+ [ 0.  0.  0.  0.]
+ [ 0.  0.  0.  0.]
+ [ 0.  0.  0.  0.]]
+
+d1Nipdu1s= 
+[[ 0.  0. -9.]
+ [ 0. -6.  9.]
+ [-3.  6.  0.]
+ [ 3.  0.  0.]
+ [ 0.  0.  0.]
+ [ 0.  0.  0.]
+ [ 0.  0.  0.]
+ [ 0.  0.  0.]]
+
+d2Nipdu2s= 
+[[  0.  54.]
+ [ 18. -81.]
+ [-27.  27.]
+ [  9.   0.]
+ [  0.   0.]
+ [  0.   0.]
+ [  0.   0.]]
+
+d3Nipdu3s= 
+[[-162. ]
+ [ 283.5]
+ [-148.5]
+ [  27. ]
+ [   0. ]
+ [   0. ]]
+
+'''

@@ -1,0 +1,208 @@
+import numpy as np
+
+# BUGS
+
+# BUGGY
+
+# BUGGY
+
+# BUGS!!
+
+
+
+### all algorithms from 'The Nurbs Book', Piegl and Tiller. 
+
+## definitions
+
+# p is the degree (order = p+1)
+# U = [u0, u1, u3, ..., um] is the knot vector
+# if u0, u1, ..., up are equal, and um-p, um-p+1 ..., um are also equal, (first p knots and last p knots):
+# the knot vector is called 'non-periodic' / 'clamped' / 'open' (also 'pinned' in other literature)
+# the formulas and functions below are for this type of knot vector
+
+# let m + 1 be the number of knots,
+# then there are n + 1 basis functions (of degree p)
+# where n = m - p - 1 				
+
+
+## functions for fixed u. u in [ui,ui+1)
+# findspan(p,u,U) # removed n from the input parameters. 
+# basisfuns(i,p,u,U)
+# dersbasisfuns(i,u,p,n,U)  <<<<<<<<< does not work as it is
+
+
+
+def findspan(p,u,U):  # removed n from the input parameters. 
+	# determine the index of the knot span of u in U
+	# returns the index
+	m = len(U) - 1
+	# check knot vector is pinned. this is a basic check, not an exhaustive check.
+	if U[p] != U[0] or U[m-p] !=U[m]:
+		return 'knot vector is not pinned for the given degree'
+	n = m - p - 1 # makes n redundant in the function input
+
+	# special case to catch the end point of the knot vector
+	if u == U[n+1]:	# u==U[m-p] = last knot value
+		return n 	#assign the last non-zero width knot span
+	# special case to catch the start point of the knot vector 
+	# Piegl doesn't address u = uo = u1 ... = up, and the while loop below doesn't catch it either?	
+	if u == U[p]:	# u==U[m-p] = first knot value
+		return p 	# assign the first non-zero width knot span
+	# setup binary search
+	low = p
+	high = n + 1
+	mid = ( low + high ) / 2
+	while u < U[mid] or u >= U[mid+1]:
+		if u <U[mid]:
+			high = mid
+		else:
+			low = mid
+		mid = ( low + high ) / 2
+	index = mid
+	return index
+
+def basisfuns(i,p,u,U):
+	#computes the non vanishing basis functions of degree p at u on knot span i
+	N = [0.0] * (p+1)		# for a given knot span, there are at most p+1 non zero basis functions of degree p
+	N[0] = 1.0			# assuming i is the correct index for u
+	left = [0] * (p+1)		
+	right = [0] * (p+1)
+	for j in range(1, p+1):
+		left[j] = u - U[i+1-j]
+		right[j] = U[i+j] - u
+		saved = 0.0
+		for r in range(j):
+			temp = N[r]/(right[r+1] + left[j-r])
+			N[r] = saved + right[r+1] * temp
+			saved = left[j-r] * temp
+		N[j] = saved
+	return N
+
+# tested against book example
+#	>>> basisfuns(4,2,2.5,U)
+#	[0.125, 0.75, 0.125]   > pass
+
+
+def dersbasisfuns(i,u,p,n,U):
+	#computes the non vanishing basis functions of degree p at u on knot span i and their n derivatives (n <= p)
+	# output is Nders, where Nders[k][j] is the kth derivative of Ni-p+j,p where 0<=k<=n and 0<=j<=p.
+	# n<=p 
+	Nders = np.zeros((n+1,p+1))
+	# [[Ni-p,p	Ni-p+1,p		Ni-p+2,p		...	Ni,p]
+	# [dNi-p,p	dNi-p+1,p	dNi-p+2,p	...	dNi,p]
+	# [d2Ni-p,p	d2Ni-p+1,p	d2Ni-p+2,p	...	d2Ni,p]
+	# ...
+	# [dnNi-p,p	dnNi-p+1,p	dnNi-p+2,p	...	dnNi,p]
+
+	# start by computing the basis functions (zeroth derivative)
+	# with a modified version of basisfuns. 
+	# this saves lower degree functions and knot differences on the way to Ni,p
+	Ndu = np.zeros((p+1, p+1)) # this array will contain
+	# [[Ni,0(u)	Ni-1,1(u)		Ni-2,2(u)		...	Ni-p,p]
+	# [ui+1-ui	Ni,1(u)		Ni-1,2(u)		...	Ni-p+1,p]
+	# [ui+1-ui-1	ui+2-ui		Ni,2(u)		...	Ni-p+2,p]
+	# ...
+	# [ui+1-ui-p	ui+2-ui-p+1 ui+2-ui-p+2	...	Ni,p]]
+	Ndu[0][0] = 1.0
+	left = np.zeros(p+1)		
+	right = np.zeros(p+1)
+	for j in range(1,p+1):
+		left[j] = u-U[i+1-j]
+		right[j] = U[i+j]-u
+		saved = 0.0
+		for r in range(j):
+			#lower triangle: knot differences
+			Ndu[j][r] = right[r+1]+left[j-r]
+			temp = Ndu[r][j-1]/Ndu[j][r]
+			#upper triangle
+			Ndu[r][j] = saved+right[r+1]*temp
+			saved = left[j-r]*temp
+		Ndu[j][j]=saved
+	print Ndu
+	'''  tested: pass
+	i = 4
+	u = 2.5
+	p = 2
+	U = [0, 0, 0, 1, 2, 3, 4, 4, 5, 5, 5]
+	Ndu
+	array([[ 1.   ,  0.5  ,  0.125],
+   	      [ 1.   ,  0.5  ,  0.75 ],
+    	      [ 2.   ,  2.   ,  0.125]])
+	'''
+	# load the non zero basis functions (0th derivative)
+	for j in range(p+1):
+		Nders[0][j] = Ndu[j][p]
+	print Nders
+	# start computing the derivatives
+	a = np.zeros((2,(p+1)))
+	# loop over function index
+	for r in range(p+1):
+		# alternate rows in array A
+		s1 = 0
+		s2 = 1
+		a[0][0] = 1.0
+		# loop to compute kth derivative
+		for k in range(1,n+1):
+			d = 0.0
+			rk = r - k
+			pk = p - k
+			if r >= k:
+				a[s2][0] = a[s1][0] / Ndu[pk+1][rk]
+				d = a[s2][0] * Ndu[rk][pk]
+			if rk >= -1:
+				j1 = 1
+			else:
+				j1 = -rk					
+			if (r-1) <= pk:
+				j2 = k - 1
+			else:
+				j2 = p - r
+			for j in range(j1,j2+1):
+				a[s2][j] = (a[s1][j] - a[s1][j-1]) / Ndu[pk+1][rk+j]
+				d = d + a[s2][j]*Ndu[rk+j][pk]
+			if r <= pk:
+				a[s2][k]= -a[s1][k-1]/Ndu[pk+1][r]
+				d = d + a[s2][k]*Ndu[r][pk]
+			Nders[k][r] = d
+			#switch rows
+			j = s1
+			s1 = s2
+			s2 = j
+	#multiply by the correct factor
+	# from equation 2.9
+	r = p
+	for k in range(1,n+1):
+		for j in range(p+1):
+			Nders[k][j] = Nders[k][j] * r
+			r = r * (p-k)
+	print Nders
+	return Nders
+
+
+#### test data block
+u=0.01
+p=3
+U=[0,0,0,0,1.0/3,2.0/3,1,1,1,1]
+i = findspan(p,u,U)
+N = basisfuns(i,p,u,U)
+N
+n=p
+Nders= dersbasisfuns(i,u,p,n,U)
+
+
+
+'''
+u=5.0/2
+p=2
+U=[0,0,0,1,2,3,4,4,5,5,5]
+
+[[ 1.     0.5    0.125]		check against book example: pass
+ [ 1.     0.5    0.75 ]
+ [ 2.     2.     0.125]]
+[[ 0.125  0.75   0.125]	first row loaded correctly
+ [ 0.     0.     0.   ]   
+ [ 0.     0.     0.   ]]
+[[ 0.125  0.75   0.125]
+ [-0.5    0.     0.5  ]		first item this row should 0.5 the book code gives -0.5 as well, afaict. correct answer should be 0.5
+ [ 1.    -0.     0.   ]]
+
