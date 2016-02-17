@@ -1,17 +1,16 @@
 import numpy as np
 
-### calculating derivatives of the NURBS curves. 
-### for any point at parameter u. the derivatives are a sum of basis functions associated with control points. The basis functions
-### form ratios of control points that control tangency, curvature, etc
+### calculating derivatives of NURBS curves. 
+### the basis function derivatives form ratios of control points that control tangency, curvature, etc
 ### these ratios will allow tangency matching (trivial) and curvature matching (less trivial)
 ### across NURBs patches. Eventually, flow of curvature matching (not trivial at all) and all higher derivative continuity may follow.
 
-### all formulas adapted from Piegl and Tiller. dersbasisfun algorithm would be better, but my implementation appears to give bad results.
+### all formulas adapted from Piegl and Tiller. the dersbasisfun algorithm would be better, but my implementation appears to give bad results.
 ### until i can fix dersbasisfuns, the less efficient version here will have to do. dersbasisfuns is probably buried deep inside FreeCAD already
-### all basis functions and derivatives are calculated, even if they are guaranteed to be zero in the knot span. 
+### in theis file, all basis functions and derivatives are calculated, even if they are guaranteed to be zero in the knot span. 
 ### knot difference denominators are recalculated each time
 
-### the functions so far
+### the functions so far:
 
 # single basis function definition
 # degree 0
@@ -36,14 +35,21 @@ import numpy as np
 
 # all derivatives. in progress
 # dNipdus(p,U,u)
-# spits out Nips as d0Nipsdu0s, then d1Nipdu1s, then d2Nipdu2s, and finally d3Nipdu3s. compaction to follow shortly.
+# spits out 
+# [ [ N0p, N'op, N''0p, N'''0p ]
+#   [ N1p, N'1p, N''1p, N'''1p ]
+#   [ N2p, N'2p, N''2p, N'''2p ]
+#   ...
+#   [ Nip, N'ip, N''ip, N'''ip ] ]
 
-# defining characteristics of the NURBS_Cubic_6P_curve type
+
+
 # knot vector
 a=1.0/3
 b=2.0/3
-#U=[0,0,0,0,a,b,1,1,1,1]
-U=[0,0,0,0,1,1,1,1]
+#U=[0,0,0,0,1,1,1,1] # cubic bezier for reference
+U=[0,0,0,0,a,b,1,1,1,1] # NURBS_Cubic_6P_curve type
+#U=[0,0,0,1,2,3,4,4,5,5,5] # book example for testing
 # degree
 p=3
 
@@ -114,25 +120,42 @@ def dNipdu(i,p,U,Nipminus1):
 def dNipdus(p,U,u):
 	# get the basis functions
 	d0Nipdu0s = Nips(p,U,u)
-	print 'd0Nipdu0s= \n', d0Nipdu0s, '\n'
+	#print 'd0Nipdu0s= \n', d0Nipdu0s, '\n'
+	
 	# initialize an array for the first derivatives
 	d1Nipdu1s = np.zeros((len(U)-1-1,p+1-1))
 	for n in range(1,p+1):
 		for i in range(len(U)-1-n):
 			d1Nipdu1s[i][n-1]=dNipdu(i,n,U,d0Nipdu0s[:,n-1])
-	print 'd1Nipdu1s= \n', d1Nipdu1s,  '\n'
+	#print 'd1Nipdu1s= \n', d1Nipdu1s,  '\n'
 	
 	d2Nipdu2s = np.zeros((len(U)-1-2,p+1-2))
 	for n in range(2,p+1):
 		for i in range(len(U)-1-n):
 			d2Nipdu2s[i][n-2]=dNipdu(i,n,U,d1Nipdu1s[:,n-2])
-	print 'd2Nipdu2s= \n', d2Nipdu2s,  '\n'
-
+	#print 'd2Nipdu2s= \n', d2Nipdu2s,  '\n'
+	
 	d3Nipdu3s = np.zeros((len(U)-1-3,p+1-3))
 	for n in range(3,p+1):
 		for i in range(len(U)-1-n):
 			d3Nipdu3s[i][n-3]=dNipdu(i,n,U,d2Nipdu2s[:,n-3])
-	print 'd3Nipdu3s= \n', d3Nipdu3s,  '\n'
+	#print 'd3Nipdu3s= \n', d3Nipdu3s,  '\n'
+	
+	
+	dNipdus = np.zeros((len(U)-1,p+1))
+	#print 'dNipdus= \n', dNipdus, '\n'
+	dNipdus[:,0] = d0Nipdu0s[:,p-0]
+	#print 'dNipdus= \n', dNipdus, '\n'
+	dNipdus[0:-1,1] = d1Nipdu1s[:,p-1]
+	#print 'dNipdus= \n', dNipdus, '\n'
+	dNipdus[0:-2,2] = d2Nipdu2s[:,p-2]
+	#print 'dNipdus= \n', dNipdus, '\n'
+	dNipdus[0:-3,3] = d3Nipdu3s[:,p-3]
+	
+	return dNipdus
+
+
+dNipdus(p,U,u)
 
 
 '''
@@ -243,5 +266,73 @@ d3Nipdu3s=
  [  27. ]
  [   0. ]
  [   0. ]]
+
+>>> dNipdus(p,U,u)
+array([[   1. ,   -9. ,   54. , -162. ],
+       [   0. ,    9. ,  -81. ,  283.5],
+       [   0. ,    0. ,   27. , -148.5],
+       [   0. ,    0. ,    0. ,   27. ],
+       [   0. ,    0. ,    0. ,    0. ],
+       [   0. ,    0. ,    0. ,    0. ],
+       [   0. ,    0. ,    0. ,    0. ],
+       [   0. ,    0. ,    0. ,    0. ],
+       [   0. ,    0. ,    0. ,    0. ]])
+
+
+
+# example from book 
+U=[0,0,0,1,2,3,4,4,5,5,5]
+# degree
+p=2
+
+u=5.0/2
+
+d0Nipdu0s= 
+[[ 0.     0.     0.   ]
+ [ 0.     0.     0.   ]
+ [ 0.     0.     0.125]
+ [ 0.     0.5    0.75 ]
+ [ 1.     0.5    0.125]
+ [ 0.     0.     0.   ]
+ [ 0.     0.     0.   ]
+ [ 0.     0.     0.   ]
+ [ 0.     0.     0.   ]
+ [ 0.     0.     0.   ]]		correct
+
+d1Nipdu1s= 
+[[ 0.   0. ]
+ [ 0.   0. ]
+ [ 0.  -0.5]
+ [-1.   0. ]
+ [ 1.   0.5]
+ [ 0.   0. ]
+ [ 0.   0. ]
+ [ 0.   0. ]
+ [ 0.   0. ]]		correct
+
+d2Nipdu2s= 
+[[ 0.]
+ [ 0.]
+ [ 1.]
+ [-2.]
+ [ 1.]
+ [ 0.]
+ [ 0.]
+ [ 0.]]		correct
+
+d3Nipdu3s= 
+[]		should be all 0. kinda correct?
+
+dNipdus= 
+[[ 0.     0.     0.   ]
+ [ 0.     0.     0.   ]
+ [ 0.125 -0.5    1.   ]
+ [ 0.75   0.    -2.   ]
+ [ 0.125  0.5    1.   ]
+ [ 0.     0.     0.   ]
+ [ 0.     0.     0.   ]
+ [ 0.     0.     0.   ]
+ [ 0.     0.     0.   ]
+ [ 0.     0.     0.   ]] i think this is correct
 
 '''

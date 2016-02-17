@@ -203,6 +203,6 @@ U=[0,0,0,1,2,3,4,4,5,5,5]
  [ 0.     0.     0.   ]   
  [ 0.     0.     0.   ]]
 [[ 0.125  0.75   0.125]
- [-0.5    0.     0.5  ]		first item this row should 0.5 the book code gives -0.5 as well, afaict. correct answer should be 0.5
- [ 1.    -0.     0.   ]]
+ [-0.5    0.     0.5  ]		all three correct
+ [ 1.    -0.     0.   ]]		first term looks correct. second term should be -2. third term should be 1.
 
