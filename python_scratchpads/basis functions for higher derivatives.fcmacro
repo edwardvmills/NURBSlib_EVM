@@ -1,5 +1,11 @@
 import numpy as np
 
+
+# BUGS? **************
+# i don't really have enough verification data to tell if this is entirely correct for second, third, and higher derivatives.
+# i'm going to use the second derivative at endpoints result [ 54, -81, 27 ] to try curvature matching on NURBS_Cubic_6p_curve.
+# if that obivously fails, the next step is to generate test verification data to fix the algorithm below.
+
 ### calculating derivatives of NURBS curves. 
 ### the basis function derivatives form ratios of control points that control tangency, curvature, etc
 ### these ratios will allow tangency matching (trivial) and curvature matching (less trivial)

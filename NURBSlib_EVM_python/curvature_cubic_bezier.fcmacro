@@ -4,6 +4,11 @@ from FreeCAD import Gui
 import math
 import NURBSlib_EVM as Nl
 
+# given the first three control points of a non-rational cubic Bezier curve (knots [0,0,0,0,1,1,1,1]), 
+# this macro calculates the radius of curvature at the first point, and draws a circle of said radius in
+# in the osculating plane.
+
+
 s=Gui.Selection.getSelectionEx()[0].SubObjects
 
 if (len(s)!=3):
@@ -13,7 +18,7 @@ pole0=[s[0].Point,1]
 pole1=[s[1].Point,1]
 pole2=[s[2].Point,1]	
 
-curvature = Nl.Cubic_curvature(pole0[0], pole1[0], pole2[0])
+curvature = Nl.Cubic_Bezier_curvature(pole0[0], pole1[0], pole2[0])
 radius = 1/curvature
 
 v1=pole1[0]-pole0[0]

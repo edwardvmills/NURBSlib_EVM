@@ -1,0 +1,35 @@
+import Part
+from FreeCAD import Base
+from FreeCAD import Gui
+import math
+import NURBSlib_EVM as Nl
+
+# draw a NURBS_Cubic_6P_curve from two nodes.
+
+s=Gui.Selection.getSelectionEx()
+
+node0=s[0]
+node1=s[1]
+
+circle0=node0.SubObjects[0].Curve.Center
+point0a=node0.SubObjects[1].Point
+point0b=node0.SubObjects[2].Point
+
+point1b=node1.SubObjects[0].Point
+point1a=node1.SubObjects[1].Point
+circle1=node1.SubObjects[2].Curve.Center
+
+
+pole0=[circle0,1]
+pole1=[point0a,1]
+pole2=[point0b,1]
+pole3=[point1b,1]
+pole4=[point1a,1]
+pole5=[circle1,1]
+
+
+poles = [pole0, pole1, pole2, pole3, pole4, pole5]
+
+curve = Nl.NURBS_Cubic_6P_curve(poles)
+
+Part.show(curve.toShape())

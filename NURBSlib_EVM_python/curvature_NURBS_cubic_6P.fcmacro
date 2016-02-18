@@ -1,0 +1,57 @@
+import Part
+from FreeCAD import Base
+from FreeCAD import Gui
+import math
+import NURBSlib_EVM as Nl
+
+# get end point curvature from NURBS_Cubic_6P_curve. draw curvature circle in osculating plane.
+
+s=Gui.Selection.getSelectionEx()
+
+
+points=s[0].PickedPoints
+if len(points) ==1:
+	point=points[0]
+else:
+	print 'pick exactly one 6P curve endpoint'
+
+poles = s[0].Object.Shape.Curve.getPoles()
+degree = s[0].Object.Shape.Curve.Degree
+
+if degree !=3 or len(poles) !=6: 
+	print 'curve is not cubic 6P type'
+
+if point == poles[0]:
+	polea=poles[0]
+	poleb=poles[1]
+	polec=poles[2]
+
+elif point == poles[5]:
+	polea=poles[5]
+	poleb=poles[4]
+	polec=poles[3]
+
+print polea, '\n', poleb, '\n', polec, '\n'
+
+curvature = Nl.Cubic_6P_curvature(polea, poleb, polec)
+if curvature !=0:
+	radius = 1 / curvature
+
+
+v1=poleb-polea
+v2=polec-poleb
+curvature_plane_normal = (v2.cross(v1)).normalize()
+curvature_center_direction = (v1.cross(curvature_plane_normal)).normalize()
+curvature_center = polea + curvature_center_direction.multiply(radius)
+
+normal=Part.Line(polea, polea+curvature_plane_normal)
+center_direction = Part.Line(polea, polea+curvature_center_direction)
+circle=Part.makeCircle(radius, curvature_center, curvature_plane_normal, 0,360)
+
+#Part.show(normal.toShape())
+#Part.show(center_direction.toShape())
+Part.show(circle)
+ 
+print curvature
+print radius
+

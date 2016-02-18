@@ -29,11 +29,11 @@ import math
 
 # NURBS_Cubic_6P_curve([pole X 6]) - pinned cubic rational Bspline - 6 control points, just enough to have independent endpoint curvature
 
-# Cubic_ddu(poles1, pole2) - cubic derivative at curve start (pole1) based on first two poles (no curve required). Weights not included yet
+# Cubic_Bezier_ddu(poles1, pole2) - cubic derivative at curve start (pole1) based on first two poles (no curve required). Weights not included yet
 
-# Cubic_d2du2(poles1, pole2, pole3) - cubic second derivative at curve start (pole1) based on first three poles (no curve required). Weights not included yet
+# Cubic_Bezier_d2du2(poles1, pole2, pole3) - cubic second derivative at curve start (pole1) based on first three poles (no curve required). Weights not included yet
 
-# Cubic_curvature(poles1, pole2, pole3) - curvature at curve start (pole1) based on the first three poles (no curve required). Weights not included yet
+# Cubic_Bezier_curvature(poles1, pole2, pole3) - curvature at curve start (pole1) based on the first three poles (no curve required). Weights not included yet
 
 # orient_a_to_b(polesa,polesb) - polesa and polesb are lists of poles that share one endpoint. if needed, this function reorders a so that a.end = b.start or b.end b is never modified
 
@@ -96,25 +96,43 @@ def NURBS_Cubic_6P_curve(poles):
 	return bs
 
 
-def Cubic_ddu(pole1, pole2):   # first derivative with respect to parameter, returns value at first pole given. weights not inlcuded!
+def Cubic_Bezier_ddu(pole1, pole2):   # first derivative with respect to parameter, returns value at first pole given. weights not inlcuded!
 	P1=Base.Vector(pole1)
 	P2=Base.Vector(pole2)
-	Cubic_ddu = (P2 - P1)*3
-	return Cubic_ddu
+	Cubic_Bezier_ddu = (P2 - P1)*3
+	return Cubic_Bezier_ddu
 
-def Cubic_d2du2(pole1, pole2, pole3): # second derivative with respect to parameter, returns value at first pole given. weights not inlcuded!
+def Cubic_6P_ddu(pole1, pole2):   # first derivative with respect to parameter, returns value at first pole given. weights not inlcuded!
+	P1=Base.Vector(pole1)
+	P2=Base.Vector(pole2)
+	Cubic_6P_ddu = (P2 - P1)*9
+	return Cubic_6P_ddu
+
+def Cubic_Bezier_d2du2(pole1, pole2, pole3): # second derivative with respect to parameter, returns value at first pole given. weights not inlcuded!
 	P1=Base.Vector(pole1)
 	P2=Base.Vector(pole2)
 	P3=Base.Vector(pole3)	
-	Cubic_d2du2 = (P1- P2*2 + P3)*6
-	return Cubic_d2du2
+	Cubic_Bezier_d2du2 = (P1- P2*2 + P3)*6
+	return Cubic_Bezier_d2du2
 
-def Cubic_curvature(pole1, pole2, pole3): # curvature, returns value at first pole given. weights not inlcuded!
-	ddu = Cubic_ddu(pole1, pole2)
-	d2du2 = Cubic_d2du2(pole1, pole2, pole3)
-	Cubic_curvature = ddu.cross(d2du2).Length/ddu.Length.__pow__(3)
-	return Cubic_curvature
+def Cubic_6P_d2du2(pole1, pole2, pole3): # second derivative with respect to parameter, returns value at first pole given. weights not inlcuded!
+	P1=Base.Vector(pole1)
+	P2=Base.Vector(pole2)
+	P3=Base.Vector(pole3)	
+	Cubic_6P_d2du2 = (P1*2- P2*3 + P3)*27
+	return Cubic_6P_d2du2
 
+def Cubic_Bezier_curvature(pole1, pole2, pole3): # curvature, returns value at first pole given. weights not inlcuded!
+	ddu = Cubic_Bezier_ddu(pole1, pole2)
+	d2du2 = Cubic_Bezier_d2du2(pole1, pole2, pole3)
+	Cubic_Bezier_curvature = ddu.cross(d2du2).Length/ddu.Length.__pow__(3)
+	return Cubic_Bezier_curvature
+
+def Cubic_6P_curvature(pole1, pole2, pole3): # curvature, returns value at first pole given. weights not inlcuded!
+	ddu = Cubic_6P_ddu(pole1, pole2)
+	d2du2 = Cubic_6P_d2du2(pole1, pole2, pole3)
+	Cubic_6P_curvature = ddu.cross(d2du2).Length/ddu.Length.__pow__(3)
+	return Cubic_6P_curvature
 
 def orient_a_to_b(polesa,polesb):
 
