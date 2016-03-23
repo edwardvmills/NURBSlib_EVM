@@ -43,9 +43,9 @@ ___
 
 For now, my focus is on skinning sets of 3 or 4 curves in a loop. 
 
-The skinning routines should be 
--*repeatable*: produce the same result for the same inputs
--*consistent*: produce a scaled result for a scaled input. 
+The skinning routines should be   
+-*repeatable*: produce the same result for the same inputs   
+-*consistent*: produce a scaled result for a scaled input.   
 
 The seams joining adjacent surfaces should always have the same level of continuity as the adjacent curves at the surface corners.
 
