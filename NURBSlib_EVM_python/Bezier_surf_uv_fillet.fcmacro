@@ -1,0 +1,78 @@
+import Part
+from FreeCAD import Base
+from FreeCAD import Gui
+from PySide import QtGui
+import math
+import NURBSlib_EVM as Nl
+
+# get selection
+sel=Gui.Selection.getSelectionEx()[0]
+
+# get surface
+surf=sel.Object.Shape.Surface
+
+# get edges
+edge_0=sel.SubObjects[0].Curve
+edge_1=sel.SubObjects[1].Curve
+
+pt_00=edge_0.StartPoint
+pt_01=edge_0.EndPoint
+
+pt_10=edge_1.StartPoint
+pt_11=edge_1.EndPoint
+
+if (pt_00==pt_10) or (pt_00==pt_11):
+	corner = pt_00
+elif (pt_01==pt_10) or (pt_01==pt_11):
+	corner = pt_01
+
+if corner==surf.getPole(1,1):
+	curve_0=surf.vIso(1)
+	curve_2=surf.uIso(1)
+	curve_1_poles=[[surf.getPole(1,4),1],[surf.getPole(1,3),1],[surf.getPole(3,1),1],[surf.getPole(4,1),1]]
+
+if corner==surf.getPole(4,1):
+	curve_0=surf.uIso(0)
+	curve_2=surf.vIso(1)
+	curve_1_poles=[[surf.getPole(1,1),1],[surf.getPole(2,1),1],[surf.getPole(4,3),1],[surf.getPole(4,4),1]]
+
+if corner==surf.getPole(4,4):
+	curve_0=surf.vIso(0)
+	curve_2=surf.uIso(0)
+	curve_1_poles=[[surf.getPole(4,1),1],[surf.getPole(4,2),1],[surf.getPole(1,4),1],[surf.getPole(2,4),1]]
+
+if corner==surf.getPole(1,4):
+	curve_0=surf.uIso(1)
+	curve_2=surf.vIso(0)
+	curve_1_poles=[[surf.getPole(4,4),1],[surf.getPole(3,4),1],[surf.getPole(1,2),1],[surf.getPole(1,1),1]]
+
+curve_1 = Nl.Bezier_Cubic_curve(curve_1_poles)
+
+corner_grid_44 = Nl.grid_44_tri_alt(curve_0, curve_1, curve_2)
+corner_Bezier_Bicubic_surf = Nl.Bezier_Bicubic_surf(corner_grid_44)
+
+
+Part.show(corner_Bezier_Bicubic_surf.toShape())
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

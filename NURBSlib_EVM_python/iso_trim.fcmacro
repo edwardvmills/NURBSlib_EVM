@@ -1,0 +1,127 @@
+import Part
+from FreeCAD import Base
+from FreeCAD import Gui
+from PySide import QtGui
+import math
+
+# pick a surface close to an edge, hit the macro
+# based on uv of picked point, chose u/v/close to 0/close to 1 as the side to cut
+# uv = (0.931,0.45) is interpreted as 'cut off the u=0.9 to u=1 strip of the surface'
+# a pop up window allows entry of a precise value: "you picked at 0.931, please enter exact value "
+
+
+sel=Gui.Selection.getSelectionEx()
+
+## Process the surface
+# this assumes the surface is Bezier AND has u and v ranges of 0-1 for now
+surf_sel=sel[0]
+object=surf_sel.SubObjects[0]
+surf=object.Surface
+uknots=surf.getUKnots()
+vknots=surf.getVKnots()
+
+if uknots!=[0.0,1.0] or vknots!=[0.0,1.0]:
+	print 'both u and v need to be 0 to 1 for this tool'
+	print ' Error below is a deliberate trainwreck to stop the macro'
+	please_stop_now = undeclared_variable # this error stops the macro. it's ugly, but very cheap.
+
+## Process the trim point.
+#the separately pick point, if it exists
+if  sel.__len__()==2:
+	point_sel=sel[1].SubObjects[0].Point 
+	uv=surf.parameter(point_sel)
+	print uv
+	u=uv[0]
+	v=uv[1]
+
+	if (u<=0) or (u>=1):
+		split_u=0
+	elif (u>0) and (u<1):
+		split_u=1
+
+	if (v<=0) or (v>=1):
+		split_v=0
+	elif (v>0) and (v<1):
+		split_v=1
+
+	if ((split_u==1) and (split_v==1)) or ((split_u==0) and (split_v==0)):
+		print ' Picked point is at a corner, selected point must be along ONE edge.'
+		print ' Error below is a deliberate trainwreck to stop the macro'
+		please_stop_now = undeclared_variable # this error stops the macro. it's ugly, but very cheap.
+	elif (split_u==1):
+		param = u
+	elif (split_v==1):
+		param = v
+		
+	
+# the point used to pick the surface itself, if no other point is specified
+if sel.__len__()==1:
+	picked_point=surf_sel.PickedPoints[0]
+	uv=surf.parameter(picked_point) 
+	u=uv[0]
+	v=uv[1]
+	# determine split orientation
+	if (u<=0.2) or (u>=0.8):
+		split_u = 1
+	else:
+		split_u=0
+	if (v<=0.2) or (v>=0.8):
+		split_v = 1
+	else:
+		split_v=0
+	if ((split_u==1) and (split_v==1)) or ((split_u==0) and (split_v==0)):
+		print ' Picked point ambiguous, please pick close to the center of the edge to be trimmed back.'
+		print ' Error below is a deliberate trainwreck to stop the macro'
+		please_stop_now = undeclared_variable # this error stops the macro. it's ugly, but very cheap.
+	elif (split_u==1):
+		param = u
+	elif (split_v==1):
+		param = v
+
+input_string = "picked at "+ str(param) + '\n' + "enter exact value (0-1):" + '\n' + 'hit return to keep the exact mouse picked value'
+
+trim_p=QtGui.QInputDialog.getDouble(None, "Set Trim value", input_string,value=param, decimals=16)[0]
+
+if trim_p==0.0:
+	trim_p=param
+
+print str(trim_p)
+
+part_1 = surf.copy()
+part_2 = surf.copy()
+
+if param==u:
+	part_1.segment(0,trim_p,0,1)
+	part_2.segment(trim_p,1,0,1)
+	part_1.setUKnots([0.0,1.0])
+	part_2.setUKnots([0.0,1.0])
+	
+elif param==v:
+	part_1.segment(0,1,0,trim_p)
+	part_2.segment(0,1,trim_p,1)
+	part_1.setVKnots([0.0,1.0])
+	part_2.setVKnots([0.0,1.0])
+
+Part.show(part_1.toShape())
+Part.show(part_2.toShape())
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
