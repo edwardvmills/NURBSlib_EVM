@@ -44,6 +44,8 @@ import math
 
 # grid_66_quad(c1,c2,c3,c4) - given four curves of 6 poles each that form a closed loop, prepare a 6*6 nurbs control grid. Curve weights not assimilated yet
 
+# grid_64_quad(c1,c2,c3,c4) - c1 and c3 are 6P curves, c2 and c4 are Bezier curves. Prepares 6*4 NURBS control grid
+
 # poly_grid_44(grid_44) - given a 4 X 4 control patch, show the internal control mesh
 
 # Bezier_Bicubic_surf(grid_44) - given a 4 x 4 control patch, build the bicubic bezier surface from a Part.BSplineSurface() !NOT! a Part.BezierSurface()
@@ -610,6 +612,65 @@ def grid_66_quad(c1,c2,c3,c4): # prepare 6 x 6 control point patch from four cur
 				p50, p51, p52, p53, p54, p55]
 	return grid_66_quad
 
+def grid_64_quad(c1,c2,c3,c4): # prepare 6 x 4 control point patch from four curves.
+	# all inner poles will now be tied to one corner of the patch.
+
+	# extract curve poles
+	poles1=c1.getPoles() # a 6P cubic curve
+	poles2=c2.getPoles() # a bezier cubic curve
+	poles3=c3.getPoles() # a 6P cubic curve
+	poles4=c4.getPoles() # a bezier cubic curve
+
+	# fix edge orientation, going counterclockwise from first curve (c1)
+	sext_1_2 = orient_a_to_b(poles1,poles2)
+	quad_2_3 = orient_a_to_b(poles2,poles3)
+	sext_3_4 = orient_a_to_b(poles3,poles4)
+	quad_4_1 = orient_a_to_b(poles4,poles1)	
+
+	# bottom edge, left to right
+	p00 = sext_1_2[0]
+	p01 = sext_1_2[1]
+	p02 = sext_1_2[2]	
+	p03 = sext_1_2[3]
+	p04 = sext_1_2[4]
+	p05 = sext_1_2[5]
+
+	# right edge, bottom to top, SKIP starting corner
+	p15 = quad_2_3[1]
+	p25 = quad_2_3[2]
+	p35 = quad_2_3[3]
+
+	# top edge, right to left, SKIP starting corner
+	p34 = sext_3_4[1]
+	p33 = sext_3_4[2]
+	p32 = sext_3_4[3]
+	p31 = sext_3_4[4]
+	p30 = sext_3_4[5]
+
+	# left edge, top to bottom, SKIP both corners
+	p20 = quad_4_1[1]
+	p10 = quad_4_1[2]
+
+	# calculate inner corner control points
+	p11 = p01 +  (p10 - p00) #
+	p14 = p04 +  (p15 - p05) #
+	p21 = p31 +  (p20 - p30) #
+	p24 = p34 +  (p25 - p35) #
+
+	# calculate edge inner control points
+	
+	p12 = p02 + (p10 - p00)
+	p13 = p03 + (p15 - p05)
+
+	p22 = p32 + (p20 - p30)
+	p23 = p33 + (p25 - p35)
+
+
+	grid_64_quad = [p00, p01, p02, p03, p04, p05,
+				p10, p11, p12, p13, p14, p15,
+				p20, p21, p22, p23, p24, p25, 
+				p30, p31, p32, p33, p34, p35]
+	return grid_64_quad
 
 
 
@@ -673,6 +734,70 @@ def poly_grid_44(grid_44):
 				l_11_12, l_12_22, l_21_22, l_11_21]
 	return poly_grid_44
 
+def poly_grid_64(grid_64):
+	# start around the perimeter
+	l_00_01 = Part.Line(grid_64[0], grid_64[1])
+	l_01_02 = Part.Line(grid_64[1], grid_64[2])
+	l_02_03 = Part.Line(grid_64[2], grid_64[3])
+	l_03_04 = Part.Line(grid_64[3], grid_64[4])
+	l_04_05 = Part.Line(grid_64[4], grid_64[5])
+
+	l_05_15 = Part.Line(grid_64[5], grid_64[11])
+	l_15_25 = Part.Line(grid_64[11], grid_64[17])
+	l_25_35 = Part.Line(grid_64[17], grid_64[23])
+
+	l_34_35 = Part.Line(grid_64[22], grid_64[23])
+	l_33_34 = Part.Line(grid_64[21], grid_64[22])
+	l_32_33 = Part.Line(grid_64[20], grid_64[21])
+	l_31_32 = Part.Line(grid_64[19], grid_64[20])
+	l_30_31 = Part.Line(grid_64[18], grid_64[19])
+
+	l_20_30=Part.Line(grid_64[12], grid_64[18])
+	l_10_20=Part.Line(grid_64[6], grid_64[12])
+	l_00_10=Part.Line(grid_64[0], grid_64[6])
+
+	# Internal controls - along the edges
+	l_01_11 =Part.Line(grid_64[1], grid_64[7])
+	l_02_12 =Part.Line(grid_64[2], grid_64[8])
+	l_03_13 =Part.Line(grid_64[3], grid_64[9])
+	l_04_14 =Part.Line(grid_64[4], grid_64[10])
+
+	l_14_15 =Part.Line(grid_64[10], grid_64[11])
+	l_24_25 =Part.Line(grid_64[16], grid_64[17])
+
+	l_24_34 =Part.Line(grid_64[16], grid_64[22])
+	l_23_33 =Part.Line(grid_64[15], grid_64[21])
+	l_22_32 =Part.Line(grid_64[14], grid_64[20])
+	l_21_31 =Part.Line(grid_64[13], grid_64[19])
+
+	l_20_21 =Part.Line(grid_64[12], grid_64[13])
+	l_10_11 =Part.Line(grid_64[6], grid_64[7])
+
+	# Internal controls - the three innermost cells
+
+	l_11_12 =Part.Line(grid_64[7], grid_64[8])
+	l_12_13 =Part.Line(grid_64[8], grid_64[9])
+	l_13_14 =Part.Line(grid_64[9], grid_64[10])
+
+	l_14_24 =Part.Line(grid_64[10], grid_64[16])
+
+	l_23_24 =Part.Line(grid_64[15], grid_64[16])
+	l_22_23 =Part.Line(grid_64[14], grid_64[15])
+	l_21_22 =Part.Line(grid_64[13], grid_64[14])
+
+	l_11_21 =Part.Line(grid_64[7], grid_64[13])
+
+	l_12_22 =Part.Line(grid_64[8], grid_64[14])
+	l_13_23 =Part.Line(grid_64[9], grid_64[15])
+
+	poly_grid_64=[l_00_01, l_01_02, l_02_03,l_03_04,l_04_05,
+				l_00_10,l_01_11,l_02_12,l_03_13,l_04_14,l_05_15,
+				l_10_11, l_11_12, l_12_13,l_13_14,l_14_15,
+				l_10_20,l_11_21,l_12_22,l_13_23,l_14_24,l_15_25,
+				l_20_21, l_21_22, l_22_23,l_23_24,l_24_25,
+				l_20_30,l_21_31,l_22_32,l_23_33,l_24_34,l_25_35,
+				l_30_31, l_31_32, l_32_33,l_33_34,l_34_35]
+	return poly_grid_64
 
 def BezBiCubic_surf(grid_44):	# obsolete - this was made to check against Bezier_Bicubic_surf(grid_44), and is not used for anything.
 	surf=Part.BezierSurface()
@@ -731,6 +856,30 @@ def NURBS_Cubic_66_surf(grid_66):
 			NURBS_Cubic_66_surf.setPole(ii+1,jj+1,grid_66[i],1);
 			i=i+1;
 	return  NURBS_Cubic_66_surf
+
+def NURBS_Cubic_64_surf(grid_64):
+	# len(knot_u) := nNodes_u + degree_u + 1
+	# len(knot_v) := nNodes_v + degree_v + 1
+	degree_u=3
+	degree_v=3
+	nNodes_u=6
+	nNodes_v=4
+	knot_u=[0,0,0,0,0.3333,0.6666,1,1,1,1]
+	knot_v=[0,0,0,0,1,1,1,1]
+	NURBS_Cubic_64_surf=Part.BSplineSurface()
+	NURBS_Cubic_64_surf.increaseDegree(degree_u,degree_v)
+	id=1
+	for i in range(0,len(knot_u)):    #-1):
+		NURBS_Cubic_64_surf.insertUKnot(knot_u[i],id,0.0000001)
+	id=1
+	for i in range(0,len(knot_v)):    #-1):
+		NURBS_Cubic_64_surf.insertVKnot(knot_v[i],id,0.0000001)
+	i=0
+	for jj in range(0,nNodes_v):
+		for ii in range(0,nNodes_u):
+			NURBS_Cubic_64_surf.setPole(ii+1,jj+1,grid_64[i],1);
+			i=i+1;
+	return  NURBS_Cubic_64_surf
 
 
 def isect_test(curve, surf, u):		# provides information about a curve point at parameter u as a surface intersection candidate.						

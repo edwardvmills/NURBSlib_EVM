@@ -1,0 +1,18 @@
+import Part
+from FreeCAD import Base
+from FreeCAD import Gui
+import math
+import NURBSlib_EVM as Nl
+
+
+s=Gui.Selection.getSelection()
+
+
+crv1=s[0].Shape.Curve
+crv2=s[1].Shape.Curve
+crv3=s[2].Shape.Curve
+crv4=s[3].Shape.Curve
+grid_64 = Nl.grid_64_quad(crv1,crv2,crv3,crv4)
+poly_grid_64 = Nl.poly_grid_64(grid_64)
+for i in range(len(poly_grid_64)):
+		Part.show(poly_grid_64[i].toShape())

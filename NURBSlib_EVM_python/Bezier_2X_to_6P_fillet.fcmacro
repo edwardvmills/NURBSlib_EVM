@@ -1,0 +1,100 @@
+import Part
+from FreeCAD import Base
+from FreeCAD import Gui
+from PySide import QtGui
+import math
+import NURBSlib_EVM as Nl
+
+# get selection
+sel=Gui.Selection.getSelectionEx()
+
+curve_0 = sel[0].SubObjects[0].Curve
+curve_1 = sel[1].SubObjects[0].Curve
+
+
+NURBS_6P_0=curve_0.copy()
+NURBS_6P_0.insertKnot(1.0/3.0)
+NURBS_6P_0.insertKnot(2.0/3.0)
+
+NURBS_6P_1=curve_1.copy()
+NURBS_6P_1.insertKnot(1.0/3.0)
+NURBS_6P_1.insertKnot(2.0/3.0)
+
+p00 = curve_0.StartPoint
+p01 = curve_0.EndPoint
+p10 = curve_1.StartPoint
+p11 = curve_1.EndPoint
+
+poles_0=NURBS_6P_0.getPoles()
+weights_0=NURBS_6P_0.getWeights()
+poles_1=NURBS_6P_1.getPoles()
+weights_1=NURBS_6P_1.getWeights()
+
+if p00==p10:
+	p0=[poles_0[5],weights_0[5]]
+	p1=[poles_0[4],weights_0[4]]
+	p2=[poles_0[3],weights_0[3]]
+	p3=[poles_1[3],weights_0[3]]
+	p4=[poles_1[4],weights_0[4]]
+	p5=[poles_1[5],weights_0[5]]
+
+if p00==p11:
+	p0=[poles_0[5],weights_0[5]]
+	p1=[poles_0[4],weights_0[4]]
+	p2=[poles_0[3],weights_0[3]]
+	p3=[poles_1[2],weights_0[2]]
+	p4=[poles_1[1],weights_0[1]]
+	p5=[poles_1[0],weights_0[0]]
+
+if p01==p10:
+	p0=[poles_0[0],weights_0[0]]
+	p1=[poles_0[1],weights_0[1]]
+	p2=[poles_0[2],weights_0[2]]
+	p3=[poles_1[3],weights_0[3]]
+	p4=[poles_1[4],weights_0[4]]
+	p5=[poles_1[5],weights_0[5]]
+
+if p01==p11:
+	p0=[poles_0[0],weights_0[0]]
+	p1=[poles_0[1],weights_0[1]]
+	p2=[poles_0[2],weights_0[2]]
+	p3=[poles_1[2],weights_0[2]]
+	p4=[poles_1[1],weights_0[1]]
+	p5=[poles_1[0],weights_0[0]]
+
+# scale innermost control points
+
+instructions = "hugs the fillet to the input curve \n recommend 0-2 range"
+
+scale_0=QtGui.QInputDialog.getDouble(None, "scale first portion of fillet", instructions,value=1.0, decimals=16)[0]
+scale_1=QtGui.QInputDialog.getDouble(None, "scale second portion of fillet", instructions,value=1.0, decimals=16)[0]
+
+tan_0 = p1[0]-p0[0]
+tan_1 = p4[0]-p5[0]
+
+p2_scl = [p2[0] + tan_0.multiply(scale_0), p2[1]]
+p3_scl = [p3[0] + tan_1.multiply(scale_1), p3[1]]
+
+poles = [p0, p1, p2_scl, p3_scl, p4, p5]
+
+
+
+# create the NURBS 6P cubic curve as the fillet approximation
+fillet = Nl.NURBS_Cubic_6P_curve(poles)
+
+Part.show(fillet.toShape())
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

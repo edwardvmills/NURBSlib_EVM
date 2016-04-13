@@ -34,14 +34,14 @@ if  sel.__len__()==2:
 	u=uv[0]
 	v=uv[1]
 
-	if (u<=0) or (u>=0.999999):
+	if (u<=0.000001) or (u>=0.999999):
 		split_u=0
-	elif (u>0) and (u<0.999999):
+	elif (u>0.000001) and (u<0.999999):
 		split_u=1
 
-	if (v<=0) or (v>=0.999999):
+	if (v<=0.000001) or (v>=0.999999):
 		split_v=0
-	elif (v>0) and (v<0.999999):
+	elif (v>0.000001) and (v<0.999999):
 		split_v=1
 
 	if ((split_u==1) and (split_v==1)) or ((split_u==0) and (split_v==0)):
