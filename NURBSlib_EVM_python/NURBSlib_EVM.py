@@ -488,7 +488,7 @@ def grid_66_quad_01(c1,c2,c3,c4): # prepare 6 x 6 control point patch from four 
 	p41 = p50 + (p51 - p50) +  (p40 - p50) #
 	p44 = p55 + (p45 - p55) +  (p54 - p55) #
 
-	# calculate edge inner control points
+	# calculate edge inner control points. this blending gives preety good internal fairness, but curvature isn't readily controlled at the edges
 	
 	p12=p02+(p11-p01).multiply(2.0/3)+(p14-p04).multiply(1.0/3)
 	p13=p03+(p11-p01).multiply(1.0/3)+(p14-p04).multiply(2.0/3)
@@ -672,7 +672,116 @@ def grid_64_quad(c1,c2,c3,c4): # prepare 6 x 4 control point patch from four cur
 				p30, p31, p32, p33, p34, p35]
 	return grid_64_quad
 
+def grid_64_tri(c1,c2,c3): # prepare 6 x 4 control point triangular patch from three curves.
+	#corner of first and last curve is the degenerate corner.
+	# all inner poles tied to one corner of the patch.
 
+	# extract curve poles
+	poles1=c1.getPoles() # a bezier cubic curve
+	poles2=c2.getPoles() # a 6P cubic curve
+	poles3=c3.getPoles() # a bezier cubic curve
+
+	weights1=c1.getWeights()
+	weights2=c2.getWeights()
+	weights3=c3.getWeights()
+
+	# fix edge orientation, going counterclockwise from first curve (c1)
+	quad_1_2 = orient_a_to_b(poles1,poles2)
+	sext_2_3 = orient_a_to_b(poles2,poles3)
+	quad_3_1 = orient_a_to_b(poles3,poles1)
+
+
+	# flip weights of flipped edges - maybe this should go into 'orient_a_to_b()'
+	if quad_1_2[0]!=poles1[0] and quad_1_2[0]==poles1[-1]:
+		weights1=weights1[::-1]
+	if sext_2_3[0]!=poles2[0] and sext_2_3[0]==poles2[-1]:
+		weights2=weights2[::-1]
+	if quad_3_1[0]!=poles3[0] and quad_3_1[0]==poles3[-1]:
+		weights3=weights3[::-1]
+
+	# the curves are received as bezier>6P>bezier, but the grid is built as 6P>bezier/degen6P/bezier
+	# so sext_2_3 is the bottom row, quad_3_1 is the right column, quad_1_2 is the left column
+
+	# bottom edge, left to right
+	p00 = sext_2_3[0]
+	p01 = sext_2_3[1]
+	p02 = sext_2_3[2]	
+	p03 = sext_2_3[3]
+	p04 = sext_2_3[4]
+	p05 = sext_2_3[5]
+
+	# right edge, bottom to top, SKIP starting corner
+	p15 = quad_3_1[1]
+	p25 = quad_3_1[2]
+	p35 = quad_3_1[3]
+
+	# top edge, degenerate
+	p34 = p35
+	p33 = p35
+	p32 = p35
+	p31 = p35
+	p30 = p35
+
+	# left edge, top to bottom, SKIP both corners
+	p20 = quad_1_2[1]
+	p10 = quad_1_2[2]
+
+	# calculate inner corner control points
+	p11 = p01 +  (p10 - p00) 
+	p14 = p04 +  (p15 - p05) 
+	p21 = p20 +  (p25 - p35) 
+	p24 = p21 
+
+	# calculate inner control points
+	
+	p12 = p11
+	p13 = p14
+
+	p22 = p21
+	p23 = p21
+
+	# set weights, assign to control points, final format is [[x,y,z],w]. The patch will be a 6x4 matrix arranged as a list of 24 of these control format.
+
+	# patch edges
+	w00 = [p00, weights2[0]] # bottom edge
+	w01 = [p01, weights2[1]]
+	w02 = [p02, weights2[2]]
+	w03 = [p03, weights2[3]]
+	w04 = [p04, weights2[4]]
+	w05 = [p05, weights2[5]]
+
+	w15 = [p15, weights3[1]] # right edge
+	w25 = [p25, weights3[2]]
+	w35 = [p35, weights3[3]] #this is the start of the collapsed edge
+
+	w34 = [p34, 1.0] # collapsed edge
+	w33 = [p33, 1.0]
+	w32 = [p32, 1.0]
+	w31 = [p31, 1.0]
+	w30 = [p30, weights1[0]]
+
+	w20 = [p20, weights1[1]]	# left edge
+	w10 = [p10, weights1[2]]	
+
+	# calculate inner weights
+
+	w11 = [p11, w01[1]*w10[1]*0.5] # combines weight at 01 and 10. multiply by 0.5 because 11 repeats as 12
+	w12 = [p12, weights2[2]*w11[1]] # combines weight at 02 and 11. this brings the 0.5 factor over from 11
+
+	w14 = [p14, w04[1]*w15[1]*0.5] # combines weight at 04 and 15. multiply by 0.5 because 14 repeats as 13
+	w13 = [p13, weights2[3]*w14[1]] # combines weight at 03 and 14. this brings the 0.5 factor over from 14
+
+
+	w21 = [p21, w20[1]*w25[1]*0.25] # combines weight at 20 and 25. multiply by 0.25 because 21 repeats as 22, 23, and 24
+	w22 = [p22, w21[1]]
+	w23 = [p23, w21[1]]
+	w24 = [p24, w21[1]]
+
+	grid_64_tri = [w00, w01, w02, w03, w04, w05,
+				w10, w11, w12, w13, w14, w15,
+				w20, w21, w22, w23, w24, w25, 
+				w30, w31, w32, w33, w34, w35]
+	return grid_64_tri
 
 def poly_grid_44(grid_44):
 	# start around the perimeter
@@ -799,6 +908,60 @@ def poly_grid_64(grid_64):
 				l_30_31, l_31_32, l_32_33,l_33_34,l_34_35]
 	return poly_grid_64
 
+def poly_grid_64_tri(grid_64):
+	## start around the perimeter
+	l_00_01 = Part.Line(grid_64[0][0], grid_64[1][0])
+	l_01_02 = Part.Line(grid_64[1][0], grid_64[2][0])
+	l_02_03 = Part.Line(grid_64[2][0], grid_64[3][0])
+	l_03_04 = Part.Line(grid_64[3][0], grid_64[4][0])
+	l_04_05 = Part.Line(grid_64[4][0], grid_64[5][0])
+
+	l_05_15 = Part.Line(grid_64[5][0], grid_64[11][0])
+	l_15_25 = Part.Line(grid_64[11][0], grid_64[17][0])
+	l_25_35 = Part.Line(grid_64[17][0], grid_64[23][0])
+
+	# skip top edge
+
+	l_20_30=Part.Line(grid_64[12][0], grid_64[18][0])
+	l_10_20=Part.Line(grid_64[6][0], grid_64[12][0])
+	l_00_10=Part.Line(grid_64[0][0], grid_64[6][0])
+
+	## Internal controls - along the edges
+	#bottom
+	l_01_11 =Part.Line(grid_64[1][0], grid_64[7][0])
+	l_02_12 =Part.Line(grid_64[2][0], grid_64[8][0])
+	l_03_13 =Part.Line(grid_64[3][0], grid_64[9][0])
+	l_04_14 =Part.Line(grid_64[4][0], grid_64[10][0])
+
+	#right
+	l_14_15 =Part.Line(grid_64[10][0], grid_64[11][0])
+	l_24_25 =Part.Line(grid_64[16][0], grid_64[17][0])
+
+	# skip anything connecting to top edge
+	l_21_31 = Part.Line(grid_64[13][0], grid_64[23][0])  #this is not a real control leg. just a visual indication of the collapsed corner
+
+	# left
+	l_20_21 =Part.Line(grid_64[12][0], grid_64[13][0])
+	l_10_11 =Part.Line(grid_64[6][0], grid_64[7][0])
+
+	## Internal controls - the center triangle
+
+	l_12_13 =Part.Line(grid_64[8][0], grid_64[9][0]) #
+
+	l_14_24 =Part.Line(grid_64[10][0], grid_64[16][0]) #
+
+	l_11_21 =Part.Line(grid_64[7][0], grid_64[13][0]) #
+
+	poly_grid_64_tri=[l_00_01, l_01_02, l_02_03,l_03_04,l_04_05, #keep whole
+				l_00_10,l_01_11,l_02_12,l_03_13,l_04_14,l_05_15, #keep whole
+				l_10_11, l_12_13,l_14_15,  # two legs removed
+				l_10_20,l_11_21,l_14_24,l_15_25, # two legs removed
+				l_20_21,l_24_25, # three legs removed
+				l_20_30,l_21_31,l_25_35, # three legs removed, 'fake'l21_31 added back
+				] # all 5 top edge segments removed
+	return poly_grid_64_tri
+
+
 def BezBiCubic_surf(grid_44):	# obsolete - this was made to check against Bezier_Bicubic_surf(grid_44), and is not used for anything.
 	surf=Part.BezierSurface()
 	surf.increase(3,3)
@@ -878,6 +1041,30 @@ def NURBS_Cubic_64_surf(grid_64):
 	for jj in range(0,nNodes_v):
 		for ii in range(0,nNodes_u):
 			NURBS_Cubic_64_surf.setPole(ii+1,jj+1,grid_64[i],1);
+			i=i+1;
+	return  NURBS_Cubic_64_surf
+
+def NURBS_Cubic_64_surf_alt(grid_64):
+	# len(knot_u) := nNodes_u + degree_u + 1
+	# len(knot_v) := nNodes_v + degree_v + 1
+	degree_u=3
+	degree_v=3
+	nNodes_u=6
+	nNodes_v=4
+	knot_u=[0,0,0,0,0.3333,0.6666,1,1,1,1]
+	knot_v=[0,0,0,0,1,1,1,1]
+	NURBS_Cubic_64_surf=Part.BSplineSurface()
+	NURBS_Cubic_64_surf.increaseDegree(degree_u,degree_v)
+	id=1
+	for i in range(0,len(knot_u)):    #-1):
+		NURBS_Cubic_64_surf.insertUKnot(knot_u[i],id,0.0000001)
+	id=1
+	for i in range(0,len(knot_v)):    #-1):
+		NURBS_Cubic_64_surf.insertVKnot(knot_v[i],id,0.0000001)
+	i=0
+	for jj in range(0,nNodes_v):
+		for ii in range(0,nNodes_u):
+			NURBS_Cubic_64_surf.setPole(ii+1,jj+1,grid_64[i][0],grid_64[i][1]);
 			i=i+1;
 	return  NURBS_Cubic_64_surf
 

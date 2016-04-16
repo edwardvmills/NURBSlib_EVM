@@ -1,0 +1,35 @@
+import Part
+from FreeCAD import Base
+from FreeCAD import Gui
+import math
+import NURBSlib_EVM as Nl
+
+
+s=Gui.Selection.getSelection()
+
+
+c1=s[0].Shape.Curve
+c2=s[1].Shape.Curve
+c3=s[2].Shape.Curve
+
+
+
+grid_64=Nl.grid_64_tri(c1,c2,c3)
+NURBS_Cubic_64_surf=Nl.NURBS_Cubic_64_surf_alt(grid_64)
+
+Part.show(NURBS_Cubic_64_surf.toShape())
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
