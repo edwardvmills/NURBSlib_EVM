@@ -64,10 +64,10 @@ if p01==p11:
 
 # scale innermost control points
 
-instructions = "hugs the fillet to the input curve \n recommend 0-2 range"
+instructions = "pulls the fillet closer to the input curve \n recommend 0-5 range"
 
-scale_0=QtGui.QInputDialog.getDouble(None, "scale first portion of fillet", instructions,value=1.0, decimals=16)[0]
-scale_1=QtGui.QInputDialog.getDouble(None, "scale second portion of fillet", instructions,value=1.0, decimals=16)[0]
+scale_0=QtGui.QInputDialog.getDouble(None, "keep fillet close to first leg factor", instructions,value=2.0, decimals=16)[0]
+scale_1=QtGui.QInputDialog.getDouble(None, "keep fillet close to second leg factor", instructions,value=2.0, decimals=16)[0]
 
 tan_0 = p1[0]-p0[0]
 tan_1 = p4[0]-p5[0]
