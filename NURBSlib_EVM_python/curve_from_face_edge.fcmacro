@@ -9,16 +9,19 @@ import NURBSlib_EVM as Nl
 # draw isoparametric curves on a NURBS surface. 
 # pick an edge: isocurve will be 'perpendicular' to picked edge, going through the point picked on the edge.
 # pick an edge, AND a point on the surface itself: isocurve will be 'parallel' to picked edge, going through the point picked on the surface.
+# pick an edge, AND a curve endpoint along that edge (to propagate a isocurve onto a neighbor surface).
 # in both cases, a input filed pops up to confirm/adjust the parameter value.
 
 
 # get selection
 
-sel=Gui.Selection.getSelectionEx()[0]
+sel=Gui.Selection.getSelectionEx()
 
-face = sel.Object.Shape.Surface
-curve = sel.SubObjects[0].Curve
-points=sel.PickedPoints
+# from the first click
+face = sel[0].Object.Shape.Surface # the surface the first edge selection belongs to
+curve = sel[0].SubObjects[0].Curve # the first edge selection
+points=sel[0].PickedPoints # the point picked along the edge, and the secondary point picked on the surface, if it exists.
+
 
 # set isocurve mode
 if len(points)==2:	
@@ -26,8 +29,12 @@ if len(points)==2:
 elif len(points)==1:
 	mode = 'perpedge' # isocurve will be 'perpendicular' to picked edge, going through the point picked on the edge.
 
+if len(sel)==2: # if the second click is on a separate object, overwrite previously set mode.
+	ext_point=sel[1].PickedPoints[0] # get the second object pick point
+	mode = 'propagate' # isocurve will be 'perpendicular to picked edge, going through the point picked on the external edge
+
 # determine parameter direction along picked curve
-param_1 = face.parameter(points[0])
+param_1 = face.parameter(points[0]) #the point on the edge where the edge itself was clicked
 
 if (param_1[0]<0.000001) or (param_1[0]>0.999999):
 	edge_dir = 'v'
@@ -60,6 +67,20 @@ if mode == 'perpedge':
 		iso_curve = face.uIso(param)
 	if edge_dir == 'v':
 		v_pick = param_1[1]
+		input_string = "picked at "+ str(v_pick) + '\n' + "enter exact value (0-1):" + '\n' + 'hit return to keep the exact mouse picked value'
+		v=QtGui.QInputDialog.getDouble(None, "Set Trim value", input_string,value=v_pick, decimals=16)[0]
+		iso_curve = face.vIso(v)
+
+if mode == 'propagate':
+	if edge_dir == 'u':
+		uv_pick=face.parameter(ext_point)
+		u_pick = uv_pick[0]
+		input_string = "picked at "+ str(u_pick) + '\n' + "enter exact value (0-1):" + '\n' + 'hit return to keep the exact mouse picked value'
+		param=QtGui.QInputDialog.getDouble(None, "Set Trim value", input_string,value=u_pick, decimals=16)[0]
+		iso_curve = face.uIso(param)
+	if edge_dir == 'v':
+		uv_pick=face.parameter(ext_point)
+		v_pick = uv_pick[1]
 		input_string = "picked at "+ str(v_pick) + '\n' + "enter exact value (0-1):" + '\n' + 'hit return to keep the exact mouse picked value'
 		v=QtGui.QInputDialog.getDouble(None, "Set Trim value", input_string,value=v_pick, decimals=16)[0]
 		iso_curve = face.vIso(v)
