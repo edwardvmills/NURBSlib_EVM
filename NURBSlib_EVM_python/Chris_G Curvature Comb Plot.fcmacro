@@ -1,0 +1,14 @@
+from __future__ import division # allows floating point division from integers
+import FreeCAD, Part, math
+from FreeCAD import Base
+from pivy import coin
+import Chris_G_comb as CGC 
+
+s = FreeCADGui.Selection.getSelectionEx()
+edges = CGC.parseSel(s)
+
+for e in edges:
+    obj=FreeCAD.ActiveDocument.addObject("App::FeaturePython","Comb") #add object to document
+    CGC.Comb(obj,e)
+    CGC.ViewProviderComb(obj.ViewObject)
+
