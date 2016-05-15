@@ -1,0 +1,106 @@
+import FreeCAD
+import FreeCADGui
+import Part
+from PySide import QtGui, QtCore
+from pivy import coin
+import Zebra_Gui
+reload(Zebra_Gui)
+
+class zebra():
+    def __init__(self):
+
+        self.zebraWidget = QtGui.QWidget()
+        self.ui = Zebra_Gui.Ui_Zebra()
+        self.ui.setupUi(self.zebraWidget)
+
+        self.StripeWidth = 25
+        self.Scale = 20
+        self.Rotation = 157
+
+        self.coinSetUp()
+
+        self.ui.horizontalSlider.setMaximum(50)
+        self.ui.horizontalSlider.valueChanged[int].connect(self.changeSlide_1)
+        self.ui.horizontalSlider.setValue(self.StripeWidth)
+
+        self.ui.horizontalSlider_2.setMaximum(40)
+        self.ui.horizontalSlider_2.valueChanged[int].connect(self.changeSlide_2)
+        self.ui.horizontalSlider_2.setValue(self.Scale)
+
+        self.ui.horizontalSlider_3.setMaximum(314)
+        self.ui.horizontalSlider_3.valueChanged[int].connect(self.changeSlide_3)
+        self.ui.horizontalSlider_3.setValue(self.Rotation)
+
+        self.ui.pushButton.clicked.connect(self.quit)
+
+        self.zebraWidget.show()
+
+    def coinSetUp(self):
+        print "coinSetUp"
+        self.TexW = 10
+        self.TexH = 100
+
+        self.sg = Gui.ActiveDocument.ActiveView.getSceneGraph()
+        print str( Gui.ActiveDocument.Document.Label )
+        print str( self.sg )
+        
+
+        self.stripes = coin.SoTexture2()
+        self.sg.insertChild(self.stripes,0)
+        self.stripes.filename = ""
+
+        self.string = '\xff' * 50 + '\x00' * self.StripeWidth
+        self.chars = self.string * self.TexW * self.TexH
+
+        self.img = coin.SoSFImage()
+        self.img.setValue(coin.SbVec2s(len(self.string) * self.TexW ,self.TexH), 1, self.chars);
+
+        self.stripes.image = self.img
+
+        # **** here we can transform the texture
+        self.transTexture = coin.SoTexture2Transform()
+        self.sg.insertChild(self.transTexture,1)
+        #transTexture.translation.setValue(1, 1)
+        self.transTexture.scaleFactor.setValue(self.Scale, self.Scale)
+        self.transTexture.rotation.setValue(1. * self.Rotation / 100)
+        #transTexture.center.setValue(0, .5)
+
+        self.tc = coin.SoTextureCoordinateEnvironment()
+        self.sg.insertChild(self.tc,2)
+
+    def coinQuit(self):
+        print "coinQuit"
+        self.sg.removeChild(self.tc)
+        self.sg.removeChild(self.transTexture)
+        self.sg.removeChild(self.stripes)
+
+    def changeSlide_1(self, value):
+        print "Stripes width : "+str(value)
+        self.StripeWidth = value
+        self.string = '\xff' * 50 + '\x00' * self.StripeWidth
+        self.chars = self.string * self.TexW * self.TexH
+        self.img.setValue(coin.SbVec2s(0 ,0), 1, '');
+        self.img.setValue(coin.SbVec2s(len(self.string) * self.TexW ,self.TexH), 1, self.chars);
+        self.stripes.image = self.img
+
+    def changeSlide_2(self, value):
+        print "scale : "+str(value)
+        self.Scale = value
+        if self.Scale < 20 :
+            scale = 1. * self.Scale / 20
+        else:
+            scale = self.Scale -19
+        self.transTexture.scaleFactor.setValue(scale, scale)
+
+    def changeSlide_3(self, value):
+        print "Rotation : "+str(value)
+        self.Rotation = value
+        self.transTexture.rotation.setValue(1. * self.Rotation / 100)
+
+    def quit(self):
+        print "Quit ..."
+        self.coinQuit()
+        self.zebraWidget.close()
+        
+
+myDialog = zebra()
