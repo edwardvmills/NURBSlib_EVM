@@ -1,4 +1,5 @@
 import Part
+import FreeCAD
 from FreeCAD import Base
 from FreeCAD import Gui
 import math
@@ -22,7 +23,7 @@ import math
 ####
 
 
-### SECTION 1: DIRECT FUNCTIONS - NO PARAMETRIC LINKING BETWEEN OBJECT - LEGACY - will be kept in place until it is thouroughly picked over.
+### SECTION 1: DIRECT FUNCTIONS - NO PARAMETRIC LINKING BETWEEN OBJECTS - LEGACY - will be kept in place until it is thouroughly picked over.
 # Bottom up view:
 # poles = 3D points with weights, as [[x,y,z],w], or [x,y,z] (these are leftovers waiting to receive weights). 
 ## These are the basic input data for all that follows. They are obtained from the FreeCAD functions .getPoles() and .getWeights()
@@ -1140,32 +1141,32 @@ def  isect_curve_surf(curve, surf):
 
 ## 4 points, for use in Bezier cubic curves.
 
-# CubicControlPoly4_3L(sketch) 					# made from a single sketch containing 3 line objects
-# CubicControlPoly4_2N(sketch0, sketch1)		# made from 2 node sketches. each node sketch contain one line (tangent), and one circle (endpoint) located at one end of the line.
-# CubicControlPoly4_Arc(sketch)					# made from a single sketch containing 1 arc object
+# ControlPoly4_3L(sketch) 					# made from a single sketch containing 3 line objects
+# ControlPoly4_2N(sketch0, sketch1)			# made from 2 node sketches. each node sketch contain one line (tangent), and one circle (endpoint) located at one end of the line.
+# ControlPoly4_Arc(sketch)					# made from a single sketch containing 1 arc object
 
 ## 6 points, for use in 6 point NURBS cubic curves.
 
-# CubicControlPoly6_5L(sketch) 					# made from a single sketch containing 5 line objects
-# CubicControlPoly6_2N(sketch0, sketch1)		# made from 2 node sketches. each node sketch contain 2 lines, and one circle.
-# CubicControlPoly6_Arc(sketch)					# made from a single sketch containing 1 arc object
+# ControlPoly6_5L(sketch) 					# made from a single sketch containing 5 line objects
+# ControlPoly6_2N(sketch0, sketch1)			# made from 2 node sketches. each node sketch contain 2 lines, and one circle.
+# ControlPoly6_Arc(sketch)					# made from a single sketch containing 1 arc object
 
 ### polyhedra of control points created from loops of CubicControlPolys.
 
 ## 4 points by 4 point grids, for use in BezierXBezier Bicubic surface patches.
 
-# CubicControlGrid44_4(poly0, poly1, poly2, poly3)	# made from 4 CubicControlPoly4.
-# CubicControlGrid44_3(poly0, poly1, poly2)			# made from 3 CubicControlPoly4. degenerate grid.
+# ControlGrid44_4(poly0, poly1, poly2, poly3)	# made from 4 CubicControlPoly4.
+# ControlGrid44_3(poly0, poly1, poly2)			# made from 3 CubicControlPoly4. degenerate grid.
 
 ## 6 points by 4 point grids, for use in BezierX6P Bicubic surface patches.
 
-# CubicControlGrid64_4(poly0, poly1, poly2, poly3)	# made from 2 CubicControlPoly6 and 2 CubicControlPoly4.
-# CubicControlGrid64_3(poly0, poly1, poly2)			# made from 2 CubicControlPoly4 and 1 CubicControlPoly6. degenerate grid.
+# ControlGrid64_4(poly0, poly1, poly2, poly3)	# made from 2 CubicControlPoly6 and 2 CubicControlPoly4.
+# ControlGrid64_3(poly0, poly1, poly2)			# made from 2 CubicControlPoly4 and 1 CubicControlPoly6. degenerate grid.
 
 ## 6 points by 6 point grids, for use in 6PX6P Bicubic surface patches.
 
-# CubicControlGrid66_4(poly0, poly1, poly2, poly3)	# made from 4 CubicControlPoly6.
-# CubicControlGrid66_3(poly0, poly1, poly2)			# made from 3 CubicControlPoly6. degenerate grid.
+# ControlGrid66_4(poly0, poly1, poly2, poly3)	# made from 4 CubicControlPoly6.
+# ControlGrid66_3(poly0, poly1, poly2)			# made from 3 CubicControlPoly6. degenerate grid.
 
 ### cubic curves created from CubicControlPolys
 
@@ -1180,18 +1181,18 @@ def  isect_curve_surf(curve, surf):
 
 #### CLASS RECAP
 
-# CubicControlPoly4_3L(sketch)
-# CubicControlPoly4_2N(sketch0, sketch1)
-# CubicControlPoly4_Arc(sketch)
-# CubicControlPoly6_5L(sketch)
-# CubicControlPoly6_2N(sketch0, sketch1)
-# CubicControlPoly6_Arc(sketch)
-# CubicControlGrid44_4(poly0, poly1, poly2, poly3)
-# CubicControlGrid44_3(poly0, poly1, poly2)			
-# CubicControlGrid64_4(poly0, poly1, poly2, poly3)
-# CubicControlGrid64_3(poly0, poly1, poly2)
-# CubicControlGrid66_4(poly0, poly1, poly2, poly3)
-# CubicControlGrid66_3(poly0, poly1, poly2)
+# ControlPoly4_3L(sketch)
+# ControlPoly4_2N(sketch0, sketch1)
+# ControlPoly4_Arc(sketch)
+# ControlPoly6_5L(sketch)
+# ControlPoly6_2N(sketch0, sketch1)
+# ControlPoly6_Arc(sketch)
+# ControlGrid44_4(poly0, poly1, poly2, poly3)
+# ControlGrid44_3(poly0, poly1, poly2)			
+# ControlGrid64_4(poly0, poly1, poly2, poly3)
+# ControlGrid64_3(poly0, poly1, poly2)
+# ControlGrid66_4(poly0, poly1, poly2, poly3)
+# ControlGrid66_3(poly0, poly1, poly2)
 # CubicCurve_4
 # CubicCurve_6
 # CubicSurface_44
@@ -1200,44 +1201,42 @@ def  isect_curve_surf(curve, surf):
 
 #### let's get started!
 
-# first prototype NURBS curve control polygon object.
-# works only for single sketch containing three lines (the lines SHOULD be connected end to end, but this is NOT enforced)
-class Poly_3L:
+
+class ControlPoly4_3L:
 	def __init__(self, obj , sketch):
 		''' Add the properties '''
-		FreeCAD.Console.PrintMessage("\nPoly_3L class Init\n")
-		obj.addProperty("App::PropertyLink","Sketch","Poly_3L","reference Sketch").Sketch = sketch
-		obj.addProperty("Part::PropertyGeometryList","Legs","Poly_3L","reference Sketch").Legs
-
+		FreeCAD.Console.PrintMessage("\nControlPoly4_3L class Init\n")
+		obj.addProperty("App::PropertyLink","Sketch","ControlPoly4_3L","reference Sketch").Sketch = sketch
+		obj.addProperty("Part::PropertyGeometryList","Legs","ControlPoly4_3L","reference Sketch").Legs
+		obj.addProperty("App::PropertyVectorList","Poles","ControlPoly4_3L","Poles").Poles
+		obj.addProperty("App::PropertyFloatList","Weights","ControlPoly4_3L","Weights").Weights = [1.0,1.0,1.0,1.0]
 		obj.Proxy = self
 
 	def execute(self, fp):
 		'''Print a short message when doing a recomputation, this method is mandatory'''
+		# get all points on first three lines...error check later
 		p00=fp.Sketch.Geometry[0].StartPoint
 		p01=fp.Sketch.Geometry[0].EndPoint
 		p10=fp.Sketch.Geometry[1].StartPoint
 		p11=fp.Sketch.Geometry[1].EndPoint
 		p20=fp.Sketch.Geometry[2].StartPoint
 		p21=fp.Sketch.Geometry[2].EndPoint
+		#for now assume
+		fp.Poles=[p00,p01,p20,p21]
+		# prepare the lines to draw the polyline
 		Leg0=Part.Line(p00,p01)
 		Leg1=Part.Line(p10,p11)
 		Leg2=Part.Line(p20,p21)
-		#if (p01==p10) and (p11==p20):
 		fp.Legs=[Leg0, Leg1, Leg2]
 		fp.Shape = Part.Shape(fp.Legs)
 
-# second prototype NURBS curve control polygon object.
-# GOAL: receive 2 node sketches as input, and for each sketch: 
-# identify the circle > get the center (poly end point)
-# identify the line > get the point that does not match the center (poly inner point)
-# form the control polygon as [center1, inner1, inner2, center 2]
-class Poly_2N:
+class ControlPoly4_2N:
 	def __init__(self, obj , sketch0, sketch1):
 		''' Add the properties '''
-		FreeCAD.Console.PrintMessage("\nPoly_2N class Init\n")
-		obj.addProperty("App::PropertyLink","Sketch0","Poly_2N","reference Sketch").Sketch0 = sketch0
-		obj.addProperty("App::PropertyLink","Sketch1","Poly_2N","reference Sketch").Sketch1 = sketch1
-		obj.addProperty("Part::PropertyGeometryList","Legs","Poly_2N","reference Sketch").Legs
+		FreeCAD.Console.PrintMessage("\nControlPoly_2N class Init\n")
+		obj.addProperty("App::PropertyLink","Sketch0","ControlPoly_2N","reference Sketch").Sketch0 = sketch0
+		obj.addProperty("App::PropertyLink","Sketch1","ControlPoly_2N","reference Sketch").Sketch1 = sketch1
+		obj.addProperty("Part::PropertyGeometryList","Legs","ControlPoly_2N","reference Sketch").Legs
 
 		obj.Proxy = self
 
@@ -1284,36 +1283,21 @@ class Poly_2N:
 		# define the shape
 		fp.Shape = Part.Shape(fp.Legs)
 
-
-# second prototype parametric NURBS cubic bezier curve
-# link a Poly_3L or Poly_2N into the NURBS curve
-class cubicBezier:
+class CubicCurve_4:
 	def __init__(self, obj , poly):
 		''' Add the properties '''
-		FreeCAD.Console.PrintMessage("\ncubicBezier class Init\n")
-		obj.addProperty("App::PropertyLink","Poly","cubicBezier","control polygon").Poly = poly
+		FreeCAD.Console.PrintMessage("\nCubicCurve_4 class Init\n")
+		obj.addProperty("App::PropertyLink","Poly","CubicCurve_4","control polygon").Poly = poly
 		obj.Proxy = self
 
 	def execute(self, fp):
 		'''Print a short message when doing a recomputation, this method is mandatory'''
-		p00=fp.Poly.Legs[0].StartPoint
-		p01=fp.Poly.Legs[0].EndPoint
-		p20=fp.Poly.Legs[2].StartPoint
-		p21=fp.Poly.Legs[2].EndPoint
-		poles = [[p00,1],[p01,1],[p20,1],[p21,1]]
-		fp.Shape = Nl.Bezier_Cubic_curve(poles).toShape()
+		# get the poles list from the poly
+		poles=[[fp.Poly.Poles[0],fp.Poly.Weights[0]],[fp.Poly.Poles[1],fp.Poly.Weights[1]],[fp.Poly.Poles[2],fp.Poly.Weights[2]],[fp.Poly.Poles[3],fp.Poly.Weights[3]]]
+		# the legacy function below sets the degree and knot vector
+		fp.Shape = Bezier_Cubic_curve(poles).toShape()
 
-# first prototype parametric control grid
-# link 4 control polys into one grid
-class ControlPoly44:
-	def __init__(self, obj , poly0, poly1, pol2, poly3):
-		''' Add the properties '''
-		FreeCAD.Console.PrintMessage("\nControlPoly44 class Init\n")
-		obj.addProperty("App::PropertyLink","Poly0","cubicBezier","control polygon").Poly0 = poly0
-		obj.addProperty("App::PropertyLink","Poly1","cubicBezier","control polygon").Poly1 = poly1
-		obj.addProperty("App::PropertyLink","Poly2","cubicBezier","control polygon").Poly2 = poly2
-		obj.addProperty("App::PropertyLink","Poly3","cubicBezier","control polygon").Poly3 = poly3
-		obj.Proxy = self
+
 
 
 

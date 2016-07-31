@@ -1,0 +1,30 @@
+from __future__ import division # allows floating point division from integers
+import FreeCAD, Part, math
+from FreeCAD import Base
+from FreeCAD import Gui
+import NURBSlib_EVM as Nl
+
+
+
+
+sel=Gui.Selection.getSelection()
+if len(sel)==1:
+	mode='3L'
+elif len(sel)==2:
+	mode='2N'
+
+if mode=='3L':
+	sketch=Gui.Selection.getSelection()[0]
+	a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","ControlPoly4_3L")
+	Nl.ControlPoly4_3L(a,sketch)
+	a.ViewObject.Proxy=0 # just set it to something different from None (this assignment is needed to run an internal notification)
+	FreeCAD.ActiveDocument.recompute()
+'''
+if mode=='2N':
+	sketch0=Gui.Selection.getSelection()[0]
+	sketch1=Gui.Selection.getSelection()[1]
+	a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","CubicControlPoly4_2N")
+	pN.Poly_2N(a,sketch0,sketch1)
+	a.ViewObject.Proxy=0 # just set it to something different from None (this assignment is needed to run an internal notification)
+	FreeCAD.ActiveDocument.recompute()
+'''
