@@ -6,8 +6,8 @@ import NURBSlib_EVM as Nl
 import para_NURBS as pN
 
 
-sketch=Gui.Selection.getSelection()[0]
+poly=Gui.Selection.getSelection()[0]
 a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","cubicBezier")
-pN.cubicBezier(a,sketch)
+pN.cubicBezier(a,poly)
 a.ViewObject.Proxy=0 # just set it to something different from None (this assignment is needed to run an internal notification)
 FreeCAD.ActiveDocument.recompute()
