@@ -1,10 +1,22 @@
-import Part
-import FreeCAD
-from FreeCAD import Base
-from FreeCAD import Gui
-import math
-
-
+#    NURBSLib_EVM
+#    (c) Edward Mills 2016
+#    edwardvmills@gmail.com
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#
+#
 ## Basic NURBS rules and terms
 ## Order >= 2
 ## Order:  2 = line, 3 = quadratic, 4 = cubic ...
@@ -19,7 +31,7 @@ import math
 
 ####
 #### SECTION 1: DIRECT FUNCTIONS - NO PARAMETRIC LINKING BETWEEN OBJECT - LEGACY
-#### SECTION 2: PYTHON FEATURE CLASSES - PARAMETRIC LINKING BETWEEN OBJECT - IN PROGRESS (start around line 1132
+#### SECTION 2: PYTHON FEATURE CLASSES - PARAMETRIC LINKING BETWEEN OBJECT - IN PROGRESS (start around line 1132)
 ####
 
 
@@ -71,6 +83,11 @@ import math
 
 # isect_curve_surf(curve, surf)
 
+import Part
+import FreeCAD
+from FreeCAD import Base
+from FreeCAD import Gui
+import math
 
 def Bezier_Cubic_curve(poles): 
 #draws a degree 3 rational bspline from first to last point,
@@ -1181,7 +1198,7 @@ def  isect_curve_surf(curve, surf):
 
 #### CLASS RECAP
 
-# ControlPoly4_3L(sketch)
+# ControlPoly4_3L(sketch)							#tested-works 2016-08-04
 # ControlPoly4_2N(sketch0, sketch1)
 # ControlPoly4_Arc(sketch)
 # ControlPoly6_5L(sketch)
@@ -1193,7 +1210,7 @@ def  isect_curve_surf(curve, surf):
 # ControlGrid64_3(poly0, poly1, poly2)
 # ControlGrid66_4(poly0, poly1, poly2, poly3)
 # ControlGrid66_3(poly0, poly1, poly2)
-# CubicCurve_4
+# CubicCurve_4										#tested-works 2016-08-04
 # CubicCurve_6
 # CubicSurface_44
 # CubicSurface_64
@@ -1215,19 +1232,27 @@ class ControlPoly4_3L:
 	def execute(self, fp):
 		'''Print a short message when doing a recomputation, this method is mandatory'''
 		# get all points on first three lines...error check later
-		p00=fp.Sketch.Geometry[0].StartPoint
-		p01=fp.Sketch.Geometry[0].EndPoint
-		p10=fp.Sketch.Geometry[1].StartPoint
-		p11=fp.Sketch.Geometry[1].EndPoint
-		p20=fp.Sketch.Geometry[2].StartPoint
-		p21=fp.Sketch.Geometry[2].EndPoint
+		p00s=fp.Sketch.Geometry[0].StartPoint
+		p01s=fp.Sketch.Geometry[0].EndPoint
+		p10s=fp.Sketch.Geometry[1].StartPoint
+		p11s=fp.Sketch.Geometry[1].EndPoint
+		p20s=fp.Sketch.Geometry[2].StartPoint
+		p21s=fp.Sketch.Geometry[2].EndPoint
+		# to world
+		mat=fp.Sketch.Placement.toMatrix()
+		p00=mat.multiply(p00s)
+		p01=mat.multiply(p01s)
+		p20=mat.multiply(p20s)
+		p21=mat.multiply(p21s)
 		#for now assume
 		fp.Poles=[p00,p01,p20,p21]
 		# prepare the lines to draw the polyline
 		Leg0=Part.Line(p00,p01)
-		Leg1=Part.Line(p10,p11)
+		Leg1=Part.Line(p01,p20)
 		Leg2=Part.Line(p20,p21)
+		#set the polygon legs property
 		fp.Legs=[Leg0, Leg1, Leg2]
+		# define the shape for visualization
 		fp.Shape = Part.Shape(fp.Legs)
 
 class ControlPoly4_2N:
@@ -1237,7 +1262,8 @@ class ControlPoly4_2N:
 		obj.addProperty("App::PropertyLink","Sketch0","ControlPoly_2N","reference Sketch").Sketch0 = sketch0
 		obj.addProperty("App::PropertyLink","Sketch1","ControlPoly_2N","reference Sketch").Sketch1 = sketch1
 		obj.addProperty("Part::PropertyGeometryList","Legs","ControlPoly_2N","reference Sketch").Legs
-
+		obj.addProperty("App::PropertyVectorList","Poles","ControlPoly4_3L","Poles").Poles
+		obj.addProperty("App::PropertyFloatList","Weights","ControlPoly4_3L","Weights").Weights = [1.0,1.0,1.0,1.0]
 		obj.Proxy = self
 
 	def execute(self, fp):
@@ -1253,11 +1279,15 @@ class ControlPoly4_2N:
 			lin0=obj00
 		if obj01.__class__==Part.Line:
 			lin0=obj01
-		p00=cir0.Center
-		if lin0.StartPoint==p00:
-			p01=lin0.EndPoint
-		elif lin0.EndPoint==p00:
-			p01=lin0.StartPoint
+		p00s=cir0.Center
+		if lin0.StartPoint==p00s:
+			p01s=lin0.EndPoint
+		elif lin0.EndPoint==p00s:
+			p01s=lin0.StartPoint
+		# to world
+		mat0=fp.Sketch0.Placement.toMatrix()
+		p00=mat0.multiply(p00s)
+		p01=mat0.multiply(p01s)
 		# process Sketch1
 		obj10=fp.Sketch1.Geometry[0]
 		obj11=fp.Sketch1.Geometry[1]
@@ -1269,18 +1299,24 @@ class ControlPoly4_2N:
 			lin1=obj10
 		if obj11.__class__==Part.Line:
 			lin1=obj11
-		p11=cir1.Center
-		if lin1.StartPoint==p11:
-			p10=lin1.EndPoint
-		elif lin1.EndPoint==p11:
-			p10=lin1.StartPoint
+		p11s=cir1.Center
+		if lin1.StartPoint==p11s:
+			p10s=lin1.EndPoint
+		elif lin1.EndPoint==p11s:
+			p10s=lin1.StartPoint
+		# to world
+		mat1=fp.Sketch1.Placement.toMatrix()
+		p10=mat1.multiply(p10s)
+		p11=mat1.multiply(p11s)
+		# set the poles
+		fp.Poles=[p00,p01,p10,p11]
 		# prepare the polygon
 		Leg0=Part.Line(p00,p01)
 		Leg1=Part.Line(p01,p10)
 		Leg2=Part.Line(p10,p11)
 		#set the polygon legs property
 		fp.Legs=[Leg0, Leg1, Leg2]
-		# define the shape
+		# define the shape for visualization
 		fp.Shape = Part.Shape(fp.Legs)
 
 class CubicCurve_4:
