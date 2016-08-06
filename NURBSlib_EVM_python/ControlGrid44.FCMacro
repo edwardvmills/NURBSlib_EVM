@@ -15,16 +15,25 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+
 from __future__ import division # allows floating point division from integers
 import FreeCAD, Part, math
 from FreeCAD import Base
 from FreeCAD import Gui
 import NURBSlib_EVM as Nl
 
+sel=Gui.Selection.getSelection()
+if len(sel)==4:
+	mode='4sided'
+elif len(sel)==3:
+	mode='3sided'
 
-
-poly=Gui.Selection.getSelection()[0]
-a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","CubicCurve_4")
-Nl.CubicCurve_4(a,poly)
-a.ViewObject.Proxy=0 # just set it to something different from None (this assignment is needed to run an internal notification)
-FreeCAD.ActiveDocument.recompute()
+if mode=='4sided':
+	poly0=Gui.Selection.getSelection()[0]
+	poly1=Gui.Selection.getSelection()[1]
+	poly2=Gui.Selection.getSelection()[2]
+	poly3=Gui.Selection.getSelection()[3]
+	a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","ControlGrid44_4")
+	Nl.ControlGrid44_4(a,poly0, poly1, poly2, poly3)
+	a.ViewObject.Proxy=0 # just set it to something different from None (this assignment is needed to run an internal notification)
+	FreeCAD.ActiveDocument.recompute()

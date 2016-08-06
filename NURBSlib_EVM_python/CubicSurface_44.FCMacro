@@ -24,7 +24,7 @@ import NURBSlib_EVM as Nl
 
 
 poly=Gui.Selection.getSelection()[0]
-a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","CubicCurve_4")
-Nl.CubicCurve_4(a,poly)
+a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","CubicSurface_44")
+Nl.CubicSurface_44(a,poly)
 a.ViewObject.Proxy=0 # just set it to something different from None (this assignment is needed to run an internal notification)
 FreeCAD.ActiveDocument.recompute()
