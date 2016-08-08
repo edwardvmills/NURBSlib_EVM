@@ -1048,7 +1048,7 @@ def NURBS_Cubic_66_surf(grid_66):
 	i=0
 	for jj in range(0,nNodes_v):
 		for ii in range(0,nNodes_u):
-			NURBS_Cubic_66_surf.setPole(ii+1,jj+1,grid_66[i],1);
+			NURBS_Cubic_66_surf.setPole(ii+1,jj+1,grid_66[i][0],grid_66[i][1]);
 			i=i+1;
 	return  NURBS_Cubic_66_surf
 
@@ -1200,29 +1200,29 @@ def  isect_curve_surf(curve, surf):
 
 # ControlPoly4_3L(sketch)							#tested-works 2016-08-04
 # ControlPoly4_2N(sketch0, sketch1)					#tested-works 2016-08-04
-# ControlPoly4_Arc(sketch)							#tested-works 2016-08-04
-# ControlPoly6_5L(sketch)
-# ControlPoly6_2N(sketch0, sketch1)
-# ControlPoly6_Arc(sketch)
-# ControlGrid44_4(poly0, poly1, poly2, poly3)		#tested-works 2016-08-04
+# ControlPoly4_Arc(sketch)							#tested-works 2016-08-05
+# ControlPoly6_5L(sketch)							#tested-works 2016-08-06
+# ControlPoly6_2N(sketch0, sketch1)					#tested-works 2016-08-06
+# ControlPoly6_Arc(sketch)							#tested-works 2016-08-06
+# ControlGrid44_4(poly0, poly1, poly2, poly3)		#tested-works 2016-08-05
 # ControlGrid44_3(poly0, poly1, poly2)			
 # ControlGrid64_4(poly0, poly1, poly2, poly3)
 # ControlGrid64_3(poly0, poly1, poly2)
-# ControlGrid66_4(poly0, poly1, poly2, poly3)
+# ControlGrid66_4(poly0, poly1, poly2, poly3)		#tested-works 2016-08-06
 # ControlGrid66_3(poly0, poly1, poly2)
 # CubicCurve_4										#tested-works 2016-08-04
-# CubicCurve_6
-# CubicSurface_44
+# CubicCurve_6										#tested-works 2016-08-06
+# CubicSurface_44									#tested-works 2016-08-04
 # CubicSurface_64
-# CubicSurface_66
+# CubicSurface_66									#tested-works 2016-08-06
 
 #### used legacy functions:
 #
 # orient_a_to_b(lista,listb)
-# Bezier_Cubic_curve(poles)
-#
-#
-#
+# Bezier_Cubic_curve(WeightedPoles)
+# Bezier_Bicubic_surf(WeightedPoles)
+# NURBS_Cubic_6P_curve(WeightedPoles)
+# NURBS_Cubic_66_surf(WeightedPoles)
 #
 #
 #
@@ -1232,6 +1232,9 @@ def  isect_curve_surf(curve, surf):
 #
 #### let's get started!
 
+#### control polygons
+
+#### 4 points
 
 class ControlPoly4_3L:
 	def __init__(self, obj , sketch):
@@ -1244,7 +1247,7 @@ class ControlPoly4_3L:
 		obj.Proxy = self
 
 	def execute(self, fp):
-		'''Print a short message when doing a recomputation, this method is mandatory'''
+		'''Do something when doing a recomputation, this method is mandatory'''
 		# get all points on first three lines...error check later
 		p00s=fp.Sketch.Geometry[0].StartPoint
 		p01s=fp.Sketch.Geometry[0].EndPoint
@@ -1269,19 +1272,20 @@ class ControlPoly4_3L:
 		# define the shape for visualization
 		fp.Shape = Part.Shape(fp.Legs)
 
+
 class ControlPoly4_2N:
 	def __init__(self, obj , sketch0, sketch1):
 		''' Add the properties '''
-		FreeCAD.Console.PrintMessage("\nControlPoly_2N class Init\n")
-		obj.addProperty("App::PropertyLink","Sketch0","ControlPoly_2N","reference Sketch").Sketch0 = sketch0
-		obj.addProperty("App::PropertyLink","Sketch1","ControlPoly_2N","reference Sketch").Sketch1 = sketch1
-		obj.addProperty("Part::PropertyGeometryList","Legs","ControlPoly_2N","control segments").Legs
-		obj.addProperty("App::PropertyVectorList","Poles","ControlPoly4_3L","Poles").Poles
-		obj.addProperty("App::PropertyFloatList","Weights","ControlPoly4_3L","Weights").Weights = [1.0,1.0,1.0,1.0]
+		FreeCAD.Console.PrintMessage("\nControlPoly4_2N class Init\n")
+		obj.addProperty("App::PropertyLink","Sketch0","ControlPoly4_2N","reference Sketch").Sketch0 = sketch0
+		obj.addProperty("App::PropertyLink","Sketch1","ControlPoly4_2N","reference Sketch").Sketch1 = sketch1
+		obj.addProperty("Part::PropertyGeometryList","Legs","ControlPoly4_2N","control segments").Legs
+		obj.addProperty("App::PropertyVectorList","Poles","ControlPoly4_2N","Poles").Poles
+		obj.addProperty("App::PropertyFloatList","Weights","ControlPoly4_2N","Weights").Weights = [1.0,1.0,1.0,1.0]
 		obj.Proxy = self
 
 	def execute(self, fp):
-		'''Print a short message when doing a recomputation, this method is mandatory'''
+		'''Do something when doing a recomputation, this method is mandatory'''
 		# process Sketch0
 		obj00=fp.Sketch0.Geometry[0]
 		obj01=fp.Sketch0.Geometry[1]
@@ -1344,7 +1348,7 @@ class ControlPoly4_Arc:
 		obj.Proxy = self
 
 	def execute(self, fp):
-		'''Print a short message when doing a recomputation, this method is mandatory'''
+		'''Do something when doing a recomputation, this method is mandatory'''
 		# process the sketch arc...error check later
 		ArcNurbs=fp.Sketch.Shape.Edges[0].toNurbs().Edge1.Curve
 		ArcNurbs.increaseDegree(3)
@@ -1370,6 +1374,104 @@ class ControlPoly4_Arc:
 		# define the shape for visualization
 		fp.Shape = Part.Shape(fp.Legs)
 
+#### 6 points
+
+class ControlPoly6_5L:
+	def __init__(self, obj , sketch):
+		''' Add the properties '''
+		FreeCAD.Console.PrintMessage("\nControlPoly6_5L class Init\n")
+		obj.addProperty("App::PropertyLink","Sketch","ControlPoly4_3L","reference Sketch").Sketch = sketch
+		obj.addProperty("Part::PropertyGeometryList","Legs","ControlPoly4_3L","control segments").Legs
+		obj.addProperty("App::PropertyVectorList","Poles","ControlPoly4_3L","Poles").Poles
+		obj.addProperty("App::PropertyFloatList","Weights","ControlPoly4_3L","Weights").Weights = [1.0,1.0,1.0,1.0,1.0,1.0]
+		obj.Proxy = self
+
+	def execute(self, fp):
+		'''Do something when doing a recomputation, this method is mandatory'''
+		# get all points on first three lines...error check later
+		p00s=fp.Sketch.Geometry[0].StartPoint
+		p01s=fp.Sketch.Geometry[0].EndPoint
+		p10s=fp.Sketch.Geometry[1].StartPoint
+		p11s=fp.Sketch.Geometry[1].EndPoint
+		p20s=fp.Sketch.Geometry[2].StartPoint
+		p21s=fp.Sketch.Geometry[2].EndPoint
+		p30s=fp.Sketch.Geometry[3].StartPoint
+		p31s=fp.Sketch.Geometry[3].EndPoint
+		p40s=fp.Sketch.Geometry[4].StartPoint
+		p41s=fp.Sketch.Geometry[4].EndPoint
+		# to world
+		mat=fp.Sketch.Placement.toMatrix()
+		p00=mat.multiply(p00s)
+		p01=mat.multiply(p01s)
+		p20=mat.multiply(p20s)
+		p21=mat.multiply(p21s)
+		p40=mat.multiply(p40s)
+		p41=mat.multiply(p41s)
+		#for now assume
+		fp.Poles=[p00,p01,p20,p21,p40,p41]
+		# prepare the lines to draw the polyline
+		Leg0=Part.Line(p00,p01)
+		Leg1=Part.Line(p01,p20)
+		Leg2=Part.Line(p20,p21)
+		Leg4=Part.Line(p21,p40)
+		Leg5=Part.Line(p40,p41)
+		#set the polygon legs property
+		fp.Legs=[Leg0, Leg1, Leg2, Leg4, Leg5]
+		# define the shape for visualization
+		fp.Shape = Part.Shape(fp.Legs)
+
+class ControlPoly6_2N:
+	def __init__(self, obj , sketch0, sketch1):
+		''' Add the properties '''
+		FreeCAD.Console.PrintMessage("\nControlPoly6_2N class Init\n")
+		obj.addProperty("App::PropertyLink","Sketch0","ControlPoly6_2N","reference Sketch").Sketch0 = sketch0
+		obj.addProperty("App::PropertyLink","Sketch1","ControlPoly6_2N","reference Sketch").Sketch1 = sketch1
+		obj.addProperty("Part::PropertyGeometryList","Legs","ControlPoly6_2N","control segments").Legs
+		obj.addProperty("App::PropertyVectorList","Poles","ControlPoly6_2N","Poles").Poles
+		obj.addProperty("App::PropertyFloatList","Weights","ControlPoly6_2N","Weights").Weights = [1.0,1.0,1.0,1.0,1.0,1.0]
+		obj.Proxy = self
+
+	def execute(self, fp):
+		'''Do something when doing a recomputation, this method is mandatory'''
+		# process Sketch0
+		obj00=fp.Sketch0.Geometry[0]
+		obj01=fp.Sketch0.Geometry[1]
+		obj02=fp.Sketch0.Geometry[2]
+		# must draw the pieces in the correct order! improve later
+		p00s=obj00.Center
+		p01s=obj01.EndPoint
+		p02s=obj02.EndPoint
+		# to world
+		mat0=fp.Sketch0.Placement.toMatrix()
+		p00=mat0.multiply(p00s)
+		p01=mat0.multiply(p01s)
+		p02=mat0.multiply(p02s)
+		# process Sketch1
+		obj10=fp.Sketch1.Geometry[0]
+		obj11=fp.Sketch1.Geometry[1]
+		obj12=fp.Sketch1.Geometry[2]
+		# must draw the pieces in the correct order! improve later
+		p12s=obj10.Center
+		p11s=obj11.EndPoint
+		p10s=obj12.EndPoint
+		# to world
+		mat1=fp.Sketch1.Placement.toMatrix()
+		p10=mat1.multiply(p10s)
+		p11=mat1.multiply(p11s)
+		p12=mat1.multiply(p12s)
+		# set the poles
+		fp.Poles=[p00,p01,p02,p10,p11, p12]
+		# prepare the polygon
+		Leg0=Part.Line(p00,p01)
+		Leg1=Part.Line(p01,p02)
+		Leg2=Part.Line(p02,p10)
+		Leg3=Part.Line(p10,p11)
+		Leg4=Part.Line(p11,p12)
+		#set the polygon legs property
+		fp.Legs=[Leg0, Leg1, Leg2, Leg3, Leg4]
+		# define the shape for visualization
+		fp.Shape = Part.Shape(fp.Legs)
+
 ###################################################################################################
 
 # ControlGrid44_4(poly0, poly1, poly2, poly3)
@@ -1387,7 +1489,7 @@ class ControlGrid44_4:
 		obj.Proxy = self
 
 	def execute(self, fp):
-		'''Print a short message when doing a recomputation, this method is mandatory'''
+		'''Do something when doing a recomputation, this method is mandatory'''
 		poles1=fp.Poly0.Poles
 		poles2=fp.Poly1.Poles
 		poles3=fp.Poly2.Poles
@@ -1435,15 +1537,15 @@ class ControlGrid44_4:
 		w13 = weights2[1]
 		w23 = weights2[2]
 		w33 = weights2[3]
-		w32 = weights3[2]
-		w31 = weights3[1]
-		w30 = weights3[0]
-		w20 = weights4[2]
-		w10 = weights4[1]
-		w11 = weights1[1]*weights4[2]
-		w12 = weights1[2]*weights2[1]
-		w21 = weights3[2]*weights4[1]
-		w22 = weights2[2]*weights3[1]
+		w32 = weights3[1]
+		w31 = weights3[2]
+		w30 = weights3[3]
+		w20 = weights4[1]
+		w10 = weights4[2]
+		w11 = w01*w20
+		w12 = w02*w13
+		w21 = w32*w10
+		w22 = w23*w31
 		fp.Weights = [w00 ,w01, w02, w03,
 					w10, w11, w12, w13,
 					w20, w21, w22, w23,
@@ -1466,9 +1568,157 @@ class ControlGrid44_4:
 		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
 
+# ControlGrid66_4
+class ControlGrid66_4:
+	def __init__(self, obj , poly0, poly1, poly2, poly3):
+		''' Add the properties '''
+		FreeCAD.Console.PrintMessage("\nControlGrid66_4 class Init\n")
+		obj.addProperty("App::PropertyLink","Poly0","ControlGrid66_4","control polygon").Poly0 = poly0
+		obj.addProperty("App::PropertyLink","Poly1","ControlGrid66_4","control polygon").Poly1 = poly1
+		obj.addProperty("App::PropertyLink","Poly2","ControlGrid66_4","control polygon").Poly2 = poly2
+		obj.addProperty("App::PropertyLink","Poly3","ControlGrid66_4","control polygon").Poly3 = poly3
+		obj.addProperty("Part::PropertyGeometryList","Legs","ControlGrid66_4","control segments").Legs
+		obj.addProperty("App::PropertyVectorList","Poles","ControlGrid66_4","Poles").Poles
+		obj.addProperty("App::PropertyFloatList","Weights","ControlGrid6_4","Weights").Weights
+		obj.Proxy = self
+
+	def execute(self, fp):
+		'''Do something when doing a recomputation, this method is mandatory'''
+		poles1=fp.Poly0.Poles
+		poles2=fp.Poly1.Poles
+		poles3=fp.Poly2.Poles
+		poles4=fp.Poly3.Poles	
+		weights1=fp.Poly0.Weights
+		weights2=fp.Poly1.Weights
+		weights3=fp.Poly2.Weights
+		weights4=fp.Poly3.Weights
+		sext12 = orient_a_to_b(poles1,poles2)
+		sext23 = orient_a_to_b(poles2,poles3)
+		sext34 = orient_a_to_b(poles3,poles4)
+		sext41 = orient_a_to_b(poles4,poles1)	
+		if sext12[0]!=poles1[0] and sext12[0]==poles1[-1]:
+			weights1=weights1[::-1]
+		if sext23[0]!=poles2[0] and sext23[0]==poles2[-1]:
+			weights2=weights2[::-1]
+		if sext34[0]!=poles3[0] and sext34[0]==poles3[-1]:
+			weights3=weights3[::-1]
+		if sext41[0]!=poles4[0] and sext41[0]==poles4[-1]:
+			weights4=weights4[::-1]
+		p00 = sext12[0]
+		p01 = sext12[1]
+		p02 = sext12[2]	
+		p03 = sext12[3]
+		p04 = sext12[4]
+		p05 = sext12[5]
+		p15 = sext23[1]
+		p25 = sext23[2]
+		p35 = sext23[3]
+		p45 = sext23[4]
+		p55 = sext23[5]
+		p54 = sext34[1]
+		p53 = sext34[2]
+		p52 = sext34[3]
+		p51 = sext34[4]
+		p50 = sext34[5]
+		p40 = sext41[1]
+		p30 = sext41[2]
+		p20 = sext41[3]
+		p10 = sext41[4]
+		p11 = p01 + (p10 - p00)
+		p14 = p04 + (p15 - p05)
+		p41 = p51 + (p40 - p50)
+		p44 = p45 + (p54 - p55)
+		p12 = p02 + (p10 - p00)
+		p13 = p03 + (p15 - p05)	
+		p24 = p25 + (p04 - p05)
+		p34 = p35 + (p54 - p55)	
+		p42 = p52 + (p40 - p50)
+		p43 = p53 + (p45 - p55)
+		p21 = p20 + (p01 - p00)
+		p31 = p30 + (p51 - p50)
+		p22 = p12 + (p20 - p10)
+		p23 = p13 + (p25 - p15)
+		p32 = p42 + (p30 - p40)
+		p33 = p43 + (p35 - p45)
+		fp.Poles = [p00, p01, p02, p03, p04, p05,
+					p10, p11, p12, p13, p14, p15,
+					p20, p21, p22, p23, p24, p25,
+					p30, p31, p32, p33, p34, p35,
+					p40, p41, p42, p43, p44, p45,
+					p50, p51, p52, p53, p54, p55]
+		w00 = weights1[0]
+		w01 = weights1[1]
+		w02 = weights1[2]
+		w03 = weights1[3]
+		w04 = weights1[4]
+		w05 = weights1[5]
+		w15 = weights2[1]
+		w25 = weights2[2]
+		w35 = weights2[3]
+		w45 = weights2[4]
+		w55 = weights2[5]
+		w54 = weights3[1]
+		w53 = weights3[2]
+		w52 = weights3[3]
+		w51 = weights3[4]
+		w50 = weights3[5]
+		w40 = weights4[1]
+		w30 = weights4[2]		
+		w20 = weights4[3]
+		w10 = weights4[4]
+		# maybe i should average instead of multiply? needs testing.
+		# currently based on the idea all wights are between 0 and 1.
+		w11 = w01*w10
+		w12 = w02*w11
+		w21 = w20*w11
+		w22 = w12*w21
+		w14 = w04*w15
+		w13 = w03*w14
+		w24 = w25*w14
+		w23 = w13*w24
+		w44 = w45*w54
+		w34 = w35*w44
+		w43 = w54*w44
+		w33 = w34*w43
+		w41 = w40*w51
+		w31 = w30*w41
+		w42 = w52*w41
+		w32 = w31*w42
+		fp.Weights = [w00, w01, w02, w03, w04, w05,
+					w10, w11, w12, w13, w14, w15,
+					w20, w21, w22, w23, w24, w25,
+					w30, w31, w32, w33, w34, w35,
+					w40, w41, w42, w43, w44, w45,
+					w50, w51, w52, w53, w54, w55]
+		Legs=[0]*60
+		for i in range(0,5):
+			Legs[i]=Part.Line(fp.Poles[i],fp.Poles[i+1])
+		for i in range(5,10):
+			Legs[i]=Part.Line(fp.Poles[i+1],fp.Poles[i+2])
+		for i in range(10,15):
+			Legs[i]=Part.Line(fp.Poles[i+2],fp.Poles[i+3])
+		for i in range(15,20):
+			Legs[i]=Part.Line(fp.Poles[i+3],fp.Poles[i+4])
+		for i in range(20,25):
+			Legs[i]=Part.Line(fp.Poles[i+4],fp.Poles[i+5])
+		for i in range(25,30):
+			Legs[i]=Part.Line(fp.Poles[i+5],fp.Poles[i+6])
+		for i in range(30,36):
+			Legs[i]=Part.Line(fp.Poles[i-30],fp.Poles[i-24])
+		for i in range(36,42):
+			Legs[i]=Part.Line(fp.Poles[i-30],fp.Poles[i-24])
+		for i in range(42,48):
+			Legs[i]=Part.Line(fp.Poles[i-30],fp.Poles[i-24])
+		for i in range(48,54):
+			Legs[i]=Part.Line(fp.Poles[i-30],fp.Poles[i-24])
+		for i in range(54,60):
+			Legs[i]=Part.Line(fp.Poles[i-30],fp.Poles[i-24])
+
+		fp.Legs=Legs
+		fp.Shape = Part.Shape(fp.Legs)
 
 ###################################################################################################
-
+# CubicCurve_4
 class CubicCurve_4:
 	def __init__(self, obj , poly):
 		''' Add the properties '''
@@ -1477,12 +1727,34 @@ class CubicCurve_4:
 		obj.Proxy = self
 
 	def execute(self, fp):
-		'''Print a short message when doing a recomputation, this method is mandatory'''
+		'''Do something when doing a recomputation, this method is mandatory'''
 		# get the poles list from the poly
-		poles=[[fp.Poly.Poles[0],fp.Poly.Weights[0]],[fp.Poly.Poles[1],fp.Poly.Weights[1]],[fp.Poly.Poles[2],fp.Poly.Weights[2]],[fp.Poly.Poles[3],fp.Poly.Weights[3]]]
+		WeightedPoles=[[fp.Poly.Poles[0],fp.Poly.Weights[0]],
+				[fp.Poly.Poles[1],fp.Poly.Weights[1]],
+				[fp.Poly.Poles[2],fp.Poly.Weights[2]],
+				[fp.Poly.Poles[3],fp.Poly.Weights[3]]]
 		# the legacy function below sets the degree and knot vector
-		fp.Shape = Bezier_Cubic_curve(poles).toShape()
+		fp.Shape = Bezier_Cubic_curve(WeightedPoles).toShape()
 
+# CubicCurve_6
+class CubicCurve_6:
+	def __init__(self, obj , poly):
+		''' Add the properties '''
+		FreeCAD.Console.PrintMessage("\nCubicCurve_6 class Init\n")
+		obj.addProperty("App::PropertyLink","Poly","CubicCurve_6","control polygon").Poly = poly
+		obj.Proxy = self
+
+	def execute(self, fp):
+		'''Do something when doing a recomputation, this method is mandatory'''
+		# get the poles list from the poly
+		WeightedPoles=[[fp.Poly.Poles[0],fp.Poly.Weights[0]],
+				[fp.Poly.Poles[1],fp.Poly.Weights[1]],
+				[fp.Poly.Poles[2],fp.Poly.Weights[2]],
+				[fp.Poly.Poles[3],fp.Poly.Weights[3]],
+				[fp.Poly.Poles[4],fp.Poly.Weights[4]],
+				[fp.Poly.Poles[5],fp.Poly.Weights[5]]]
+		# the legacy function below sets the degree and knot vector
+		fp.Shape = NURBS_Cubic_6P_curve(WeightedPoles).toShape()
 
 
 ###################################################################################################
@@ -1497,7 +1769,7 @@ class CubicSurface_44:
 		obj.Proxy = self
 
 	def execute(self, fp):
-		'''Print a short message when doing a recomputation, this method is mandatory'''
+		'''Do something when doing a recomputation, this method is mandatory'''
 		# get the poles list from the poly
 		WeightedPoles=[
 			[fp.Grid.Poles[0],fp.Grid.Weights[0]],
@@ -1518,6 +1790,57 @@ class CubicSurface_44:
 			[fp.Grid.Poles[15],fp.Grid.Weights[15]]]
 		# the legacy function below sets the degree and knot vector
 		fp.Shape = Bezier_Bicubic_surf(WeightedPoles).toShape()
+
+
+class CubicSurface_66:
+	def __init__(self, obj , grid):
+		''' Add the properties '''
+		FreeCAD.Console.PrintMessage("\nCubicSurface_66 class Init\n")
+		obj.addProperty("App::PropertyLink","Grid","CubicSurface_66","control grid").Grid = grid
+		obj.Proxy = self
+
+	def execute(self, fp):
+		'''Do something when doing a recomputation, this method is mandatory'''
+		# get the poles list from the poly
+		WeightedPoles=[
+			[fp.Grid.Poles[0],fp.Grid.Weights[0]],
+			[fp.Grid.Poles[1],fp.Grid.Weights[1]],
+			[fp.Grid.Poles[2],fp.Grid.Weights[2]],
+			[fp.Grid.Poles[3],fp.Grid.Weights[3]],
+			[fp.Grid.Poles[4],fp.Grid.Weights[5]],
+			[fp.Grid.Poles[5],fp.Grid.Weights[5]],
+			[fp.Grid.Poles[6],fp.Grid.Weights[6]],
+			[fp.Grid.Poles[7],fp.Grid.Weights[7]],
+			[fp.Grid.Poles[8],fp.Grid.Weights[8]],
+			[fp.Grid.Poles[9],fp.Grid.Weights[9]],
+			[fp.Grid.Poles[10],fp.Grid.Weights[10]],
+			[fp.Grid.Poles[11],fp.Grid.Weights[11]],
+			[fp.Grid.Poles[12],fp.Grid.Weights[12]],
+			[fp.Grid.Poles[13],fp.Grid.Weights[13]],
+			[fp.Grid.Poles[14],fp.Grid.Weights[14]],
+			[fp.Grid.Poles[15],fp.Grid.Weights[15]],
+			[fp.Grid.Poles[16],fp.Grid.Weights[16]],
+			[fp.Grid.Poles[17],fp.Grid.Weights[17]],
+			[fp.Grid.Poles[18],fp.Grid.Weights[18]],
+			[fp.Grid.Poles[19],fp.Grid.Weights[19]],
+			[fp.Grid.Poles[20],fp.Grid.Weights[20]],
+			[fp.Grid.Poles[21],fp.Grid.Weights[21]],
+			[fp.Grid.Poles[22],fp.Grid.Weights[22]],
+			[fp.Grid.Poles[23],fp.Grid.Weights[23]],
+			[fp.Grid.Poles[24],fp.Grid.Weights[24]],
+			[fp.Grid.Poles[25],fp.Grid.Weights[25]],
+			[fp.Grid.Poles[26],fp.Grid.Weights[26]],
+			[fp.Grid.Poles[27],fp.Grid.Weights[27]],
+			[fp.Grid.Poles[28],fp.Grid.Weights[28]],
+			[fp.Grid.Poles[29],fp.Grid.Weights[29]],
+			[fp.Grid.Poles[30],fp.Grid.Weights[30]],
+			[fp.Grid.Poles[31],fp.Grid.Weights[31]],
+			[fp.Grid.Poles[32],fp.Grid.Weights[32]],
+			[fp.Grid.Poles[33],fp.Grid.Weights[33]],
+			[fp.Grid.Poles[34],fp.Grid.Weights[34]],
+			[fp.Grid.Poles[35],fp.Grid.Weights[35]]]
+		# the legacy function below sets the degree and knot vector
+		fp.Shape = NURBS_Cubic_66_surf(WeightedPoles).toShape()
 
 
 

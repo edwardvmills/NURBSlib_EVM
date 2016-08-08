@@ -23,34 +23,17 @@ from FreeCAD import Gui
 import NURBSlib_EVM as Nl
 
 sel=Gui.Selection.getSelection()
-if len(sel)==1:
-	if sel[0].GeometryCount==3:
-		mode='3L'
-	if sel[0].GeometryCount==1:
-		mode='Arc'
-elif len(sel)==2:
-	mode='2N'
+if len(sel)==4:
+	mode='4sided'
+elif len(sel)==3:
+	mode='3sided'
 
-if mode=='3L':
-	sketch=Gui.Selection.getSelection()[0]
-	a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","ControlPoly4_3L")
-	Nl.ControlPoly4_3L(a,sketch)
+if mode=='4sided':
+	poly0=Gui.Selection.getSelection()[0]
+	poly1=Gui.Selection.getSelection()[1]
+	poly2=Gui.Selection.getSelection()[2]
+	poly3=Gui.Selection.getSelection()[3]
+	a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","ControlGrid66_4")
+	Nl.ControlGrid66_4(a,poly0, poly1, poly2, poly3)
 	a.ViewObject.Proxy=0 # just set it to something different from None (this assignment is needed to run an internal notification)
 	FreeCAD.ActiveDocument.recompute()
-
-if mode=='Arc':
-	sketch=Gui.Selection.getSelection()[0]
-	a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","ControlPoly4_Arc")
-	Nl.ControlPoly4_Arc(a,sketch)
-	a.ViewObject.Proxy=0 # just set it to something different from None (this assignment is needed to run an internal notification)
-	FreeCAD.ActiveDocument.recompute()
-
-if mode=='2N':
-	sketch0=Gui.Selection.getSelection()[0]
-	sketch1=Gui.Selection.getSelection()[1]
-	a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","ControlPoly4_2N")
-	Nl.ControlPoly4_2N(a,sketch0,sketch1)
-	a.ViewObject.Proxy=0 # just set it to something different from None (this assignment is needed to run an internal notification)
-	FreeCAD.ActiveDocument.recompute()
-
-
