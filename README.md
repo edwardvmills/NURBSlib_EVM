@@ -1,7 +1,7 @@
 ## NURBSlib_EVM
 My python scripts for creating surfaces in [FreeCAD](http://freecadweb.org/).   
 
-At this time, none of the entities created by these scripts are parametric. This is the rough workflow prototyping phase. If/when the surface creation methods reach my minimum goals, i intend to make them parametric.
+At this time, none of the entities created by these scripts are parametric. This is the rough workflow prototyping phase. If/when the surface creation methods reach my minimum goals, i intend to make them parametric (currently underway. most basic objects are now parametric. manipulation tools still needed).
 
 The ultimate goal is to implement a set of tools that require *very few points and tangents/normals* to generate NURBS surfaces of high continuity. I have some ideas as to what constitutes an efficient and intuitive input/interface structure. This is very personal, and cannot address all individual preferences. 
 
