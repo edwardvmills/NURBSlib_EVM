@@ -1052,7 +1052,7 @@ def NURBS_Cubic_66_surf(grid_66):
 			i=i+1;
 	return  NURBS_Cubic_66_surf
 
-def NURBS_Cubic_64_surf(grid_64):
+def NURBS_Cubic_64_surf_no_weights(grid_64):
 	# len(knot_u) := nNodes_u + degree_u + 1
 	# len(knot_v) := nNodes_v + degree_v + 1
 	degree_u=3
@@ -1076,7 +1076,7 @@ def NURBS_Cubic_64_surf(grid_64):
 			i=i+1;
 	return  NURBS_Cubic_64_surf
 
-def NURBS_Cubic_64_surf_alt(grid_64):
+def NURBS_Cubic_64_surf(grid_64):
 	# len(knot_u) := nNodes_u + degree_u + 1
 	# len(knot_v) := nNodes_v + degree_v + 1
 	degree_u=3
@@ -1147,7 +1147,7 @@ def  isect_curve_surf(curve, surf):
 #################################################################################################
 #################################################################################################
 
-#### SECTION 2: PYTHON FEATURE CLASSES - PARAMETRIC LINKING BETWEEN OBJECT - IN PROGRESS
+#### SECTION 2: PYTHON FEATURE CLASSES - PARAMETRIC LINKING BETWEEN OBJECTS - IN PROGRESS
 
 # poles = 3D points with weights, as [[x,y,z],w], or [x,y,z] (these are leftovers waiting to receive weights). 
 # need to make a class for this...but i'm hoping to have FreeCAD do it for me :)
@@ -1206,7 +1206,7 @@ def  isect_curve_surf(curve, surf):
 # ControlPoly6_Arc(sketch)							#tested-works 2016-08-06
 # ControlGrid44_4(poly0, poly1, poly2, poly3)		#tested-works 2016-08-05
 # ControlGrid44_3(poly0, poly1, poly2)			
-# ControlGrid64_4(poly0, poly1, poly2, poly3)
+# ControlGrid64_4(poly0, poly1, poly2, poly3)		#tested-works 2016-08-14
 # ControlGrid64_3(poly0, poly1, poly2)
 # ControlGrid66_4(poly0, poly1, poly2, poly3)		#tested-works 2016-08-06
 # ControlGrid66_3(poly0, poly1, poly2)
@@ -1223,7 +1223,7 @@ def  isect_curve_surf(curve, surf):
 # Bezier_Bicubic_surf(WeightedPoles)
 # NURBS_Cubic_6P_curve(WeightedPoles)
 # NURBS_Cubic_66_surf(WeightedPoles)
-#
+# NURBS_Cubic_64_surf(WeightedPoles)
 #
 #
 #
@@ -1626,7 +1626,7 @@ class ControlGrid66_4:
 		obj.addProperty("App::PropertyLink","Poly3","ControlGrid66_4","control polygon").Poly3 = poly3
 		obj.addProperty("Part::PropertyGeometryList","Legs","ControlGrid66_4","control segments").Legs
 		obj.addProperty("App::PropertyVectorList","Poles","ControlGrid66_4","Poles").Poles
-		obj.addProperty("App::PropertyFloatList","Weights","ControlGrid6_4","Weights").Weights
+		obj.addProperty("App::PropertyFloatList","Weights","ControlGrid66_4","Weights").Weights
 		obj.Proxy = self
 
 	def execute(self, fp):
@@ -1715,22 +1715,25 @@ class ControlGrid66_4:
 		w10 = weights4[4]
 		# maybe i should average instead of multiply? needs testing.
 		# currently based on the idea all wights are between 0 and 1.
+		# previous used cumulative neighbor mulitplication. this drives weights too low.
+		# current method multiplies the two weights along isos to the closest edge
 		w11 = w01*w10
-		w12 = w02*w11
-		w21 = w20*w11
-		w22 = w12*w21
+		w12 = w02*w10 
+		w21 = w01*w20
+		w22 = w02*w20
 		w14 = w04*w15
-		w13 = w03*w14
-		w24 = w25*w14
-		w23 = w13*w24
+		w13 = w03*w15
+		w24 = w04*w25
+		w23 = w03*w25
 		w44 = w45*w54
-		w34 = w35*w44
-		w43 = w54*w44
-		w33 = w34*w43
+		w34 = w35*w54
+		w43 = w54*w45
+		w33 = w35*w53
 		w41 = w40*w51
-		w31 = w30*w41
-		w42 = w52*w41
-		w32 = w31*w42
+		w31 = w30*w51
+		w42 = w52*w40
+		w32 = w30*w52
+
 		fp.Weights = [w00, w01, w02, w03, w04, w05,
 					w10, w11, w12, w13, w14, w15,
 					w20, w21, w22, w23, w24, w25,
@@ -1764,6 +1767,122 @@ class ControlGrid66_4:
 		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
 
+# ControlGrid64_4(poly0, poly1, poly2, poly3)
+class ControlGrid64_4:
+	def __init__(self, obj , poly6_0, poly4_1, poly6_2, poly4_3):
+		''' Add the properties '''
+		FreeCAD.Console.PrintMessage("\nControlGrid64_4 class Init\n")
+		obj.addProperty("App::PropertyLink","Poly6_0","ControlGrid64_4","control polygon").Poly6_0 = poly6_0
+		obj.addProperty("App::PropertyLink","Poly4_1","ControlGrid64_4","control polygon").Poly4_1 = poly4_1
+		obj.addProperty("App::PropertyLink","Poly6_2","ControlGrid64_4","control polygon").Poly6_2 = poly6_2
+		obj.addProperty("App::PropertyLink","Poly4_3","ControlGrid64_4","control polygon").Poly4_3 = poly4_3
+		obj.addProperty("Part::PropertyGeometryList","Legs","ControlGrid64_4","control segments").Legs
+		obj.addProperty("App::PropertyVectorList","Poles","ControlGrid64_4","Poles").Poles
+		obj.addProperty("App::PropertyFloatList","Weights","ControlGrid64_4","Weights").Weights
+		obj.Proxy = self
+
+	def execute(self, fp):
+		'''Do something when doing a recomputation, this method is mandatory'''
+		poles6_0=fp.Poly6_0.Poles
+		poles4_1=fp.Poly4_1.Poles
+		poles6_2=fp.Poly6_2.Poles
+		poles4_3=fp.Poly4_3.Poles	
+		weights6_0=fp.Poly6_0.Weights
+		weights4_1=fp.Poly4_1.Weights
+		weights6_2=fp.Poly6_2.Weights
+		weights4_3=fp.Poly4_3.Weights
+		sext12 = orient_a_to_b(poles6_0,poles4_1)
+		quad23 = orient_a_to_b(poles4_1,poles6_2)
+		sext34 = orient_a_to_b(poles6_2,poles4_3)
+		quad41 = orient_a_to_b(poles4_3,poles6_0)	
+		if sext12[0]!=poles6_0[0] and sext12[0]==poles6_0[-1]:
+			weights6_0=weights6_0[::-1]
+		if quad23[0]!=poles4_1[0] and quad23[0]==poles4_1[-1]:
+			weights4_1=weights4_1[::-1]
+		if sext34[0]!=poles6_2[0] and sext34[0]==poles6_2[-1]:
+			weights6_2=weights6_2[::-1]
+		if quad41[0]!=poles4_3[0] and quad41[0]==poles4_3[-1]:
+			weights4_3=weights4_3[::-1]
+		p00 = sext12[0]
+		p01 = sext12[1]
+		p02 = sext12[2]	
+		p03 = sext12[3]
+		p04 = sext12[4]
+		p05 = sext12[5]
+		p15 = quad23[1]
+		p25 = quad23[2]
+		p35 = quad23[3]
+		p34 = sext34[1]
+		p33 = sext34[2]
+		p32 = sext34[3]
+		p31 = sext34[4]
+		p30 = sext34[5]
+		p20 = quad41[1]
+		p10 = quad41[2]
+		p11 = p01 + (p10 - p00)
+		p14 = p04 + (p15 - p05)
+		p21 = p31 + (p20 - p30)
+		p24 = p25 + (p34 - p35)
+		p12 = p02 + (p10 - p00)
+		p13 = p03 + (p15 - p05)	
+		p22 = p32 + (p20 - p30)
+		p23 = p33 + (p25 - p35)
+		fp.Poles = [p00, p01, p02, p03, p04, p05,
+					p10, p11, p12, p13, p14, p15,
+					p20, p21, p22, p23, p24, p25,
+					p30, p31, p32, p33, p34, p35]
+		w00 = weights6_0[0]
+		w01 = weights6_0[1]
+		w02 = weights6_0[2]
+		w03 = weights6_0[3]
+		w04 = weights6_0[4]
+		w05 = weights6_0[5]
+		w15 = weights4_1[1]
+		w25 = weights4_1[2]
+		w35 = weights4_1[3]
+		w34 = weights6_2[1]
+		w33 = weights6_2[2]
+		w32 = weights6_2[3]
+		w31 = weights6_2[4]
+		w30 = weights6_2[5]
+		w20 = weights4_3[1]
+		w10 = weights4_3[2]
+		# maybe i should average instead of multiply? needs testing.
+		# currently based on the idea all wights are between 0 and 1.
+		# previous used cumulative neighbor mulitplication. this drives weights too low.
+		# current method multiplies the two weights along isos to the closest edge
+		w11 = w01*w10
+		w12 = w02*w10
+		w13 = w03*w15
+		w14 = w04*w15
+		w21 = w31*w20
+		w22 = w32*w20		
+		w23 = w33*w25		
+		w24 = w34*w25
+		fp.Weights = [w00, w01, w02, w03, w04, w05,
+					w10, w11, w12, w13, w14, w15,
+					w20, w21, w22, w23, w24, w25,
+					w30, w31, w32, w33, w34, w35]
+		Legs=[0]*38
+		for i in range(0,5):
+			Legs[i]=Part.Line(fp.Poles[i],fp.Poles[i+1])
+		for i in range(5,10):
+			Legs[i]=Part.Line(fp.Poles[i+1],fp.Poles[i+2])
+		for i in range(10,15):
+			Legs[i]=Part.Line(fp.Poles[i+2],fp.Poles[i+3])
+		for i in range(15,20):
+			Legs[i]=Part.Line(fp.Poles[i+3],fp.Poles[i+4])
+
+		for i in range(20,26):
+			Legs[i]=Part.Line(fp.Poles[i-20],fp.Poles[i-14])
+		for i in range(26,32):
+			Legs[i]=Part.Line(fp.Poles[i-20],fp.Poles[i-14])
+		for i in range(32,38):
+			Legs[i]=Part.Line(fp.Poles[i-20],fp.Poles[i-14])
+		fp.Legs=Legs
+		fp.Shape = Part.Shape(fp.Legs)
+
+
 ###################################################################################################
 # CubicCurve_4
 class CubicCurve_4:
@@ -1775,7 +1894,7 @@ class CubicCurve_4:
 
 	def execute(self, fp):
 		'''Do something when doing a recomputation, this method is mandatory'''
-		# get the poles list from the poly
+		# get the poles list from the poly. legacy shape function wants 'homogeneous' coords as [[x,y,z],w]
 		WeightedPoles=[[fp.Poly.Poles[0],fp.Poly.Weights[0]],
 				[fp.Poly.Poles[1],fp.Poly.Weights[1]],
 				[fp.Poly.Poles[2],fp.Poly.Weights[2]],
@@ -1793,7 +1912,7 @@ class CubicCurve_6:
 
 	def execute(self, fp):
 		'''Do something when doing a recomputation, this method is mandatory'''
-		# get the poles list from the poly
+		# get the poles list from the poly. legacy shape function wants 'homogeneous' coords as [[x,y,z],w]
 		WeightedPoles=[[fp.Poly.Poles[0],fp.Poly.Weights[0]],
 				[fp.Poly.Poles[1],fp.Poly.Weights[1]],
 				[fp.Poly.Poles[2],fp.Poly.Weights[2]],
@@ -1817,13 +1936,13 @@ class CubicSurface_44:
 
 	def execute(self, fp):
 		'''Do something when doing a recomputation, this method is mandatory'''
-		# get the poles list from the poly
+		# get the poles list from the poly. legacy shape function wants 'homogeneous' coords as [[x,y,z],w]
 		WeightedPoles=[
 			[fp.Grid.Poles[0],fp.Grid.Weights[0]],
 			[fp.Grid.Poles[1],fp.Grid.Weights[1]],
 			[fp.Grid.Poles[2],fp.Grid.Weights[2]],
 			[fp.Grid.Poles[3],fp.Grid.Weights[3]],
-			[fp.Grid.Poles[4],fp.Grid.Weights[5]],
+			[fp.Grid.Poles[4],fp.Grid.Weights[4]],
 			[fp.Grid.Poles[5],fp.Grid.Weights[5]],
 			[fp.Grid.Poles[6],fp.Grid.Weights[6]],
 			[fp.Grid.Poles[7],fp.Grid.Weights[7]],
@@ -1848,13 +1967,13 @@ class CubicSurface_66:
 
 	def execute(self, fp):
 		'''Do something when doing a recomputation, this method is mandatory'''
-		# get the poles list from the poly
+		# get the poles list from the poly. legacy shape function wants 'homogeneous' coords as [[x,y,z],w]
 		WeightedPoles=[
 			[fp.Grid.Poles[0],fp.Grid.Weights[0]],
 			[fp.Grid.Poles[1],fp.Grid.Weights[1]],
 			[fp.Grid.Poles[2],fp.Grid.Weights[2]],
 			[fp.Grid.Poles[3],fp.Grid.Weights[3]],
-			[fp.Grid.Poles[4],fp.Grid.Weights[5]],
+			[fp.Grid.Poles[4],fp.Grid.Weights[4]],
 			[fp.Grid.Poles[5],fp.Grid.Weights[5]],
 			[fp.Grid.Poles[6],fp.Grid.Weights[6]],
 			[fp.Grid.Poles[7],fp.Grid.Weights[7]],
@@ -1889,5 +2008,41 @@ class CubicSurface_66:
 		# the legacy function below sets the degree and knot vector
 		fp.Shape = NURBS_Cubic_66_surf(WeightedPoles).toShape()
 
+class CubicSurface_64:
+	def __init__(self, obj , grid):
+		''' Add the properties '''
+		FreeCAD.Console.PrintMessage("\nCubicSurface_64 class Init\n")
+		obj.addProperty("App::PropertyLink","Grid","CubicSurface_64","control grid").Grid = grid
+		obj.Proxy = self
 
+	def execute(self, fp):
+		'''Do something when doing a recomputation, this method is mandatory'''
+		# get the poles list from the poly. legacy shape function wants 'homogeneous' coords as [[x,y,z],w]
+		WeightedPoles=[
+			[fp.Grid.Poles[0],fp.Grid.Weights[0]],
+			[fp.Grid.Poles[1],fp.Grid.Weights[1]],
+			[fp.Grid.Poles[2],fp.Grid.Weights[2]],
+			[fp.Grid.Poles[3],fp.Grid.Weights[3]],
+			[fp.Grid.Poles[4],fp.Grid.Weights[4]],
+			[fp.Grid.Poles[5],fp.Grid.Weights[5]],
+			[fp.Grid.Poles[6],fp.Grid.Weights[6]],
+			[fp.Grid.Poles[7],fp.Grid.Weights[7]],
+			[fp.Grid.Poles[8],fp.Grid.Weights[8]],
+			[fp.Grid.Poles[9],fp.Grid.Weights[9]],
+			[fp.Grid.Poles[10],fp.Grid.Weights[10]],
+			[fp.Grid.Poles[11],fp.Grid.Weights[11]],
+			[fp.Grid.Poles[12],fp.Grid.Weights[12]],
+			[fp.Grid.Poles[13],fp.Grid.Weights[13]],
+			[fp.Grid.Poles[14],fp.Grid.Weights[14]],
+			[fp.Grid.Poles[15],fp.Grid.Weights[15]],
+			[fp.Grid.Poles[16],fp.Grid.Weights[16]],
+			[fp.Grid.Poles[17],fp.Grid.Weights[17]],
+			[fp.Grid.Poles[18],fp.Grid.Weights[18]],
+			[fp.Grid.Poles[19],fp.Grid.Weights[19]],
+			[fp.Grid.Poles[20],fp.Grid.Weights[20]],
+			[fp.Grid.Poles[21],fp.Grid.Weights[21]],
+			[fp.Grid.Poles[22],fp.Grid.Weights[22]],
+			[fp.Grid.Poles[23],fp.Grid.Weights[23]]]
+		# the legacy function below sets the degree and knot vector
+		fp.Shape = NURBS_Cubic_64_surf(WeightedPoles).toShape()
 
