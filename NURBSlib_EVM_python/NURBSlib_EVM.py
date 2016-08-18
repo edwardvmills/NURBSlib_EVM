@@ -1198,23 +1198,27 @@ def  isect_curve_surf(curve, surf):
 
 #### CLASS RECAP
 
-# ControlPoly4_3L(sketch)							#tested-works 2016-08-04
-# ControlPoly4_2N(sketch0, sketch1)					#tested-works 2016-08-04
-# ControlPoly4_Arc(sketch)							#tested-works 2016-08-05
-# ControlPoly6_5L(sketch)							#tested-works 2016-08-06
-# ControlPoly6_2N(sketch0, sketch1)					#tested-works 2016-08-06
-# ControlPoly6_Arc(sketch)							#tested-works 2016-08-06
-# ControlGrid44_4(poly0, poly1, poly2, poly3)		#tested-works 2016-08-05
+# ControlPoly4_3L(sketch)									#tested-works 2016-08-04
+# ControlPoly4_2N(sketch0, sketch1)							#tested-works 2016-08-04
+# ControlPoly4_Arc(sketch)									#tested-works 2016-08-05
+# ControlPoly6_5L(sketch)									#tested-works 2016-08-06
+# ControlPoly6_2N(sketch0, sketch1)							#tested-works 2016-08-06
+# ControlPoly6_Arc(sketch)									#tested-works 2016-08-17
+# ControlGrid44_4(poly0, poly1, poly2, poly3)				#tested-works 2016-08-05
 # ControlGrid44_3(poly0, poly1, poly2)			
-# ControlGrid64_4(poly0, poly1, poly2, poly3)		#tested-works 2016-08-14
+# ControlGrid64_4(poly0, poly1, poly2, poly3)				#tested-works 2016-08-14
 # ControlGrid64_3(poly0, poly1, poly2)
-# ControlGrid66_4(poly0, poly1, poly2, poly3)		#tested-works 2016-08-06
+# ControlGrid66_4(poly0, poly1, poly2, poly3)				#tested-works 2016-08-06
 # ControlGrid66_3(poly0, poly1, poly2)
-# CubicCurve_4										#tested-works 2016-08-04
-# CubicCurve_6										#tested-works 2016-08-06
-# CubicSurface_44									#tested-works 2016-08-04
-# CubicSurface_64
-# CubicSurface_66									#tested-works 2016-08-06
+# CubicCurve_4												#tested-works 2016-08-04
+# CubicCurve_6												#tested-works 2016-08-06
+# ControlPoly6_Bezier(CubicCurve4_0)						#tested-works 2016-08-17
+# ControlPoly6_FilletBezier(CubicCurve4_0,CubicCurve4_1)
+# CubicSurface_44											#tested-works 2016-08-04
+# CubicSurface_64											#tested-works 2016-08-14
+# CubicSurface_66											#tested-works 2016-08-06
+
+
 
 #### used legacy functions:
 #
@@ -1518,6 +1522,7 @@ class ControlPoly6_Arc:
 		fp.Legs=[Leg0, Leg1, Leg2, Leg3, Leg4]
 		# define the shape for visualization
 		fp.Shape = Part.Shape(fp.Legs)
+
 
 ###################################################################################################
 
@@ -1921,6 +1926,203 @@ class CubicCurve_6:
 				[fp.Poly.Poles[5],fp.Poly.Weights[5]]]
 		# the legacy function below sets the degree and knot vector
 		fp.Shape = NURBS_Cubic_6P_curve(WeightedPoles).toShape()
+
+###########################     Curve linked/derived control polygons   ###########################
+# ControlPoly6_Bezier
+class ControlPoly6_Bezier:
+	def __init__(self, obj , cubiccurve4_0):
+		''' Add the properties '''
+		FreeCAD.Console.PrintMessage("\nControlPoly6_Bezier class Init\n")
+		obj.addProperty("App::PropertyLink","Sketch","ControlPoly6_Bezier","reference Bezier Curve").CubicCurve4_0 = cubiccurve4_0
+		obj.addProperty("Part::PropertyGeometryList","Legs","ControlPoly6_Bezier","control segments").Legs
+		obj.addProperty("App::PropertyVectorList","Poles","ControlPoly6_Bezier","Poles").Poles
+		obj.addProperty("App::PropertyFloatList","Weights","ControlPoly6_Bezier","Weights").Weights = [1.0,1.0,1.0,1.0]
+		obj.Proxy = self
+
+	def execute(self, fp):
+		'''Do something when doing a recomputation, this method is mandatory'''
+		# process the sketch arc...error check later
+		curve=fp.fp.CubicCurve4_0.Shape
+		curve.increaseDegree(3)
+		start=curve.FirstParameter
+		end=curve.LastParameter
+		knot1=start+(end-start)/3.0
+		knot2=end-(end-start)/3.0
+		curve.insertKnot(knot1)
+		curve.insertKnot(knot2)
+		p0=curve.getPole(1)
+		p1=curve.getPole(2)
+		p2=curve.getPole(3)
+		p3=curve.getPole(4)
+		p4=curve.getPole(5)
+		p5=curve.getPole(6)
+		fp.Poles=[p0,p1,p2,p3,p4,p5]
+		# set the weights
+		fp.Weights = curve.getWeights()
+		# prepare the lines to draw the polyline
+		Leg0=Part.Line(p0,p1)
+		Leg1=Part.Line(p1,p2)
+		Leg2=Part.Line(p2,p3)
+		Leg3=Part.Line(p3,p4)
+		Leg4=Part.Line(p4,p5)
+		#set the polygon legs property
+		fp.Legs=[Leg0, Leg1, Leg2, Leg3, Leg4]
+		# define the shape for visualization
+		fp.Shape = Part.Shape(fp.Legs)
+
+# ControlPoly6_FilletBezier(CubicCurve4_0,CubicCurve4_1)
+class ControlPoly6_FilletBezier:
+	def __init__(self, obj , cubiccurve4_0, cibiccurve4_1):
+		''' Add the properties '''
+		FreeCAD.Console.PrintMessage("\nControlPoly6_FilletBezier class Init\n")
+		obj.addProperty("App::PropertyLink","Sketch","ControlPoly6_FilletBezier","First reference Bezier Curve").CubicCurve4_0 = cubiccurve4_0
+		obj.addProperty("App::PropertyLink","Sketch","ControlPoly6_FilletBezier","Second reference Bezier Curve").CubicCurve4_1 = cubiccurve4_1
+		obj.addProperty("App::PropertyFloat","Scale_0","ControlPoly6_FilletBezier","First curve tangent scaling").Scale_0 = 2.0
+		obj.addProperty("App::PropertyFloat","Scale_4","ControlPoly6_FilletBezier","Second curve tangent scaling").Scale_4 = 2.0
+
+
+		obj.addProperty("Part::PropertyGeometryList","Legs","ControlPoly6_FilletBezier","control segments").Legs
+		obj.addProperty("App::PropertyVectorList","Poles","ControlPoly6_FilletBezier","Poles").Poles
+		obj.addProperty("App::PropertyFloatList","Weights","ControlPoly6_FilletBezier","Weights").Weights = [1.0,1.0,1.0,1.0]
+		obj.Proxy = self
+
+	def execute(self, fp):
+		'''Do something when doing a recomputation, this method is mandatory'''
+		NURBS_6P_0=cubiccurve4_0.copy() # make copy to keep original selection intact
+		NURBS_6P_0.insertKnot(1.0/3.0) # add knots to convert bezier to 6P
+		NURBS_6P_0.insertKnot(2.0/3.0)
+
+		NURBS_6P_1=cubiccurve4_1.copy() # make copy to keep original selection intact
+		NURBS_6P_1.insertKnot(1.0/3.0) # add knots to convert bezier to 6P
+		NURBS_6P_1.insertKnot(2.0/3.0)
+
+		# get all poles and weights
+		poles_0=NURBS_6P_0.getPoles()
+		weights_0=NURBS_6P_0.getWeights()
+		poles_1=NURBS_6P_1.getPoles()
+		weights_1=NURBS_6P_1.getWeights()
+
+		# get all start/end points of the curves to determine how they are connected. 
+		# reset so control points flow from first curve into second curve
+		p00 = curve_0.StartPoint
+		p01 = curve_0.EndPoint
+		p10 = curve_1.StartPoint
+		p11 = curve_1.EndPoint
+		
+		if p00==p10: 
+			p0=[poles_0[5],weights_0[5]]
+			p1=[poles_0[4],weights_0[4]]
+			p2=[poles_0[3],weights_0[3]]
+			p3=[poles_1[3],weights_0[3]]
+			p4=[poles_1[4],weights_0[4]]
+			p5=[poles_1[5],weights_0[5]]
+		
+		if p00==p11:
+			p0=[poles_0[5],weights_0[5]]
+			p1=[poles_0[4],weights_0[4]]
+			p2=[poles_0[3],weights_0[3]]
+			p3=[poles_1[2],weights_0[2]]
+			p4=[poles_1[1],weights_0[1]]
+			p5=[poles_1[0],weights_0[0]]
+		
+		if p01==p10:
+			p0=[poles_0[0],weights_0[0]]
+			p1=[poles_0[1],weights_0[1]]
+			p2=[poles_0[2],weights_0[2]]
+			p3=[poles_1[3],weights_0[3]]
+			p4=[poles_1[4],weights_0[4]]
+			p5=[poles_1[5],weights_0[5]]
+		
+		if p01==p11:
+			p0=[poles_0[0],weights_0[0]]
+			p1=[poles_0[1],weights_0[1]]
+			p2=[poles_0[2],weights_0[2]]
+			p3=[poles_1[2],weights_0[2]]
+			p4=[poles_1[1],weights_0[1]]
+			p5=[poles_1[0],weights_0[0]]
+
+############## begin copypasta of non linked version. incorporate above then trim
+
+
+
+
+
+
+# at this stage, the poles are clustered around the curve start and end. They need to get 'spread out' a bit
+
+#### find start/end curvatures, scale start and end tangents, then reposition innermost control points to maintain curvature. 
+#### set the height to the tangent, but leave the length along the tangent as numeric input. what to use for a start value?
+
+scale_0 = 2.0 # factor to scale first control leg by.
+scale_4 = 2.0 # factor to scale last control leg by.
+
+### calculate curvature components
+## start point
+l0 = p1[0]-p0[0]					# first control leg
+tan0=Base.Vector(l0)				# make clean copy
+tan0.normalize()					# unit tangent direction
+l1=Base.Vector(tan0)				# make clean copy
+l1.multiply(tan0.dot(p2[0]-p1[0])) 	# scalar projection of second control leg along unit tangent
+h1=(p2[0]-p1[0])-l1				# height of second control leg orthogonal to tangent
+## end point
+l4 = p4[0]-p5[0]					# last control leg
+tan4=Base.Vector(l4)				# make clean copy
+tan4.normalize()					# unit tangent direction
+l3=Base.Vector(tan4)				# make clean copy
+l3.multiply(tan4.dot(p3[0]-p4[0])) 	# scalar projection of second to last control leg along unit tangent
+h3=(p3[0]-p4[0])-l3				# height of second control leg orthogonal to tangent
+
+### scale first and last control legs
+L0=Base.Vector(l0)			# make clean copy
+L0.multiply(scale_0)		# apply tangent scale
+p1_scl = [p0[0] + L0, p1[1]]	# reposition second control point
+
+L4=Base.Vector(l4)			# make clean copy
+L4.multiply(scale_4)		# apply tangent scale
+p4_scl = [p5[0] + L4, p4[1]]	# reposition fifth control point
+
+### calc new heights for inner control legs
+H1 = Base.Vector(h1)				# make clean copy
+H1.multiply(scale_0.__pow__(2))	# apply height scale
+
+H3 = Base.Vector(h3)				# make clean copy
+H3.multiply(scale_4.__pow__(2))	# apply height scale
+
+### take input and calc new tangential component for  inner control points
+instructions = "pulls the fillet closer to the input tangents \n recommend 0-5 range"
+
+scale_1=QtGui.QInputDialog.getDouble(None, "keep fillet close to first leg factor", instructions,value=2.0, decimals=16)[0]
+scale_3=QtGui.QInputDialog.getDouble(None, "keep fillet close to last leg factor", instructions,value=2.0, decimals=16)[0]
+
+L1 = Base.Vector(l1) 			# make clean copy
+L1 = L1.multiply(scale_1)		# apply inner tangent scale
+p2_scl = [p1[0] + H1 + L1, p2[1]]	#reposition third control point
+
+L3 = Base.Vector(l3) 			# make clean copy
+L3 = L3.multiply(scale_3)		# apply inner tangent scale
+p3_scl = [p4[0] + H3 + L3, p3[1]]	#reposition third control point
+
+
+
+poles = [p0, p1_scl, p2_scl, p3_scl, p4_scl, p5]
+
+
+############## end copypasta of non linked version
+
+		fp.Poles=[p0,p1,p2,p3,p4,p5]
+		# set the weights
+		fp.Weights = curve.getWeights()
+		# prepare the lines to draw the polyline
+		Leg0=Part.Line(p0,p1)
+		Leg1=Part.Line(p1,p2)
+		Leg2=Part.Line(p2,p3)
+		Leg3=Part.Line(p3,p4)
+		Leg4=Part.Line(p4,p5)
+		#set the polygon legs property
+		fp.Legs=[Leg0, Leg1, Leg2, Leg3, Leg4]
+		# define the shape for visualization
+		fp.Shape = Part.Shape(fp.Legs)
+
 
 
 ###################################################################################################

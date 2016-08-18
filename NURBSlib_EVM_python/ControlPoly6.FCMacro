@@ -24,12 +24,25 @@ import NURBSlib_EVM as Nl
 
 sel=Gui.Selection.getSelection()
 if len(sel)==1:
-	if sel[0].GeometryCount==5:
-		mode='5L'
-	if sel[0].GeometryCount==1:
-		mode='Arc'
-elif len(sel)==2:
+	try:
+		if sel[0].Shape.Curve.NbPoles==4:
+			mode='Bezier'
+	except Exception: 
+		pass
+	try:
+		if sel[0].GeometryCount==5:
+			mode='5L'
+	except Exception: 
+		pass
+	try:
+		if sel[0].GeometryCount==1:
+			#if isinstance(sel[0].Geometry[0], Part.ArcOfCircle):
+			mode='Arc'
+	except Exception: 
+		pass
+if len(sel)==2:
 	mode='2N'
+
 
 if mode=='5L':
 	sketch=Gui.Selection.getSelection()[0]
@@ -42,6 +55,13 @@ if mode=='Arc':
 	sketch=Gui.Selection.getSelection()[0]
 	a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","ControlPoly6_Arc")
 	Nl.ControlPoly6_Arc(a,sketch)
+	a.ViewObject.Proxy=0 # just set it to something different from None (this assignment is needed to run an internal notification)
+	FreeCAD.ActiveDocument.recompute()
+
+if mode=='Bezier':
+	bezier=Gui.Selection.getSelection()[0]
+	a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","ControlPoly6_Bezier")
+	Nl.ControlPoly6_Arc(a,bezier)
 	a.ViewObject.Proxy=0 # just set it to something different from None (this assignment is needed to run an internal notification)
 	FreeCAD.ActiveDocument.recompute()
 

@@ -30,7 +30,7 @@ if len(sel)==1:
 		mode='Arc'
 elif len(sel)==2:
 	mode='2N'
-
+print mode
 if mode=='3L':
 	sketch=Gui.Selection.getSelection()[0]
 	a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","ControlPoly4_3L")
