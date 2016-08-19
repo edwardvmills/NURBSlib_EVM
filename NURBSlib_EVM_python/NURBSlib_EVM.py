@@ -2041,74 +2041,74 @@ class ControlPoly6_FilletBezier:
 			p4=[poles_1[1],weights_0[1]]
 			p5=[poles_1[0],weights_0[0]]
 
-############## begin copypasta of non linked version. incorporate above then trim
-
-
-
-
-
-
-# at this stage, the poles are clustered around the curve start and end. They need to get 'spread out' a bit
-
-#### find start/end curvatures, scale start and end tangents, then reposition innermost control points to maintain curvature. 
-#### set the height to the tangent, but leave the length along the tangent as numeric input. what to use for a start value?
-
-scale_0 = 2.0 # factor to scale first control leg by.
-scale_4 = 2.0 # factor to scale last control leg by.
-
-### calculate curvature components
-## start point
-l0 = p1[0]-p0[0]					# first control leg
-tan0=Base.Vector(l0)				# make clean copy
-tan0.normalize()					# unit tangent direction
-l1=Base.Vector(tan0)				# make clean copy
-l1.multiply(tan0.dot(p2[0]-p1[0])) 	# scalar projection of second control leg along unit tangent
-h1=(p2[0]-p1[0])-l1				# height of second control leg orthogonal to tangent
-## end point
-l4 = p4[0]-p5[0]					# last control leg
-tan4=Base.Vector(l4)				# make clean copy
-tan4.normalize()					# unit tangent direction
-l3=Base.Vector(tan4)				# make clean copy
-l3.multiply(tan4.dot(p3[0]-p4[0])) 	# scalar projection of second to last control leg along unit tangent
-h3=(p3[0]-p4[0])-l3				# height of second control leg orthogonal to tangent
-
-### scale first and last control legs
-L0=Base.Vector(l0)			# make clean copy
-L0.multiply(scale_0)		# apply tangent scale
-p1_scl = [p0[0] + L0, p1[1]]	# reposition second control point
-
-L4=Base.Vector(l4)			# make clean copy
-L4.multiply(scale_4)		# apply tangent scale
-p4_scl = [p5[0] + L4, p4[1]]	# reposition fifth control point
-
-### calc new heights for inner control legs
-H1 = Base.Vector(h1)				# make clean copy
-H1.multiply(scale_0.__pow__(2))	# apply height scale
-
-H3 = Base.Vector(h3)				# make clean copy
-H3.multiply(scale_4.__pow__(2))	# apply height scale
-
-### take input and calc new tangential component for  inner control points
-instructions = "pulls the fillet closer to the input tangents \n recommend 0-5 range"
-
-scale_1=QtGui.QInputDialog.getDouble(None, "keep fillet close to first leg factor", instructions,value=2.0, decimals=16)[0]
-scale_3=QtGui.QInputDialog.getDouble(None, "keep fillet close to last leg factor", instructions,value=2.0, decimals=16)[0]
-
-L1 = Base.Vector(l1) 			# make clean copy
-L1 = L1.multiply(scale_1)		# apply inner tangent scale
-p2_scl = [p1[0] + H1 + L1, p2[1]]	#reposition third control point
-
-L3 = Base.Vector(l3) 			# make clean copy
-L3 = L3.multiply(scale_3)		# apply inner tangent scale
-p3_scl = [p4[0] + H3 + L3, p3[1]]	#reposition third control point
-
-
-
-poles = [p0, p1_scl, p2_scl, p3_scl, p4_scl, p5]
-
-
-############## end copypasta of non linked version
-
+		############## begin copypasta of non linked version. incorporate above then trim
+		
+		
+		
+		
+		
+		
+		# at this stage, the poles are clustered around the curve start and end. They need to get 'spread out' a bit
+		
+		#### find start/end curvatures, scale start and end tangents, then reposition innermost control points to maintain curvature. 
+		#### set the height to the tangent, but leave the length along the tangent as numeric input. what to use for a start value?
+		
+		scale_0 = 2.0 # factor to scale first control leg by.
+		scale_4 = 2.0 # factor to scale last control leg by.
+		
+		### calculate curvature components
+		## start point
+		l0 = p1[0]-p0[0]					# first control leg
+		tan0=Base.Vector(l0)				# make clean copy
+		tan0.normalize()					# unit tangent direction
+		l1=Base.Vector(tan0)				# make clean copy
+		l1.multiply(tan0.dot(p2[0]-p1[0])) 	# scalar projection of second control leg along unit tangent
+		h1=(p2[0]-p1[0])-l1				# height of second control leg orthogonal to tangent
+		## end point
+		l4 = p4[0]-p5[0]					# last control leg
+		tan4=Base.Vector(l4)				# make clean copy
+		tan4.normalize()					# unit tangent direction
+		l3=Base.Vector(tan4)				# make clean copy
+		l3.multiply(tan4.dot(p3[0]-p4[0])) 	# scalar projection of second to last control leg along unit tangent
+		h3=(p3[0]-p4[0])-l3				# height of second control leg orthogonal to tangent
+		
+		### scale first and last control legs
+		L0=Base.Vector(l0)			# make clean copy
+		L0.multiply(scale_0)		# apply tangent scale
+		p1_scl = [p0[0] + L0, p1[1]]	# reposition second control point
+		
+		L4=Base.Vector(l4)			# make clean copy
+		L4.multiply(scale_4)		# apply tangent scale
+		p4_scl = [p5[0] + L4, p4[1]]	# reposition fifth control point
+		
+		### calc new heights for inner control legs
+		H1 = Base.Vector(h1)				# make clean copy
+		H1.multiply(scale_0.__pow__(2))	# apply height scale
+		
+		H3 = Base.Vector(h3)				# make clean copy
+		H3.multiply(scale_4.__pow__(2))	# apply height scale
+		
+		### take input and calc new tangential component for  inner control points
+		instructions = "pulls the fillet closer to the input tangents \n recommend 0-5 range"
+		
+		scale_1=QtGui.QInputDialog.getDouble(None, "keep fillet close to first leg factor", instructions,value=2.0, decimals=16)[0]
+		scale_3=QtGui.QInputDialog.getDouble(None, "keep fillet close to last leg factor", instructions,value=2.0, decimals=16)[0]
+		
+		L1 = Base.Vector(l1) 			# make clean copy
+		L1 = L1.multiply(scale_1)		# apply inner tangent scale
+		p2_scl = [p1[0] + H1 + L1, p2[1]]	#reposition third control point
+				
+		L3 = Base.Vector(l3) 			# make clean copy
+		L3 = L3.multiply(scale_3)		# apply inner tangent scale
+		p3_scl = [p4[0] + H3 + L3, p3[1]]	#reposition third control point
+		
+		
+		
+		poles = [p0, p1_scl, p2_scl, p3_scl, p4_scl, p5]
+		
+		
+		############## end copypasta of non linked version
+		
 		fp.Poles=[p0,p1,p2,p3,p4,p5]
 		# set the weights
 		fp.Weights = curve.getWeights()
