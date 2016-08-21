@@ -1972,15 +1972,15 @@ class ControlPoly6_Bezier:
 
 # ControlPoly6_FilletBezier(CubicCurve4_0,CubicCurve4_1)
 class ControlPoly6_FilletBezier:
-	def __init__(self, obj , cubiccurve4_0, cibiccurve4_1):
+	def __init__(self, obj , cubiccurve4_0, cubiccurve4_1):
 		''' Add the properties '''
 		FreeCAD.Console.PrintMessage("\nControlPoly6_FilletBezier class Init\n")
-		obj.addProperty("App::PropertyLink","Sketch","ControlPoly6_FilletBezier","First reference Bezier Curve").CubicCurve4_0 = cubiccurve4_0
-		obj.addProperty("App::PropertyLink","Sketch","ControlPoly6_FilletBezier","Second reference Bezier Curve").CubicCurve4_1 = cubiccurve4_1
-		obj.addProperty("App::PropertyFloat","Scale_0","ControlPoly6_FilletBezier","First curve tangent scaling").Scale_1 = 2.0
+		obj.addProperty("App::PropertyLink","CubicCurve4_0","ControlPoly6_FilletBezier","First reference Bezier Curve").CubicCurve4_0 = cubiccurve4_0
+		obj.addProperty("App::PropertyLink","CubicCurve4_1","ControlPoly6_FilletBezier","Second reference Bezier Curve").CubicCurve4_1 = cubiccurve4_1
+		obj.addProperty("App::PropertyFloat","Scale_1","ControlPoly6_FilletBezier","First curve tangent scaling").Scale_1 = 2.0
 		obj.addProperty("App::PropertyFloat","Scale_4","ControlPoly6_FilletBezier","Second curve tangent scaling").Scale_4 = 2.0
-		obj.addProperty("App::PropertyFloat","Scale_1","ControlPoly6_FilletBezier","First curve inner scaling").Scale_2 = 2.0
-		obj.addProperty("App::PropertyFloat","Scale_1","ControlPoly6_FilletBezier","Second curve inner scaling").Scale_3 = 2.0
+		obj.addProperty("App::PropertyFloat","Scale_2","ControlPoly6_FilletBezier","First curve inner scaling").Scale_2 = 2.0
+		obj.addProperty("App::PropertyFloat","Scale_3","ControlPoly6_FilletBezier","Second curve inner scaling").Scale_3 = 2.0
 		obj.addProperty("Part::PropertyGeometryList","Legs","ControlPoly6_FilletBezier","control segments").Legs
 		obj.addProperty("App::PropertyVectorList","Poles","ControlPoly6_FilletBezier","Poles").Poles
 		obj.addProperty("App::PropertyFloatList","Weights","ControlPoly6_FilletBezier","Weights").Weights = [1.0,1.0,1.0,1.0]
@@ -1988,25 +1988,25 @@ class ControlPoly6_FilletBezier:
 
 	def execute(self, fp):
 		'''Do something when doing a recomputation, this method is mandatory'''
-		cubiccurve6_0=cubiccurve4_0.copy() # make copy to keep original selection intact
-		cubiccurve6_0.insertKnot(1.0/3.0) # add knots to convert bezier to 6P
-		cubiccurve6_0.insertKnot(2.0/3.0)
+		CubicCurve6_0=fp.CubicCurve4_0.Shape.Curve.copy() # make copy to keep original selection intact
+		CubicCurve6_0.insertKnot(1.0/3.0) # add knots to convert bezier to 6P
+		CubicCurve6_0.insertKnot(2.0/3.0)
 
-		cubiccurve6_1=cubiccurve4_1.copy() # make copy to keep original selection intact
-		cubiccurve6_1.insertKnot(1.0/3.0) # add knots to convert bezier to 6P
-		cubiccurve6_1.insertKnot(2.0/3.0)
+		CubicCurve6_1=fp.CubicCurve4_1.Shape.Curve.copy() # make copy to keep original selection intact
+		CubicCurve6_1.insertKnot(1.0/3.0) # add knots to convert bezier to 6P
+		CubicCurve6_1.insertKnot(2.0/3.0)
 
 		# get all poles and weights
-		poles_0=NURBS_6P_0.getPoles()
-		weights_0=NURBS_6P_0.getWeights()
-		poles_1=NURBS_6P_1.getPoles()
-		weights_1=NURBS_6P_1.getWeights()
+		poles_0=CubicCurve6_0.getPoles()
+		weights_0=CubicCurve6_0.getWeights()
+		poles_1=CubicCurve6_1.getPoles()
+		weights_1=CubicCurve6_1.getWeights()
 
 		# get all start/end points of the curves to determine how they are connected. 
-		p00 = curve_0.StartPoint
-		p01 = curve_0.EndPoint
-		p10 = curve_1.StartPoint
-		p11 = curve_1.EndPoint
+		p00 = CubicCurve6_0.StartPoint
+		p01 = CubicCurve6_0.EndPoint
+		p10 = CubicCurve6_1.StartPoint
+		p11 = CubicCurve6_1.EndPoint
 
 		# reorder so control points flow from first curve into second curve. this is analogous to orient_a_to_b()
 		# the 'fillet' CubicCurve6 will be built based on the first three control points of the first curve, 
@@ -2021,7 +2021,7 @@ class ControlPoly6_FilletBezier:
 			p3=[poles_1[3],weights_0[3]]
 			p4=[poles_1[4],weights_0[4]]
 			p5=[poles_1[5],weights_0[5]]
-			corner=p00p10
+			corner='p00p10'
 		
 		if p00==p11:
 			p0=[poles_0[5],weights_0[5]]
@@ -2030,7 +2030,7 @@ class ControlPoly6_FilletBezier:
 			p3=[poles_1[2],weights_0[2]]
 			p4=[poles_1[1],weights_0[1]]
 			p5=[poles_1[0],weights_0[0]]
-			corner=p00p11
+			corner='p00p11'
 		
 		if p01==p10:
 			p0=[poles_0[0],weights_0[0]]
@@ -2039,7 +2039,7 @@ class ControlPoly6_FilletBezier:
 			p3=[poles_1[3],weights_0[3]]
 			p4=[poles_1[4],weights_0[4]]
 			p5=[poles_1[5],weights_0[5]]
-			corner=p01p10
+			corner='p01p10'
 		
 		if p01==p11:
 			p0=[poles_0[0],weights_0[0]]
@@ -2048,7 +2048,7 @@ class ControlPoly6_FilletBezier:
 			p3=[poles_1[2],weights_0[2]]
 			p4=[poles_1[1],weights_0[1]]
 			p5=[poles_1[0],weights_0[0]]
-			corner=p01p11
+			corner='p01p11'
 
 		# print warning if input curves do not join at a 'corner'		
 		if corner=='none':
@@ -2081,39 +2081,39 @@ class ControlPoly6_FilletBezier:
 		
 		### scale first and last control legs
 		L0=Base.Vector(l0)					# make clean copy
-		L0.multiply(Scale_1)				# apply tangent scale
+		L0.multiply(fp.Scale_1)				# apply tangent scale
 		p1_scl = [p0[0] + L0, p1[1]]		# reposition second control point
 		
 		L4=Base.Vector(l4)					# make clean copy
-		L4.multiply(Scale_4)				# apply tangent scale
+		L4.multiply(fp.Scale_4)				# apply tangent scale
 		p4_scl = [p5[0] + L4, p4[1]]		# reposition fifth control point
 		
 		### calc new heights for inner control legs
 		H1 = Base.Vector(h1)				# make clean copy
-		H1.multiply(Scale_1.__pow__(2))		# apply height scale
+		H1.multiply(fp.Scale_1.__pow__(2))		# apply height scale
 		
 		H3 = Base.Vector(h3)				# make clean copy
-		H3.multiply(Scale_4.__pow__(2))		# apply height scale
+		H3.multiply(fp.Scale_4.__pow__(2))		# apply height scale
 		
 		L1 = Base.Vector(l1) 				# make clean copy
-		L1 = L1.multiply(Scale_2)			# apply inner tangent scale
+		L1 = L1.multiply(fp.Scale_2)			# apply inner tangent scale
 		p2_scl = [p1[0] + H1 + L1, p2[1]]	# reposition third control point
 				
 		L3 = Base.Vector(l3) 				# make clean copy
-		L3 = L3.multiply(Scale_3)			# apply inner tangent scale
+		L3 = L3.multiply(fp.Scale_3)			# apply inner tangent scale
 		p3_scl = [p4[0] + H3 + L3, p3[1]]	# reposition third control point
 		
 		
-		fp.Poles=[p0[0], p1_scl, p2_scl, p3_scl, p4_scl, p5[0]]
+		fp.Poles=[p0[0], p1_scl[0], p2_scl[0], p3_scl[0], p4_scl[0], p5[0]]
 		# set the weights. No scaling at this point. No idea what happens if one of the input curve is an arc.
 		# it would probably be a mess, since the curvature formulas above do not incorporate weights yet.
 		fp.Weights = [p0[1], p1[1], p2[1], p3[1], p4[1], p5[1]]
 		# prepare the lines to draw the polyline
-		Leg0=Part.Line(p0,p1_scl)
-		Leg1=Part.Line(p1_scl,p2_scl)
-		Leg2=Part.Line(p2_scl,p3_scl)
-		Leg3=Part.Line(p3_scl,p4_scl)
-		Leg4=Part.Line(p4_scl,p5_scl)
+		Leg0=Part.Line(p0[0],p1_scl[0])
+		Leg1=Part.Line(p1_scl[0],p2_scl[0])
+		Leg2=Part.Line(p2_scl[0],p3_scl[0])
+		Leg3=Part.Line(p3_scl[0],p4_scl[0])
+		Leg4=Part.Line(p4_scl[0],p5[0])
 		#set the polygon legs property
 		fp.Legs=[Leg0, Leg1, Leg2, Leg3, Leg4]
 		# define the shape for visualization

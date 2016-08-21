@@ -41,8 +41,12 @@ if len(sel)==1:
 	except Exception: 
 		pass
 if len(sel)==2:
-	mode='2N'
+	if  sel[0].TypeId=='Sketcher::SketchObject' and sel[1].TypeId=='Sketcher::SketchObject':
+		mode='2N'
+	if sel[0].Shape.Curve.NbPoles==4 and sel[1].Shape.Curve.NbPoles==4:
+		mode='FilletBezier'
 
+print 'selection processed as ', mode, ' operation'
 
 if mode=='5L':
 	sketch=Gui.Selection.getSelection()[0]
@@ -72,5 +76,34 @@ if mode=='2N':
 	Nl.ControlPoly6_2N(a,sketch0,sketch1)
 	a.ViewObject.Proxy=0 # just set it to something different from None (this assignment is needed to run an internal notification)
 	FreeCAD.ActiveDocument.recompute()
+
+if mode=='FilletBezier':
+	CubicCurve4_0=Gui.Selection.getSelection()[0]
+	CubicCurve4_1=Gui.Selection.getSelection()[1]
+	a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","ControlPoly6_FilletBezier")
+	Nl.ControlPoly6_FilletBezier(a,CubicCurve4_0,CubicCurve4_1)
+	a.ViewObject.Proxy=0 # just set it to something different from None (this assignment is needed to run an internal notification)
+	FreeCAD.ActiveDocument.recompute()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
