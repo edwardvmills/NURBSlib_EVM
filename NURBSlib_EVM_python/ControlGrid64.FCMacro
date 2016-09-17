@@ -37,3 +37,29 @@ if mode=='4sided':
 	Nl.ControlGrid64_4(a,poly0, poly1, poly2, poly3)
 	a.ViewObject.Proxy=0 # just set it to something different from None (this assignment is needed to run an internal notification)
 	FreeCAD.ActiveDocument.recompute()
+
+if mode=='3sided':
+	poly0=Gui.Selection.getSelection()[0]
+	poly1=Gui.Selection.getSelection()[1]
+	poly2=Gui.Selection.getSelection()[2]
+	a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","ControlGrid64_3")
+	Nl.ControlGrid64_3(a,poly0, poly1, poly2)
+	a.ViewObject.Proxy=0 # just set it to something different from None (this assignment is needed to run an internal notification)
+	FreeCAD.ActiveDocument.recompute()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1205,15 +1205,16 @@ def  isect_curve_surf(curve, surf):
 # ControlPoly6_2N(sketch0, sketch1)							#tested-works 2016-08-06
 # ControlPoly6_Arc(sketch)									#tested-works 2016-08-17
 # ControlGrid44_4(poly0, poly1, poly2, poly3)				#tested-works 2016-08-05
-# ControlGrid44_3(poly0, poly1, poly2)			
+# ControlGrid44_3(poly0, poly1, poly2)						#tested-works 2016-08-21 - works, but result is not very good
 # ControlGrid64_4(poly0, poly1, poly2, poly3)				#tested-works 2016-08-14
 # ControlGrid64_3(poly0, poly1, poly2)
 # ControlGrid66_4(poly0, poly1, poly2, poly3)				#tested-works 2016-08-06
-# ControlGrid66_3(poly0, poly1, poly2)
+# ControlGrid64_3(poly4_0, poly6_1, poly4_2)
+# ControlGrid64_3_BySurface(CubicSurface_44)
 # CubicCurve_4												#tested-works 2016-08-04
 # CubicCurve_6												#tested-works 2016-08-06
 # ControlPoly6_Bezier(CubicCurve4_0)						#tested-works 2016-08-17
-# ControlPoly6_FilletBezier(CubicCurve4_0,CubicCurve4_1)
+# ControlPoly6_FilletBezier(CubicCurve4_0,CubicCurve4_1)	#tested-works 2016-08-20
 # CubicSurface_44											#tested-works 2016-08-04
 # CubicSurface_64											#tested-works 2016-08-14
 # CubicSurface_66											#tested-works 2016-08-06
@@ -1620,6 +1621,115 @@ class ControlGrid44_4:
 		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
 
+# ControlGrid44_3
+class ControlGrid44_3:
+	def __init__(self, obj , poly0, poly1, poly2):
+		''' Add the properties '''
+		FreeCAD.Console.PrintMessage("\nControlGrid44_3 class Init\n")
+		obj.addProperty("App::PropertyLink","Poly0","ControlGrid44_3","control polygon").Poly0 = poly0
+		obj.addProperty("App::PropertyLink","Poly1","ControlGrid44_3","control polygon").Poly1 = poly1
+		obj.addProperty("App::PropertyLink","Poly2","ControlGrid44_3","control polygon").Poly2 = poly2
+		obj.addProperty("Part::PropertyGeometryList","Legs","ControlGrid44_3","control segments").Legs
+		obj.addProperty("App::PropertyVectorList","Poles","ControlGrid44_3","Poles").Poles
+		obj.addProperty("App::PropertyFloatList","Weights","ControlGrid44_3","Weights").Weights
+		obj.addProperty("App::PropertyFloat","TweakWeight11","ControlGrid44_3","Weights").TweakWeight11 = 1.0
+		obj.Proxy = self
+
+	def execute(self, fp):
+		'''Do something when doing a recomputation, this method is mandatory'''
+		poles1=fp.Poly0.Poles
+		poles2=fp.Poly1.Poles
+		poles3=fp.Poly2.Poles	
+		weights1=fp.Poly0.Weights
+		weights2=fp.Poly1.Weights
+		weights3=fp.Poly2.Weights
+		quad12 = orient_a_to_b(poles1,poles2)
+		quad23 = orient_a_to_b(poles2,poles3)
+		quad31 = orient_a_to_b(poles3,poles1)
+	
+		if quad12[0]!=poles1[0] and quad12[0]==poles1[-1]:
+			weights1=weights1[::-1]
+		if quad23[0]!=poles2[0] and quad23[0]==poles2[-1]:
+			weights2=weights2[::-1]
+		if quad31[0]!=poles3[0] and quad31[0]==poles3[-1]:
+			weights3=weights3[::-1]
+		# make sure this is a degenerate quadrangle, i.e. a triangle
+		if (quad31[3] != quad12[0]):
+			print 'edge loop does not form a triangle'
+		#no further error handling is implemented
+
+		p00 = quad12[0]
+		p01 = quad12[1]
+		p02 = quad12[2]	
+		p03 = quad12[3]
+
+		p13 = quad23[1]
+		p23 = quad23[2]
+		p33 = quad23[3]
+
+		p32 = quad31[1]
+		p31 = quad31[2]
+		p30 = p00
+
+		p20 = p00
+		p10 = p00
+
+		p11 = p01+p31-p30
+		p12 = p02+p13-p03
+		p21 = p11
+		p22 = p23+p32-p33
+
+		fp.Poles = [p00 ,p01, p02, p03,
+					p10, p11, p12, p13,
+					p20, p21, p22, p23,
+					p30, p31, p32, p33]
+
+		# weights below are meh. surface edges follow curves, but internal degenerate point has too much draw.
+		w00 = weights1[0]
+		w01 = weights1[1]
+		w02 = weights1[2]
+		w03 = weights1[3]
+
+		w13 = weights2[1]
+		w23 = weights2[2]
+		w33 = weights2[3]
+
+		w32 = weights3[1]
+		w31 = weights3[2]
+		w30 = weights3[3]
+
+		w10 = fp.TweakWeight11
+		w20 = fp.TweakWeight11
+
+		w11 = w01*w10
+		w12 = w02*w13
+		w21 = w31*w20
+		w22 = w23*w31
+		
+
+		fp.Weights = [w00 ,w01, w02, w03,
+					w10, w11, w12, w13,
+					w20, w21, w22, w23,
+					w30, w31, w32, w33]
+		Legs=[0]*20
+		for i in range(0,3):
+			Legs[i]=Part.Line(fp.Poles[i],fp.Poles[i+1])
+		for i in range(3,6):
+			Legs[i]=Part.Line(fp.Poles[i+1],fp.Poles[i+2])
+		for i in range(6,9):
+			Legs[i]=Part.Line(fp.Poles[i+2],fp.Poles[i+3])
+		for i in range(9,12):
+			Legs[i]=Part.Line(fp.Poles[i+3],fp.Poles[i+4])
+		for i in range(12,15): #skip 0-4
+			Legs[i]=Part.Line(fp.Poles[i-11],fp.Poles[i-7])
+		for i in range(15,17): #skip 4-8 and 5-9
+			Legs[i]=Part.Line(fp.Poles[i-9],fp.Poles[i-5])
+		for i in range(17,20): #skip 8-12
+			Legs[i]=Part.Line(fp.Poles[i-8],fp.Poles[i-4])
+		fp.Legs=Legs
+		fp.Shape = Part.Shape(fp.Legs)
+
+
 # ControlGrid66_4
 class ControlGrid66_4:
 	def __init__(self, obj , poly0, poly1, poly2, poly3):
@@ -1884,6 +1994,128 @@ class ControlGrid64_4:
 			Legs[i]=Part.Line(fp.Poles[i-20],fp.Poles[i-14])
 		for i in range(32,38):
 			Legs[i]=Part.Line(fp.Poles[i-20],fp.Poles[i-14])
+		fp.Legs=Legs
+		fp.Shape = Part.Shape(fp.Legs)
+
+# ControlGrid64_3(poly4_0, poly6_1, poly4_2)
+class ControlGrid64_3:
+	def __init__(self, obj , poly4_0, poly6_1, poly4_2):
+		''' Add the properties '''
+		FreeCAD.Console.PrintMessage("\nControlGrid64_4 class Init\n")
+		obj.addProperty("App::PropertyLink","Poly4_0","ControlGrid64_3","control polygon").Poly4_0 = poly4_0
+		obj.addProperty("App::PropertyLink","Poly6_1","ControlGrid64_3","control polygon").Poly6_1 = poly6_1
+		obj.addProperty("App::PropertyLink","Poly4_2","ControlGrid64_3","control polygon").Poly4_2 = poly4_2
+		obj.addProperty("Part::PropertyGeometryList","Legs","ControlGrid64_3","control segments").Legs
+		obj.addProperty("App::PropertyVectorList","Poles","ControlGrid64_3","Poles").Poles
+		obj.addProperty("App::PropertyFloatList","Weights","ControlGrid64_3","Weights").Weights
+		obj.Proxy = self
+
+	def execute(self, fp):
+		'''Do something when doing a recomputation, this method is mandatory'''
+		poles4_0=fp.Poly4_0.Poles
+		poles6_1=fp.Poly6_1.Poles
+		poles4_2=fp.Poly4_2.Poles
+
+		weights4_0=fp.Poly4_0.Weights
+		weights6_1=fp.Poly6_1.Weights
+		weights4_2=fp.Poly4_2.Weights
+
+		sext12 = orient_a_to_b(poles6_1,poles4_2)
+		quad23 = orient_a_to_b(poles4_2,poles4_0)
+		quad31 = orient_a_to_b(poles4_0,poles6_1)
+
+		if sext12[0]!=poles6_1[0] and sext12[0]==poles6_1[-1]:
+			weights6_1=weights6_1[::-1]
+		if quad23[0]!=poles4_2[0] and quad23[0]==poles4_2[-1]:
+			weights4_2=weights4_2[::-1]
+		if quad31[0]!=poles4_0[0] and quad31[0]==poles4_0[-1]:
+			weights4_0=weights4_0[::-1]
+
+		p00 = sext12[0]
+		p01 = sext12[1]
+		p02 = sext12[2]	
+		p03 = sext12[3]
+		p04 = sext12[4]
+		p05 = sext12[5]
+
+		p15 = quad23[1]
+		p25 = quad23[2]
+		p35 = quad23[3]
+
+		p34 = p35
+		p33 = p35
+		p32 = p35
+		p31 = p35
+		p30 = p35
+
+		p20 = quad31[1]
+		p10 = quad31[2]
+
+		p11 = p01 + (p10 - p00)
+		p14 = p04 + (p15 - p05)
+		p12 = p11
+		p13 = p14
+		p21 = p20 + (p25 - p35)
+		p22 = p21
+		p23 = p21
+		p24 = p21
+		fp.Poles = [p00, p01, p02, p03, p04, p05,
+					p10, p11, p12, p13, p14, p15,
+					p20, p21, p22, p23, p24, p25,
+					p30, p31, p32, p33, p34, p35]
+
+		w00 = weights6_1[0]
+		w01 = weights6_1[1]
+		w02 = weights6_1[2]
+		w03 = weights6_1[3]
+		w04 = weights6_1[4]
+		w05 = weights6_1[5]
+		w15 = weights4_2[1]
+		w25 = weights4_2[2]
+		w35 = weights4_2[3]
+		w34 = 1
+		w33 = 1
+		w32 = 1
+		w31 = 1
+		w30 = weights4_0[0]
+		w20 = weights4_0[1]
+		w10 = weights4_0[2]
+		
+		# maybe i should average instead of multiply? needs testing.
+		# currently based on the idea all weights are between 0 and 1.
+		# previous used cumulative neighbor mulitplication. this drives weights too low.
+		# current method multiplies the two weights along isos to the closest edge
+		w11 = w01*w10*0.5
+		w12 = w02*w10*0.5
+		w13 = w03*w15*0.5
+		w14 = w04*w15*0.5
+		w21 = w31*w20*0.25
+		w22 = w32*w20*0.25		
+		w23 = w33*w25*0.25		
+		w24 = w34*w25*0.25
+		fp.Weights = [w00, w01, w02, w03, w04, w05,
+					w10, w11, w12, w13, w14, w15,
+					w20, w21, w22, w23, w24, w25,
+					w30, w31, w32, w33, w34, w35]
+		Legs=[0]*22
+		for i in range(0,5):
+			Legs[i]=Part.Line(fp.Poles[i],fp.Poles[i+1])
+		Legs[5]=Part.Line(p10,p11)
+		Legs[6]=Part.Line(p12,p13)
+		Legs[7]=Part.Line(p14,p15)
+		Legs[8]=Part.Line(p20,p21)
+		Legs[9]=Part.Line(p24,p25)
+		
+		for i in range(10,16):
+			Legs[i]=Part.Line(fp.Poles[i-10],fp.Poles[i-4])
+		
+		Legs[16]=Part.Line(p10,p20)
+		Legs[17]=Part.Line(p11,p21)
+		Legs[18]=Part.Line(p14,p24)
+		Legs[19]=Part.Line(p15,p25)
+		Legs[20]=Part.Line(p20,p30)
+		Legs[21]=Part.Line(p25,p35)
+		
 		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
 
