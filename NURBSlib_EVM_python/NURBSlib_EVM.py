@@ -1207,7 +1207,7 @@ def  isect_curve_surf(curve, surf):
 # ControlGrid44_4(poly0, poly1, poly2, poly3)				#tested-works 2016-08-05
 # ControlGrid44_3(poly0, poly1, poly2)						#tested-works 2016-08-21 - works, but result is not very good
 # ControlGrid64_4(poly0, poly1, poly2, poly3)				#tested-works 2016-08-14
-# ControlGrid64_3(poly0, poly1, poly2)
+# ControlGrid64_3(poly0, poly1, poly2)						#tested-works 2016-08-21 - works, but result is quite ugly
 # ControlGrid66_4(poly0, poly1, poly2, poly3)				#tested-works 2016-08-06
 # ControlGrid64_3(poly4_0, poly6_1, poly4_2)
 # ControlGrid64_3_BySurface(CubicSurface_44)
@@ -1218,6 +1218,7 @@ def  isect_curve_surf(curve, surf):
 # CubicSurface_44											#tested-works 2016-08-04
 # CubicSurface_64											#tested-works 2016-08-14
 # CubicSurface_66											#tested-works 2016-08-06
+# Point_onCurve(Curve,u)
 
 
 
@@ -2119,6 +2120,130 @@ class ControlGrid64_3:
 		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
 
+# ControlGrid64_3_1Surf44(CubicSurface_44, CornerIndex)
+class ControlGrid64_3:
+	def __init__(self, obj , CubicSurface_44, ControlPoly6_FilletBezier):
+		''' Add the properties '''
+		FreeCAD.Console.PrintMessage("\nControlGrid64_4 class Init\n")
+		obj.addProperty("App::PropertyLink","CubicSurface_44","ControlGrid64_3_1Surf44","Reference Bezier Surface").CubicSurface_44 = CubicSurface_44
+		obj.addProperty("App::PropertyLink","ControlPoly6_FilletBezier","ControlGrid64_3_1Surf44","Corner blending curve").ControlPoly6_FilletBezier = ControlPoly6_FilletBezier
+		obj.addProperty("Part::PropertyGeometryList","Legs","ControlGrid64_3_1Surf44","control segments").Legs
+		obj.addProperty("App::PropertyVectorList","Poles","ControlGrid64_3_1Surf44","Poles").Poles
+		obj.addProperty("App::PropertyFloatList","Weights","ControlGrid64_3_1Surf44","Weights").Weights
+		obj.Proxy = self
+
+	def execute(self, fp):
+		'''Do something when doing a recomputation, this method is mandatory'''
+		# get the control poly of the bezier
+		grid_44 = CubicSurface_44.Grid
+		
+
+		poles4_0=fp.Poly4_0.Poles
+		poles6_1=fp.Poly6_1.Poles
+		poles4_2=fp.Poly4_2.Poles
+
+		weights4_0=fp.Poly4_0.Weights
+		weights6_1=fp.Poly6_1.Weights
+		weights4_2=fp.Poly4_2.Weights
+
+		sext12 = orient_a_to_b(poles6_1,poles4_2)
+		quad23 = orient_a_to_b(poles4_2,poles4_0)
+		quad31 = orient_a_to_b(poles4_0,poles6_1)
+
+		if sext12[0]!=poles6_1[0] and sext12[0]==poles6_1[-1]:
+			weights6_1=weights6_1[::-1]
+		if quad23[0]!=poles4_2[0] and quad23[0]==poles4_2[-1]:
+			weights4_2=weights4_2[::-1]
+		if quad31[0]!=poles4_0[0] and quad31[0]==poles4_0[-1]:
+			weights4_0=weights4_0[::-1]
+
+		p00 = sext12[0]
+		p01 = sext12[1]
+		p02 = sext12[2]	
+		p03 = sext12[3]
+		p04 = sext12[4]
+		p05 = sext12[5]
+
+		p15 = quad23[1]
+		p25 = quad23[2]
+		p35 = quad23[3]
+
+		p34 = p35
+		p33 = p35
+		p32 = p35
+		p31 = p35
+		p30 = p35
+
+		p20 = quad31[1]
+		p10 = quad31[2]
+
+		p11 = p01 + (p10 - p00)
+		p14 = p04 + (p15 - p05)
+		p12 = p11
+		p13 = p14
+		p21 = p20 + (p25 - p35)
+		p22 = p21
+		p23 = p21
+		p24 = p21
+		fp.Poles = [p00, p01, p02, p03, p04, p05,
+					p10, p11, p12, p13, p14, p15,
+					p20, p21, p22, p23, p24, p25,
+					p30, p31, p32, p33, p34, p35]
+
+		w00 = weights6_1[0]
+		w01 = weights6_1[1]
+		w02 = weights6_1[2]
+		w03 = weights6_1[3]
+		w04 = weights6_1[4]
+		w05 = weights6_1[5]
+		w15 = weights4_2[1]
+		w25 = weights4_2[2]
+		w35 = weights4_2[3]
+		w34 = 1
+		w33 = 1
+		w32 = 1
+		w31 = 1
+		w30 = weights4_0[0]
+		w20 = weights4_0[1]
+		w10 = weights4_0[2]
+		
+		# maybe i should average instead of multiply? needs testing.
+		# currently based on the idea all weights are between 0 and 1.
+		# previous used cumulative neighbor mulitplication. this drives weights too low.
+		# current method multiplies the two weights along isos to the closest edge
+		w11 = w01*w10*0.5
+		w12 = w02*w10*0.5
+		w13 = w03*w15*0.5
+		w14 = w04*w15*0.5
+		w21 = w31*w20*0.25
+		w22 = w32*w20*0.25		
+		w23 = w33*w25*0.25		
+		w24 = w34*w25*0.25
+		fp.Weights = [w00, w01, w02, w03, w04, w05,
+					w10, w11, w12, w13, w14, w15,
+					w20, w21, w22, w23, w24, w25,
+					w30, w31, w32, w33, w34, w35]
+		Legs=[0]*22
+		for i in range(0,5):
+			Legs[i]=Part.Line(fp.Poles[i],fp.Poles[i+1])
+		Legs[5]=Part.Line(p10,p11)
+		Legs[6]=Part.Line(p12,p13)
+		Legs[7]=Part.Line(p14,p15)
+		Legs[8]=Part.Line(p20,p21)
+		Legs[9]=Part.Line(p24,p25)
+		
+		for i in range(10,16):
+			Legs[i]=Part.Line(fp.Poles[i-10],fp.Poles[i-4])
+		
+		Legs[16]=Part.Line(p10,p20)
+		Legs[17]=Part.Line(p11,p21)
+		Legs[18]=Part.Line(p14,p24)
+		Legs[19]=Part.Line(p15,p25)
+		Legs[20]=Part.Line(p20,p30)
+		Legs[21]=Part.Line(p25,p35)
+		
+		fp.Legs=Legs
+		fp.Shape = Part.Shape(fp.Legs)
 
 ###################################################################################################
 # CubicCurve_4
@@ -2476,3 +2601,17 @@ class CubicSurface_64:
 		# the legacy function below sets the degree and knot vector
 		fp.Shape = NURBS_Cubic_64_surf(WeightedPoles).toShape()
 
+
+
+class  Point_onCurve:
+	def __init__(self, obj ,NL_Curve,u):
+		''' Add the properties '''
+		FreeCAD.Console.PrintMessage("\nPoint_onCurve class Init\n")
+		obj.addProperty("App::PropertyLink","NL_Curve","Point_onCurve","reference curve").NL_Curve = NL_Curve
+		obj.addProperty("App::PropertyFloat","u","Point_onCurve","parameter along curve").u = u		
+		obj.Proxy = self
+
+	def execute(self, fp):
+		'''Do something when doing a recomputation, this method is mandatory'''
+		Point=fp.NL_Curve.Shape.Curve.value(fp.u)
+		fp.Shape = Part.Point(Point).toShape()
