@@ -1218,7 +1218,8 @@ def  isect_curve_surf(curve, surf):
 # CubicSurface_44											#tested-works 2016-08-04
 # CubicSurface_64											#tested-works 2016-08-14
 # CubicSurface_66											#tested-works 2016-08-06
-# Point_onCurve(Curve,u)
+# Point_onCurve(NL_Curve,u)									#tested-works 2016-11-16
+# ControlPoly4_segment(NL_Curve,Point_onCurve_0,Point_onCurve_1)
 
 
 
@@ -2603,15 +2604,63 @@ class CubicSurface_64:
 
 
 
-class  Point_onCurve:
+class Point_onCurve:
 	def __init__(self, obj ,NL_Curve,u):
 		''' Add the properties '''
 		FreeCAD.Console.PrintMessage("\nPoint_onCurve class Init\n")
 		obj.addProperty("App::PropertyLink","NL_Curve","Point_onCurve","reference curve").NL_Curve = NL_Curve
 		obj.addProperty("App::PropertyFloat","u","Point_onCurve","parameter along curve").u = u		
+		obj.addProperty("App::PropertyVector","Position","Point_onCurve","position vector").Position	
 		obj.Proxy = self
 
 	def execute(self, fp):
 		'''Do something when doing a recomputation, this method is mandatory'''
-		Point=fp.NL_Curve.Shape.Curve.value(fp.u)
-		fp.Shape = Part.Point(Point).toShape()
+		fp.Position=fp.NL_Curve.Shape.Curve.value(fp.u)
+		fp.Shape = Part.Point(fp.Position).toShape()
+
+class ControlPoly4_segment:
+	def __init__(self, obj , NL_Curve, Point_onCurve_0, Point_onCurve_1):
+		''' Add the properties '''
+		FreeCAD.Console.PrintMessage("\nControlPoly4_segment class Init\n")
+		obj.addProperty("App::PropertyLink","NL_Curve","ControlPoly4_segment","reference Curve").NL_Curve = NL_Curve
+		obj.addProperty("App::PropertyLink","Point_onCurve_0","ControlPoly4_segment","first reference point").Point_onCurve_0 = Point_onCurve_0
+		obj.addProperty("App::PropertyLink","Point_onCurve_1","ControlPoly4_segment","second reference point").Point_onCurve_1 = Point_onCurve_1
+		obj.addProperty("Part::PropertyGeometryList","Legs","ControlPoly4_3L","control segments").Legs
+		obj.addProperty("App::PropertyVectorList","Poles","ControlPoly4_3L","Poles").Poles
+		obj.addProperty("App::PropertyFloatList","Weights","ControlPoly4_3L","Weights").Weights = [1.0,1.0,1.0,1.0]
+		obj.Proxy = self
+
+	def execute(self, fp):
+		'''Do something when doing a recomputation, this method is mandatory'''
+		# get the curve
+		curve=fp.NL_Curve.Shape.Curve
+		# get the u span
+		u0=curve.parameter(fp.Point_onCurve_0.Position)
+		print(u0)
+		u1=curve.parameter(fp.Point_onCurve_1.Position)
+		print(u1)
+		if u0<u1:
+			a=u0
+			b=u1
+		elif u1<u0:
+			a=u1
+			b=u0
+		# cut the curve...need to copy first to keep original?
+		curve.segment(a,b)
+		fp.Poles=curve.getPoles()
+		fp.Weights=curve.getWeights()
+
+		# prepare visualization elements
+		p00=fp.Poles[0]
+		p01=fp.Poles[1]
+		p20=fp.Poles[2]
+		p21=fp.Poles[3]
+
+		# prepare the lines to draw the polyline
+		Leg0=Part.Line(p00,p01)
+		Leg1=Part.Line(p01,p20)
+		Leg2=Part.Line(p20,p21)
+		#set the polygon legs property
+		fp.Legs=[Leg0, Leg1, Leg2]
+		# define the shape for visualization
+		fp.Shape = Part.Shape(fp.Legs)
