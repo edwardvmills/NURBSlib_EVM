@@ -2664,3 +2664,128 @@ class ControlPoly4_segment:
 		fp.Legs=[Leg0, Leg1, Leg2]
 		# define the shape for visualization
 		fp.Shape = Part.Shape(fp.Legs)
+
+class ControlGrid44_EdgeSegment:
+	def __init__(self, obj , NL_Surface, NL_Curve):
+		''' Add the properties '''
+		FreeCAD.Console.PrintMessage("\nControlGrid44_EdgeSegment class Init\n")
+		obj.addProperty("App::PropertyLink","NL_Surface","ControlGrid44_EdgeSegment","Base Surface").NL_Surface = NL_Surface
+		obj.addProperty("App::PropertyLink","NL_Curve","ControlGrid44_EdgeSegment","reference Curve").NL_Curve = NL_Curve
+		obj.addProperty("Part::PropertyGeometryList","Legs","ControlGrid44_EdgeSegment","control segments").Legs
+		obj.addProperty("App::PropertyVectorList","Poles","ControlPoly4_3L","Poles").Poles
+		obj.addProperty("App::PropertyFloatList","Weights","ControlPoly4_3L","Weights").Weights
+		obj.Proxy = self
+
+	def execute(self, fp):
+		'''Do something when doing a recomputation, this method is mandatory'''
+		# get surface
+		surface=fp.NL_Surface.Shape.Surface
+		# get cutting points from curve
+		curve=fp.NL_Curve.Shape.Curve
+		p0 = curve.StartPoint
+		p1 = curve.EndPoint
+		# determine u or v segmentation and get parameter span fron cutting points
+		param0=surface.parameter(p0)
+		print(param0)
+		param1=surface.parameter(p1)
+		print(param1)
+		if ((param0[0]<0.001 and param1[0]<0.001) or (param0[0]>0.999 and param1[0]>0.999)): # if u is constant 0 or constant 1 along curve
+			segdir = 'v'
+			if param0[1] < param1[1]:
+				t0=param0[1]
+				t1=param1[1]
+			if param0[1] > param1[1]:
+				t0=param1[1]
+				t1=param0[1]
+		if ((param0[1]<0.001 and param1[1]<0.001) or (param0[1]>0.999 and param1[1]>0.999)): # if v is constant 0 or constant 1 along curve
+			segdir = 'u'
+			if param0[0] < param1[0]:
+				t0=param0[0]
+				t1=param1[0]
+			if param0[0] > param1[0]:
+				t0=param1[0]
+				t1=param0[0]
+		# create surface segment
+		if segdir=='u':
+			surface.segment(t0,t1,0,1)
+		if segdir=='v':
+			surface.segment(0,1,t0,t1)
+		# extract the control grid information from the surface segment
+		poles_2dArray = surface.getPoles()
+		print(poles_2dArray)
+		fp.Poles = [poles_2dArray[0][0],
+					poles_2dArray[0][1],
+					poles_2dArray[0][2],
+					poles_2dArray[0][3],
+					poles_2dArray[1][0],
+					poles_2dArray[1][1],
+					poles_2dArray[1][2],
+					poles_2dArray[1][3],
+					poles_2dArray[2][0],
+					poles_2dArray[2][1],
+					poles_2dArray[2][2],
+					poles_2dArray[2][3],
+					poles_2dArray[3][0],
+					poles_2dArray[3][1],
+					poles_2dArray[3][2],
+					poles_2dArray[3][3]]
+
+		weights_2dArray = surface.getWeights()
+		print(weights_2dArray)
+		fp.Weights = [weights_2dArray[0][0],
+					weights_2dArray[0][1],
+					weights_2dArray[0][2],
+					weights_2dArray[0][3],
+					weights_2dArray[1][0],
+					weights_2dArray[1][1],
+					weights_2dArray[1][2],
+					weights_2dArray[1][3],
+					weights_2dArray[2][0],
+					weights_2dArray[2][1],
+					weights_2dArray[2][2],
+					weights_2dArray[2][3],
+					weights_2dArray[3][0],
+					weights_2dArray[3][1],
+					weights_2dArray[3][2],
+					weights_2dArray[3][3]]
+
+
+
+		Legs=[0]*24
+		for i in range(0,3):
+			Legs[i]=Part.Line(fp.Poles[i],fp.Poles[i+1])
+		for i in range(3,6):
+			Legs[i]=Part.Line(fp.Poles[i+1],fp.Poles[i+2])
+		for i in range(6,9):
+			Legs[i]=Part.Line(fp.Poles[i+2],fp.Poles[i+3])
+		for i in range(9,12):
+			Legs[i]=Part.Line(fp.Poles[i+3],fp.Poles[i+4])
+		for i in range(12,16):
+			Legs[i]=Part.Line(fp.Poles[i-12],fp.Poles[i-8])
+		for i in range(16,20):
+			Legs[i]=Part.Line(fp.Poles[i-12],fp.Poles[i-8])
+		for i in range(20,24):
+			Legs[i]=Part.Line(fp.Poles[i-12],fp.Poles[i-8])
+		fp.Legs=Legs
+		fp.Shape = Part.Shape(fp.Legs)
+
+'''
+		# flip the poles list back into 2D array form
+		p00 = fp.Poles[0]
+		p01 = fp.Poles[1]
+		p02 = fp.Poles[2]
+		p03 = fp.Poles[3]
+		p13 = fp.Poles[7]
+		p23 = fp.Poles[11]
+		p33 = fp.Poles[15]
+		p32 = fp.Poles[14]
+		p31 = fp.Poles[13]
+		p30 = fp.Poles[12]
+		p20 = fp.Poles[8]
+		p10 = fp.Poles[4]
+		p11 = fp.Poles[5]
+		p12 = fp.Poles[6]
+		p21 = fp.Poles[9]
+		p22 = fp.Poles[10]
+'''
+
