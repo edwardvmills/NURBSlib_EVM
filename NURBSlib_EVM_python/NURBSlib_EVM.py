@@ -2686,9 +2686,9 @@ class ControlGrid44_EdgeSegment:
 		p1 = curve.EndPoint
 		# determine u or v segmentation and get parameter span fron cutting points
 		param0=surface.parameter(p0)
-		print(param0)
+		print 'param0: ', param0
 		param1=surface.parameter(p1)
-		print(param1)
+		print 'param1: ', param1
 		if ((param0[0]<0.001 and param1[0]<0.001) or (param0[0]>0.999 and param1[0]>0.999)): # if u is constant 0 or constant 1 along curve
 			segdir = 'v'
 			if param0[1] < param1[1]:
@@ -2705,7 +2705,16 @@ class ControlGrid44_EdgeSegment:
 			if param0[0] > param1[0]:
 				t0=param1[0]
 				t1=param0[0]
+		# filter out t0<0 and t1>1 that may occur when the xyz position is projected to uv
+		if t0<0:
+			t0=0
+		if t1>1:
+			t1=1
+
 		# create surface segment
+		print 'sgdir: ', segdir 
+		print 't0 ', t0
+		print 't1 ', t1
 		if segdir=='u':
 			surface.segment(t0,t1,0,1)
 		if segdir=='v':
@@ -2769,23 +2778,30 @@ class ControlGrid44_EdgeSegment:
 		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
 
-'''
-		# flip the poles list back into 2D array form
-		p00 = fp.Poles[0]
-		p01 = fp.Poles[1]
-		p02 = fp.Poles[2]
-		p03 = fp.Poles[3]
-		p13 = fp.Poles[7]
-		p23 = fp.Poles[11]
-		p33 = fp.Poles[15]
-		p32 = fp.Poles[14]
-		p31 = fp.Poles[13]
-		p30 = fp.Poles[12]
-		p20 = fp.Poles[8]
-		p10 = fp.Poles[4]
-		p11 = fp.Poles[5]
-		p12 = fp.Poles[6]
-		p21 = fp.Poles[9]
-		p22 = fp.Poles[10]
-'''
+class ControlGrid64_2Grid44:
+	def __init__(self, obj , Grid_0, Grid_1):
+		''' Add the properties '''
+		FreeCAD.Console.PrintMessage("\nControlGrid64_2Grid44 class Init\n")
+		obj.addProperty("App::PropertyLink","Grid_0","ControlGrid64_2Grid44","first reference 4X4 grid").Grid_0 = Grid_0
+		obj.addProperty("App::PropertyLink","Grid_1","ControlGrid64_2Grid44","second reference 4X4 grid").Grid_1 = Grid_1
+		obj.addProperty("App::PropertyFloat","scale_tangent_0","ControlGrid64_2Grid44","first grid tangent scale").scale_tangent_0 = 2
+		obj.addProperty("App::PropertyFloat","scale_tangent_1","ControlGrid64_2Grid44","second grid tangent scale").scale_tangent_1 = 2
+		obj.addProperty("App::PropertyFloatList","scale_inner_0","ControlGrid64_2Grid44","first side inner scale").scale_inner_0 = [2, 2, 2, 2]
+		obj.addProperty("App::PropertyFloatList","scale_inner_1","ControlGrid64_2Grid44","second side inner scale").scale_inner_1 = [2, 2, 2, 2]
+
+
+
+		obj.addProperty("Part::PropertyGeometryList","Legs","ControlGrid44_EdgeSegment","control segments").Legs
+		obj.addProperty("App::PropertyVectorList","Poles","ControlPoly4_3L","Poles").Poles
+		obj.addProperty("App::PropertyFloatList","Weights","ControlPoly4_3L","Weights").Weights
+		obj.Proxy = self
+
+	def execute(self, fp):
+		'''Do something when doing a recomputation, this method is mandatory'''
+
+
+		Legs=[0]*1
+
+		fp.Legs=Legs
+		fp.Shape = Part.Shape(fp.Legs)
 
