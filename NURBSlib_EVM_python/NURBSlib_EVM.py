@@ -88,6 +88,7 @@ import FreeCAD
 from FreeCAD import Base
 from FreeCAD import Gui
 import math
+import numpy as np
 
 def Bezier_Cubic_curve(poles): 
 #draws a degree 3 rational bspline from first to last point,
@@ -2798,10 +2799,52 @@ class ControlGrid64_2Grid44:
 
 	def execute(self, fp):
 		'''Do something when doing a recomputation, this method is mandatory'''
+		# scratch pad copypasta for array manipulation
+		# numpy.asarray(l).T.tolist()
+		# np.rot90(m, 2)
 
+		# to do
+		#extract corner points
+		corners_0=[fp.Grid_0.Poles[0],fp.Grid_0.Poles[3],fp.Grid_0.Poles[15],fp.Grid_0.Poles[12]]
+		corners_1=[fp.Grid_1.Poles[0],fp.Grid_1.Poles[3],fp.Grid_1.Poles[15],fp.Grid_1.Poles[12]]
+		#find the seam
+		seam_points = [0]*2
+		found = 0
+		while found < 2:
+			for i in corners_0:
 
+		# rotate the grids so that the seam is on the right side for Grid_0 and the left side for Grid_1
+
+		# extract ControlPoly4 pairs running across the seams
+		# run ControlPoly6_FilletBezier or equivalent internal function on each pair
+		# stack the ControlPoly6s into a 64 grid - poles and weights
+		#build the leg list for viz
 		Legs=[0]*1
 
 		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
