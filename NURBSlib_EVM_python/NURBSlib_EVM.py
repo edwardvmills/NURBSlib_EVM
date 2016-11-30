@@ -2877,12 +2877,9 @@ class ControlGrid64_2Grid44:  # surfaces not strictly used as input, but this is
 		obj.addProperty("App::PropertyFloat","scale_tangent_1","ControlGrid64_2Grid44","second grid tangent scale").scale_tangent_1 = 2
 		obj.addProperty("App::PropertyFloatList","scale_inner_0","ControlGrid64_2Grid44","first side inner scale").scale_inner_0 = [2, 2, 2, 2]
 		obj.addProperty("App::PropertyFloatList","scale_inner_1","ControlGrid64_2Grid44","second side inner scale").scale_inner_1 = [2, 2, 2, 2]
-
-
-
-		obj.addProperty("Part::PropertyGeometryList","Legs","ControlGrid44_EdgeSegment","control segments").Legs
-		obj.addProperty("App::PropertyVectorList","Poles","ControlPoly4_3L","Poles").Poles
-		obj.addProperty("App::PropertyFloatList","Weights","ControlPoly4_3L","Weights").Weights
+		obj.addProperty("Part::PropertyGeometryList","Legs","ControlGrid64_2Grid44","control segments").Legs
+		obj.addProperty("App::PropertyVectorList","Poles","ControlGrid64_2Grid44","Poles").Poles
+		obj.addProperty("App::PropertyFloatList","Weights","ControlGrid64_2Grid44","Weights").Weights
 		obj.Proxy = self
 
 	def execute(self, fp):
@@ -2951,33 +2948,28 @@ class ControlGrid64_2Grid44:  # surfaces not strictly used as input, but this is
 		lin_poles_1 = fp.Grid_1.Poles
 		lin_weights_1 = fp.Grid_1.Weights
 
-		
 		# first shot: simple partition.this is an array of rows
 		poles_0 = [[lin_poles_0[0], lin_poles_0[1], lin_poles_0[2], lin_poles_0[3]],
 					[lin_poles_0[4], lin_poles_0[5], lin_poles_0[6], lin_poles_0[7]],
 					[lin_poles_0[8], lin_poles_0[9], lin_poles_0[10], lin_poles_0[11]],
 					[lin_poles_0[12], lin_poles_0[13], lin_poles_0[14], lin_poles_0[15]]]
 		
-		
 		weights_0 = [[lin_weights_0[0], lin_weights_0[1], lin_weights_0[2], lin_weights_0[3]],
 					[lin_weights_0[4], lin_weights_0[5], lin_weights_0[6], lin_weights_0[7]],
 					[lin_weights_0[8], lin_weights_0[9], lin_weights_0[10], lin_weights_0[11]],
 					[lin_weights_0[12], lin_weights_0[13], lin_weights_0[14], lin_weights_0[15]]]		
-		
 		
 		poles_1 = [[lin_poles_1[0], lin_poles_1[1], lin_poles_1[2], lin_poles_1[3]],
 					[lin_poles_1[4], lin_poles_1[5], lin_poles_1[6], lin_poles_1[7]],
 					[lin_poles_1[8], lin_poles_1[9], lin_poles_1[10], lin_poles_1[11]],
 					[lin_poles_1[12], lin_poles_1[13], lin_poles_1[14], lin_poles_1[15]]]
 		
-		
 		weights_1 = [[lin_weights_1[0], lin_weights_1[1], lin_weights_1[2], lin_weights_1[3]],
 					[lin_weights_1[4], lin_weights_1[5], lin_weights_1[6], lin_weights_1[7]],
 					[lin_weights_1[8], lin_weights_1[9], lin_weights_1[10], lin_weights_1[11]],
 					[lin_weights_1[12], lin_weights_1[13], lin_weights_1[14], lin_weights_1[15]]]
 		
-		
-		print 'poles_0', poles_0
+		#print 'poles_0', poles_0
 		#print 'poles_1', poles_1
 		
 		# apply rotation correction. vector type gets stripped in numpy
@@ -2987,29 +2979,28 @@ class ControlGrid64_2Grid44:  # surfaces not strictly used as input, but this is
 		uv_poles_1_temp = np.rot90(poles_1,rotate_1).tolist()
 		uv_weights_1 = np.rot90(weights_1,rotate_1).tolist()
 		
-		print 'uv_poles_0_temp', uv_poles_0_temp
+		#print 'uv_poles_0_temp', uv_poles_0_temp
 		#print 'uv_poles_1_temp', uv_poles_1_temp
-		print 'uv_poles_0_temp[0][0] ', uv_poles_0_temp[0][0]
-		print 'uv_poles_0_temp[3][3] ', uv_poles_0_temp[3][3]
+		#print 'uv_poles_0_temp[0][0] ', uv_poles_0_temp[0][0]
+		#print 'uv_poles_0_temp[3][3] ', uv_poles_0_temp[3][3]
 		
 		# get ready to recast to vector
 		uv_poles_0 = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
 		uv_poles_1 = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
 		
-		
 		for i in range(0,4):
 			for j in range(0,4):
 				uv_poles_0[i][j]= Base.Vector(uv_poles_0_temp[i][j][0],uv_poles_0_temp[i][j][1],uv_poles_0_temp[i][j][2])
-			print uv_poles_0
+			#print uv_poles_0
 			
 		for i in range(0,4):
 			for j in range(0,4):
 				uv_poles_1[i][j]= Base.Vector(uv_poles_1_temp[i][j][0],uv_poles_1_temp[i][j][1],uv_poles_1_temp[i][j][2])
-			print uv_poles_1
+			#print uv_poles_1
 			
 		
-		print 'uv_poles_0', uv_poles_0
-		print 'uv_poles_1', uv_poles_1		
+		#print 'uv_poles_0', uv_poles_0
+		#print 'uv_poles_1', uv_poles_1		
 		
 		#b=Base.Vector(a[0],a[1],a[2])
 		
@@ -3017,19 +3008,99 @@ class ControlGrid64_2Grid44:  # surfaces not strictly used as input, but this is
 		row_0 = blend_poly_2x4_1x6(uv_poles_0[0], uv_weights_0[0], uv_poles_1[0], uv_weights_1[0], fp.scale_tangent_0, fp.scale_inner_0[0], fp.scale_inner_1[0], fp.scale_tangent_1)
 		blend_poles_0 = row_0[0]
 		blend_weights_0 = row_0[1]
-				
 		
-		Leg0=Part.Line(blend_poles_0[0], blend_poles_0[1])
-		Leg1=Part.Line(blend_poles_0[1], blend_poles_0[2])
-		Leg2=Part.Line(blend_poles_0[2], blend_poles_0[3])
-		Leg3=Part.Line(blend_poles_0[3], blend_poles_0[4])
-		Leg4=Part.Line(blend_poles_0[4], blend_poles_0[5])
+		row_1 = blend_poly_2x4_1x6(uv_poles_0[1], uv_weights_0[1], uv_poles_1[1], uv_weights_1[1], fp.scale_tangent_0, fp.scale_inner_0[1], fp.scale_inner_1[1], fp.scale_tangent_1)
+		blend_poles_1 = row_1[0]
+		blend_weights_1 = row_1[1]
 		
-		
+		row_2 = blend_poly_2x4_1x6(uv_poles_0[2], uv_weights_0[2], uv_poles_1[2], uv_weights_1[2], fp.scale_tangent_0, fp.scale_inner_0[2], fp.scale_inner_1[2], fp.scale_tangent_1)
+		blend_poles_2 = row_2[0]
+		blend_weights_2 = row_2[1]
+
+		row_3 = blend_poly_2x4_1x6(uv_poles_0[3], uv_weights_0[3], uv_poles_1[3], uv_weights_1[3], fp.scale_tangent_0, fp.scale_inner_0[3], fp.scale_inner_1[3], fp.scale_tangent_1)
+		blend_poles_3 = row_3[0]
+		blend_weights_3 = row_3[1]
 		
 		# stack the ControlPoly6s into a 64 grid - poles and weights
-		# build the leg list for viz
-		fp.Legs=[Leg0, Leg1, Leg2, Leg3, Leg4]
+		fp.Poles=[blend_poles_0[0],
+				blend_poles_0[1],
+				blend_poles_0[2],
+				blend_poles_0[3],
+				blend_poles_0[4],
+				blend_poles_0[5],
+				blend_poles_1[0],
+				blend_poles_1[1],
+				blend_poles_1[2],
+				blend_poles_1[3],
+				blend_poles_1[4],
+				blend_poles_1[5],
+				blend_poles_2[0],
+				blend_poles_2[1],
+				blend_poles_2[2],
+				blend_poles_2[3],
+				blend_poles_2[4],
+				blend_poles_2[5],
+				blend_poles_3[0],
+				blend_poles_3[1],
+				blend_poles_3[2],
+				blend_poles_3[3],
+				blend_poles_3[4],
+				blend_poles_3[5]]	
+
+		fp.Weights=[blend_weights_0[0],
+				blend_weights_0[1],
+				blend_weights_0[2],
+				blend_weights_0[3],
+				blend_weights_0[4],
+				blend_weights_0[5],
+				blend_weights_1[0],
+				blend_weights_1[1],
+				blend_weights_1[2],
+				blend_weights_1[3],
+				blend_weights_1[4],
+				blend_weights_1[5],
+				blend_weights_2[0],
+				blend_weights_2[1],
+				blend_weights_2[2],
+				blend_weights_2[3],
+				blend_weights_2[4],
+				blend_weights_2[5],
+				blend_weights_3[0],
+				blend_weights_3[1],
+				blend_weights_3[2],
+				blend_weights_3[3],
+				blend_weights_3[4],
+				blend_weights_3[5]]	
+	
+		# build the leg list for viz		
+		Legs=[0]*20
+		
+		Legs[0]=Part.Line(blend_poles_0[0], blend_poles_0[1])
+		Legs[1]=Part.Line(blend_poles_0[1], blend_poles_0[2])
+		Legs[2]=Part.Line(blend_poles_0[2], blend_poles_0[3])
+		Legs[3]=Part.Line(blend_poles_0[3], blend_poles_0[4])
+		Legs[4]=Part.Line(blend_poles_0[4], blend_poles_0[5])
+		
+		Legs[5]=Part.Line(blend_poles_1[0], blend_poles_1[1])
+		Legs[6]=Part.Line(blend_poles_1[1], blend_poles_1[2])
+		Legs[7]=Part.Line(blend_poles_1[2], blend_poles_1[3])
+		Legs[8]=Part.Line(blend_poles_1[3], blend_poles_1[4])
+		Legs[9]=Part.Line(blend_poles_1[4], blend_poles_1[5])
+		
+		Legs[10]=Part.Line(blend_poles_2[0], blend_poles_2[1])
+		Legs[11]=Part.Line(blend_poles_2[1], blend_poles_2[2])
+		Legs[12]=Part.Line(blend_poles_2[2], blend_poles_2[3])
+		Legs[13]=Part.Line(blend_poles_2[3], blend_poles_2[4])
+		Legs[14]=Part.Line(blend_poles_2[4], blend_poles_2[5])
+		
+		Legs[15]=Part.Line(blend_poles_3[0], blend_poles_3[1])
+		Legs[16]=Part.Line(blend_poles_3[1], blend_poles_3[2])
+		Legs[17]=Part.Line(blend_poles_3[2], blend_poles_3[3])
+		Legs[18]=Part.Line(blend_poles_3[3], blend_poles_3[4])
+		Legs[19]=Part.Line(blend_poles_3[4], blend_poles_3[5])
+		
+		# stack the ControlPoly6s into a 64 grid - poles and weights
+		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
 
 
