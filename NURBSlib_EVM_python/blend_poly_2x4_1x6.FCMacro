@@ -1,0 +1,41 @@
+#    This file is part of NURBSLib_EVM
+#    (c) Edward Mills 2016
+#    edwardvmills@gmail.com
+#
+#    NURBSLib_EVM is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+from __future__ import division # allows floating point division from integers
+import FreeCAD, Part, math
+from FreeCAD import Base
+from FreeCAD import Gui
+import NURBSlib_EVM as Nl
+
+sel=Gui.Selection.getSelection()
+
+poly_0=Gui.Selection.getSelection()[0]
+poly_1=Gui.Selection.getSelection()[1]
+
+poles_0=poly_0.Poles
+weights_0=poly_0.Weights
+
+poles_1=poly_1.Poles
+weights_1=poly_1.Weights
+
+blend_poly=Nl.blend_poly_2x4_1x6(poles_0,weights_0, poles_1, weights_1,2,2,2,2)
+
+#Part.show(blend_poly[0].toShape())
+#Part.show(blend_poly[1].toShape())
+
+Part.show(blend_poly.toShape())

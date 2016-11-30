@@ -130,7 +130,6 @@ def NURBS_Cubic_6P_curve(poles):
 		i=i+1;
 	return bs
 
-
 def Cubic_Bezier_ddu(pole1, pole2):   # first derivative with respect to parameter, returns value at first pole given. weights not inlcuded!
 	P1=Base.Vector(pole1)
 	P2=Base.Vector(pole2)
@@ -186,7 +185,6 @@ def orient_a_to_b(polesa,polesb):
 	else:
 		print 'curves do not share endpoints'
 		return 0
-
 
 def grid_44_quad(c1,c2,c3,c4): # prepare 4 x 4 control point patch from four curves
 	# extract curve poles
@@ -563,7 +561,6 @@ def grid_66_quad_01(c1,c2,c3,c4): # prepare 6 x 6 control point patch from four 
 				p40, p41, p42, p43, p44, p45,
 				p50, p51, p52, p53, p54, p55]
 	return grid_66_quad
-
 
 def grid_66_quad(c1,c2,c3,c4): # prepare 6 x 6 control point patch from four curves.
 	# all inner poles will now be tied to one corner of the patch. Trying to improve curvature matching along seams.
@@ -994,7 +991,6 @@ def poly_grid_64_tri(grid_64):
 				] # all 5 top edge segments removed
 	return poly_grid_64_tri
 
-
 def BezBiCubic_surf(grid_44):	# obsolete - this was made to check against Bezier_Bicubic_surf(grid_44), and is not used for anything.
 	surf=Part.BezierSurface()
 	surf.increase(3,3)
@@ -1233,16 +1229,10 @@ def  isect_curve_surf(curve, surf):
 # NURBS_Cubic_66_surf(WeightedPoles)
 # NURBS_Cubic_64_surf(WeightedPoles)
 #
-#
-#
-#
-#
-#
-#### let's get started!
 
-#### control polygons
 
-#### 4 points
+#################################################################################################
+#### control polygons (+sketch to input)
 
 class ControlPoly4_3L:
 	def __init__(self, obj , sketch):
@@ -1279,7 +1269,6 @@ class ControlPoly4_3L:
 		fp.Legs=[Leg0, Leg1, Leg2]
 		# define the shape for visualization
 		fp.Shape = Part.Shape(fp.Legs)
-
 
 class ControlPoly4_2N:
 	def __init__(self, obj , sketch0, sketch1):
@@ -1381,8 +1370,6 @@ class ControlPoly4_Arc:
 		fp.Legs=[Leg0, Leg1, Leg2]
 		# define the shape for visualization
 		fp.Shape = Part.Shape(fp.Legs)
-
-#### 6 points
 
 class ControlPoly6_5L:
 	def __init__(self, obj , sketch):
@@ -1527,10 +1514,9 @@ class ControlPoly6_Arc:
 		# define the shape for visualization
 		fp.Shape = Part.Shape(fp.Legs)
 
-
 ###################################################################################################
+#### control grids (+poly to input)
 
-# ControlGrid44_4(poly0, poly1, poly2, poly3)
 class ControlGrid44_4:
 	def __init__(self, obj , poly0, poly1, poly2, poly3):
 		''' Add the properties '''
@@ -1624,7 +1610,6 @@ class ControlGrid44_4:
 		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
 
-# ControlGrid44_3
 class ControlGrid44_3:
 	def __init__(self, obj , poly0, poly1, poly2):
 		''' Add the properties '''
@@ -1732,8 +1717,6 @@ class ControlGrid44_3:
 		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
 
-
-# ControlGrid66_4
 class ControlGrid66_4:
 	def __init__(self, obj , poly0, poly1, poly2, poly3):
 		''' Add the properties '''
@@ -1885,7 +1868,6 @@ class ControlGrid66_4:
 		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
 
-# ControlGrid64_4(poly0, poly1, poly2, poly3)
 class ControlGrid64_4:
 	def __init__(self, obj , poly6_0, poly4_1, poly6_2, poly4_3):
 		''' Add the properties '''
@@ -2000,7 +1982,6 @@ class ControlGrid64_4:
 		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
 
-# ControlGrid64_3(poly4_0, poly6_1, poly4_2)
 class ControlGrid64_3:
 	def __init__(self, obj , poly4_0, poly6_1, poly4_2):
 		''' Add the properties '''
@@ -2122,7 +2103,6 @@ class ControlGrid64_3:
 		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
 
-# ControlGrid64_3_1Surf44(CubicSurface_44, CornerIndex)
 class ControlGrid64_3:
 	def __init__(self, obj , CubicSurface_44, ControlPoly6_FilletBezier):
 		''' Add the properties '''
@@ -2248,7 +2228,8 @@ class ControlGrid64_3:
 		fp.Shape = Part.Shape(fp.Legs)
 
 ###################################################################################################
-# CubicCurve_4
+#### NURBS curves (+poly to input)
+
 class CubicCurve_4:
 	def __init__(self, obj , poly):
 		''' Add the properties '''
@@ -2266,7 +2247,6 @@ class CubicCurve_4:
 		# the legacy function below sets the degree and knot vector
 		fp.Shape = Bezier_Cubic_curve(WeightedPoles).toShape()
 
-# CubicCurve_6
 class CubicCurve_6:
 	def __init__(self, obj , poly):
 		''' Add the properties '''
@@ -2286,8 +2266,6 @@ class CubicCurve_6:
 		# the legacy function below sets the degree and knot vector
 		fp.Shape = NURBS_Cubic_6P_curve(WeightedPoles).toShape()
 
-###########################     Curve linked / derived control polygons   ###########################
-# ControlPoly6_Bezier
 class ControlPoly6_Bezier:
 	def __init__(self, obj , cubiccurve4_0):
 		''' Add the properties '''
@@ -2329,7 +2307,90 @@ class ControlPoly6_Bezier:
 		# define the shape for visualization
 		fp.Shape = Part.Shape(fp.Legs)
 
-# ControlPoly6_FilletBezier(CubicCurve4_0,CubicCurve4_1)
+		
+		
+# separate out poly blend / fillet as stand alone function. test out in ControlGrid64_2Grid44, then fix ControlPoly6_FilletBezier. this function assumes poles_0 flow into poles_1 without checking.
+def blend_poly_2x4_1x6(poles_0,weights_0, poles_1, weights_1, scale_0, scale_1, scale_2, scale_3):
+	WeightedPoles_0=[[poles_0[0],weights_0[0]], [poles_0[1],weights_0[1]], [poles_0[2],weights_0[2]], [poles_0[3],weights_0[3]]]
+	CubicCurve4_0= Bezier_Cubic_curve(WeightedPoles_0) 
+	CubicCurve6_0=CubicCurve4_0
+	CubicCurve6_0.insertKnot(1.0/3.0) # add knots to convert bezier to 6P
+	CubicCurve6_0.insertKnot(2.0/3.0)
+	
+	WeightedPoles_1=[[poles_1[0],weights_1[0]], [poles_1[1],weights_1[1]], [poles_1[2],weights_1[2]], [poles_1[3],weights_1[3]]]
+	CubicCurve4_1= Bezier_Cubic_curve(WeightedPoles_1) # checked good BSplineSurface object.
+	CubicCurve6_1=CubicCurve4_1
+	CubicCurve6_1.insertKnot(1.0/3.0) # add knots to convert bezier to 6P
+	CubicCurve6_1.insertKnot(2.0/3.0)	
+	
+	poles_6_0=CubicCurve6_0.getPoles()
+	weights_6_0=CubicCurve6_0.getWeights()
+	
+	poles_6_1=CubicCurve6_1.getPoles()
+	weights_6_1=CubicCurve6_1.getWeights()
+	
+	p0=[poles_6_0[0],weights_6_0[0]]
+	p1=[poles_6_0[1],weights_6_0[1]]
+	p2=[poles_6_0[2],weights_6_0[2]]
+	p3=[poles_6_1[3],weights_6_0[3]]
+	p4=[poles_6_1[4],weights_6_0[4]]
+	p5=[poles_6_1[5],weights_6_0[5]]
+	corner='p01p10'
+	
+			
+	### calculate curvature components
+	## start point
+	l0 = p1[0]-p0[0]					# first control leg
+	tan0=Base.Vector(l0)				# make clean copy
+	tan0.normalize()					# unit tangent direction
+	l1=Base.Vector(tan0)				# make clean copy
+	l1.multiply(tan0.dot(p2[0]-p1[0])) 	# scalar projection of second control leg along unit tangent
+	h1=(p2[0]-p1[0])-l1					# height of second control leg orthogonal to tangent
+	## end point
+	l4 = p4[0]-p5[0]					# last control leg
+	tan4=Base.Vector(l4)				# make clean copy
+	tan4.normalize()					# unit tangent direction
+	l3=Base.Vector(tan4)				# make clean copy
+	l3.multiply(tan4.dot(p3[0]-p4[0])) 	# scalar projection of second to last control leg along unit tangent
+	h3=(p3[0]-p4[0])-l3					# height of second control leg orthogonal to tangent
+		
+	### scale first and last control legs
+	L0=Base.Vector(l0)					# make clean copy
+	L0.multiply(scale_0)				# apply tangent scale
+	p1_scl = [p0[0] + L0, p1[1]]		# reposition second control point
+		
+	L4=Base.Vector(l4)					# make clean copy
+	L4.multiply(scale_3)				# apply tangent scale
+	p4_scl = [p5[0] + L4, p4[1]]		# reposition fifth control point
+		
+	### calc new heights for inner control legs
+	H1 = Base.Vector(h1)				# make clean copy
+	H1.multiply(scale_0.__pow__(2))		# apply height scale
+		
+	H3 = Base.Vector(h3)				# make clean copy
+	H3.multiply(scale_3.__pow__(2))		# apply height scale
+		
+	L1 = Base.Vector(l1) 				# make clean copy
+	L1 = L1.multiply(scale_1)			# apply inner tangent scale
+	p2_scl = [p1[0] + H1 + L1, p2[1]]	# reposition third control point
+				
+	L3 = Base.Vector(l3) 				# make clean copy
+	L3 = L3.multiply(scale_2)			# apply inner tangent scale
+	p3_scl = [p4[0] + H3 + L3, p3[1]]	# reposition third control point
+		
+		
+	poles=[p0[0], p1_scl[0], p2_scl[0], p3_scl[0], p4_scl[0], p5[0]]
+	# set the weights. No scaling at this point. No idea what happens if one of the input curve is an arc.
+	# it would probably be a mess, since the curvature formulas above do not incorporate weights yet.
+	weights = [p0[1], p1[1], p2[1], p3[1], p4[1], p5[1]]
+	
+	WeightedPoles= [[poles[0],weights[0]], [poles[1],weights[1]], [poles[2],weights[2]], [poles[3],weights[3]], [poles[4],weights[4]], [poles[5],weights[5]]]
+	
+	current_test = NURBS_Cubic_6P_curve(WeightedPoles)
+	
+	return [poles,weights]
+		
+#### curve derived objects (+curve to input)
 class ControlPoly6_FilletBezier:
 	def __init__(self, obj , cubiccurve4_0, cubiccurve4_1):
 		''' Add the properties '''
@@ -2478,11 +2539,71 @@ class ControlPoly6_FilletBezier:
 		# define the shape for visualization
 		fp.Shape = Part.Shape(fp.Legs)
 
+class Point_onCurve:
+	def __init__(self, obj ,NL_Curve,u):
+		''' Add the properties '''
+		FreeCAD.Console.PrintMessage("\nPoint_onCurve class Init\n")
+		obj.addProperty("App::PropertyLink","NL_Curve","Point_onCurve","reference curve").NL_Curve = NL_Curve
+		obj.addProperty("App::PropertyFloat","u","Point_onCurve","parameter along curve").u = u		
+		obj.addProperty("App::PropertyVector","Position","Point_onCurve","position vector").Position	
+		obj.Proxy = self
 
+	def execute(self, fp):
+		'''Do something when doing a recomputation, this method is mandatory'''
+		fp.Position=fp.NL_Curve.Shape.Curve.value(fp.u)
+		fp.Shape = Part.Point(fp.Position).toShape()
 
+#### point derived objects (+point to input)
+class ControlPoly4_segment:
+	def __init__(self, obj , NL_Curve, Point_onCurve_0, Point_onCurve_1):
+		''' Add the properties '''
+		FreeCAD.Console.PrintMessage("\nControlPoly4_segment class Init\n")
+		obj.addProperty("App::PropertyLink","NL_Curve","ControlPoly4_segment","reference Curve").NL_Curve = NL_Curve
+		obj.addProperty("App::PropertyLink","Point_onCurve_0","ControlPoly4_segment","first reference point").Point_onCurve_0 = Point_onCurve_0
+		obj.addProperty("App::PropertyLink","Point_onCurve_1","ControlPoly4_segment","second reference point").Point_onCurve_1 = Point_onCurve_1
+		obj.addProperty("Part::PropertyGeometryList","Legs","ControlPoly4_3L","control segments").Legs
+		obj.addProperty("App::PropertyVectorList","Poles","ControlPoly4_3L","Poles").Poles
+		obj.addProperty("App::PropertyFloatList","Weights","ControlPoly4_3L","Weights").Weights = [1.0,1.0,1.0,1.0]
+		obj.Proxy = self
+
+	def execute(self, fp):
+		'''Do something when doing a recomputation, this method is mandatory'''
+		# get the curve
+		curve=fp.NL_Curve.Shape.Curve
+		# get the u span
+		u0=curve.parameter(fp.Point_onCurve_0.Position)
+		print(u0)
+		u1=curve.parameter(fp.Point_onCurve_1.Position)
+		print(u1)
+		if u0<u1:
+			a=u0
+			b=u1
+		elif u1<u0:
+			a=u1
+			b=u0
+		# cut the curve...need to copy first to keep original?
+		curve.segment(a,b)
+		fp.Poles=curve.getPoles()
+		fp.Weights=curve.getWeights()
+
+		# prepare visualization elements
+		p00=fp.Poles[0]
+		p01=fp.Poles[1]
+		p20=fp.Poles[2]
+		p21=fp.Poles[3]
+
+		# prepare the lines to draw the polyline
+		Leg0=Part.Line(p00,p01)
+		Leg1=Part.Line(p01,p20)
+		Leg2=Part.Line(p20,p21)
+		#set the polygon legs property
+		fp.Legs=[Leg0, Leg1, Leg2]
+		# define the shape for visualization
+		fp.Shape = Part.Shape(fp.Legs)
+		
+		
 ###################################################################################################
-
-# CubicSurface_44
+#### NURBS surfaces (+grid to input)
 
 class CubicSurface_44:
 	def __init__(self, obj , grid):
@@ -2513,7 +2634,6 @@ class CubicSurface_44:
 			[fp.Grid.Poles[15],fp.Grid.Weights[15]]]
 		# the legacy function below sets the degree and knot vector
 		fp.Shape = Bezier_Bicubic_surf(WeightedPoles).toShape()
-
 
 class CubicSurface_66:
 	def __init__(self, obj , grid):
@@ -2603,69 +2723,8 @@ class CubicSurface_64:
 		# the legacy function below sets the degree and knot vector
 		fp.Shape = NURBS_Cubic_64_surf(WeightedPoles).toShape()
 
-
-
-class Point_onCurve:
-	def __init__(self, obj ,NL_Curve,u):
-		''' Add the properties '''
-		FreeCAD.Console.PrintMessage("\nPoint_onCurve class Init\n")
-		obj.addProperty("App::PropertyLink","NL_Curve","Point_onCurve","reference curve").NL_Curve = NL_Curve
-		obj.addProperty("App::PropertyFloat","u","Point_onCurve","parameter along curve").u = u		
-		obj.addProperty("App::PropertyVector","Position","Point_onCurve","position vector").Position	
-		obj.Proxy = self
-
-	def execute(self, fp):
-		'''Do something when doing a recomputation, this method is mandatory'''
-		fp.Position=fp.NL_Curve.Shape.Curve.value(fp.u)
-		fp.Shape = Part.Point(fp.Position).toShape()
-
-class ControlPoly4_segment:
-	def __init__(self, obj , NL_Curve, Point_onCurve_0, Point_onCurve_1):
-		''' Add the properties '''
-		FreeCAD.Console.PrintMessage("\nControlPoly4_segment class Init\n")
-		obj.addProperty("App::PropertyLink","NL_Curve","ControlPoly4_segment","reference Curve").NL_Curve = NL_Curve
-		obj.addProperty("App::PropertyLink","Point_onCurve_0","ControlPoly4_segment","first reference point").Point_onCurve_0 = Point_onCurve_0
-		obj.addProperty("App::PropertyLink","Point_onCurve_1","ControlPoly4_segment","second reference point").Point_onCurve_1 = Point_onCurve_1
-		obj.addProperty("Part::PropertyGeometryList","Legs","ControlPoly4_3L","control segments").Legs
-		obj.addProperty("App::PropertyVectorList","Poles","ControlPoly4_3L","Poles").Poles
-		obj.addProperty("App::PropertyFloatList","Weights","ControlPoly4_3L","Weights").Weights = [1.0,1.0,1.0,1.0]
-		obj.Proxy = self
-
-	def execute(self, fp):
-		'''Do something when doing a recomputation, this method is mandatory'''
-		# get the curve
-		curve=fp.NL_Curve.Shape.Curve
-		# get the u span
-		u0=curve.parameter(fp.Point_onCurve_0.Position)
-		print(u0)
-		u1=curve.parameter(fp.Point_onCurve_1.Position)
-		print(u1)
-		if u0<u1:
-			a=u0
-			b=u1
-		elif u1<u0:
-			a=u1
-			b=u0
-		# cut the curve...need to copy first to keep original?
-		curve.segment(a,b)
-		fp.Poles=curve.getPoles()
-		fp.Weights=curve.getWeights()
-
-		# prepare visualization elements
-		p00=fp.Poles[0]
-		p01=fp.Poles[1]
-		p20=fp.Poles[2]
-		p21=fp.Poles[3]
-
-		# prepare the lines to draw the polyline
-		Leg0=Part.Line(p00,p01)
-		Leg1=Part.Line(p01,p20)
-		Leg2=Part.Line(p20,p21)
-		#set the polygon legs property
-		fp.Legs=[Leg0, Leg1, Leg2]
-		# define the shape for visualization
-		fp.Shape = Part.Shape(fp.Legs)
-
+#### surface derived objects (+surf to input)		
+		
 class ControlGrid44_EdgeSegment:
 	def __init__(self, obj , NL_Surface, NL_Curve):
 		''' Add the properties '''
@@ -2779,7 +2838,36 @@ class ControlGrid44_EdgeSegment:
 		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
 
-class ControlGrid64_2Grid44:
+		
+# 11/25/2016
+# There a mess to clean up in re. passing the pole/weight list to FreeCAD. 
+# The 3 legacy _surf functions above want a list of 16 X [[x,y,z],w] as input,
+# but internally, they run two loops to break it back into 2D array form to feed into the actual BSplineSurface(). 
+# This is only because this was the first working example i found for BSplineSurface. and this was fine for a long time.
+# To rotate grids easily, i need to rewrite all the code to stay in 2D array form at all times
+#
+# a BSplineSurface with u along x, v along y, looked at from the top returns the following poles list
+#
+# [[00,01,02,03],[10,11,12,13],[20,21,22,23],[30,31,32,33]]
+#
+# with the following topology 
+#	v=1			1,1
+#	03 13 23 33
+#	02 12 22 32
+#	01 11 21 31
+#	00 10 20 30 	
+#u,v=0,0		u=1
+#
+# so the pole list is  list of pole columns. Unfortunately, all my grid numbering schemes so far were row>column, as in
+#
+#	30 31 32 33 
+#	20 21 22 23
+#	10 11 12 13
+#	00 01 02 03
+#
+# this will be annoying to rewrite.		
+		
+class ControlGrid64_2Grid44:  # surfaces not strictly used as input, but this is the logical position
 	def __init__(self, obj , Grid_0, Grid_1):
 		''' Add the properties '''
 		FreeCAD.Console.PrintMessage("\nControlGrid64_2Grid44 class Init\n")
@@ -2799,31 +2887,150 @@ class ControlGrid64_2Grid44:
 
 	def execute(self, fp):
 		'''Do something when doing a recomputation, this method is mandatory'''
+		# this is the monolithic version. This deserves a future breakdown:
+		# -find seam points
+		# -rotate grids to match uv flow
+		# -extract and line up grid rows in pairs
+		# -blend: upgrade, stitch, scale
+		# -stack each blend poly back into a grid
+		
 		# scratch pad copypasta for array manipulation
 		# numpy.asarray(l).T.tolist()
 		# np.rot90(m, 2)
 
-		# to do
-		#extract corner points
+		# extract corner points
 		corners_0=[fp.Grid_0.Poles[0],fp.Grid_0.Poles[3],fp.Grid_0.Poles[15],fp.Grid_0.Poles[12]]
 		corners_1=[fp.Grid_1.Poles[0],fp.Grid_1.Poles[3],fp.Grid_1.Poles[15],fp.Grid_1.Poles[12]]
-		#find the seam
-		seam_points = [0]*2
+		# find the seam
+		seam_index = [0]*2
 		found = 0
-		while found < 2:
-			for i in corners_0:
-
+		for i in range(0,4):
+			for j in range(0,4):
+				if corners_0[i]==corners_1[j]:
+					seam_index[found]=[i,j]
+					found=found+1
+					
 		# rotate the grids so that the seam is on the right side for Grid_0 and the left side for Grid_1
+		# in the ideal case, no rotation is required:
+		# seam_index[0]=[1,0], and
+		# seam_index[1]=[2,3]
+		# to rotate each grid individually, split seam_index data into one set for each grid
+		seam_0 = [seam_index[0][0],seam_index[1][0]]
+		seam_1 = [seam_index[0][1],seam_index[1][1]]
+		
+		# left grid correction rotation
+		if seam_0 == [1,2]:
+			rotate_0 = 0
+		if seam_0 == [2,3]:
+			rotate_0 = 1 
+		if seam_0 == [0,3]:
+			rotate_0 = 2 
+		if seam_0 == [0,1]:
+			rotate_0 = 3 
+		
+		print 'seam_0 ', seam_0
+		print 'seam_1 ', seam_1
+		
+		# right grid correction rotation		
+		if seam_1 == [0,3] or seam_1 == [3,0]:
+			rotate_1 = 0 # times 90 degrees clockwise
+		if seam_1 == [0,1] or seam_1 == [1,0]:
+			rotate_1 = 1 
+		if seam_1 == [1,2] or seam_1 == [2,1]:
+			rotate_1 = 2 
+		if seam_1 == [0,4] or seam_1 == [4,0]:
+			rotate_1 = 3 
+						
+		print 'rotate left: ', rotate_0
+		print 'rotate right: ', rotate_1
+		
+		# get grid data back into array
+		lin_poles_0 = fp.Grid_0.Poles
+		lin_weights_0 = fp.Grid_0.Weights
+		
+		lin_poles_1 = fp.Grid_1.Poles
+		lin_weights_1 = fp.Grid_1.Weights
 
-		# extract ControlPoly4 pairs running across the seams
-		# run ControlPoly6_FilletBezier or equivalent internal function on each pair
+		
+		# first shot: simple partition.this is an array of rows
+		poles_0 = [[lin_poles_0[0], lin_poles_0[1], lin_poles_0[2], lin_poles_0[3]],
+					[lin_poles_0[4], lin_poles_0[5], lin_poles_0[6], lin_poles_0[7]],
+					[lin_poles_0[8], lin_poles_0[9], lin_poles_0[10], lin_poles_0[11]],
+					[lin_poles_0[12], lin_poles_0[13], lin_poles_0[14], lin_poles_0[15]]]
+		
+		
+		weights_0 = [[lin_weights_0[0], lin_weights_0[1], lin_weights_0[2], lin_weights_0[3]],
+					[lin_weights_0[4], lin_weights_0[5], lin_weights_0[6], lin_weights_0[7]],
+					[lin_weights_0[8], lin_weights_0[9], lin_weights_0[10], lin_weights_0[11]],
+					[lin_weights_0[12], lin_weights_0[13], lin_weights_0[14], lin_weights_0[15]]]		
+		
+		
+		poles_1 = [[lin_poles_1[0], lin_poles_1[1], lin_poles_1[2], lin_poles_1[3]],
+					[lin_poles_1[4], lin_poles_1[5], lin_poles_1[6], lin_poles_1[7]],
+					[lin_poles_1[8], lin_poles_1[9], lin_poles_1[10], lin_poles_1[11]],
+					[lin_poles_1[12], lin_poles_1[13], lin_poles_1[14], lin_poles_1[15]]]
+		
+		
+		weights_1 = [[lin_weights_1[0], lin_weights_1[1], lin_weights_1[2], lin_weights_1[3]],
+					[lin_weights_1[4], lin_weights_1[5], lin_weights_1[6], lin_weights_1[7]],
+					[lin_weights_1[8], lin_weights_1[9], lin_weights_1[10], lin_weights_1[11]],
+					[lin_weights_1[12], lin_weights_1[13], lin_weights_1[14], lin_weights_1[15]]]
+		
+		
+		print 'poles_0', poles_0
+		#print 'poles_1', poles_1
+		
+		# apply rotation correction. vector type gets stripped in numpy
+		uv_poles_0_temp = np.rot90(poles_0,rotate_0).tolist()
+		uv_weights_0 = np.rot90(weights_0,rotate_0).tolist()
+		
+		uv_poles_1_temp = np.rot90(poles_1,rotate_1).tolist()
+		uv_weights_1 = np.rot90(weights_1,rotate_1).tolist()
+		
+		print 'uv_poles_0_temp', uv_poles_0_temp
+		#print 'uv_poles_1_temp', uv_poles_1_temp
+		print 'uv_poles_0_temp[0][0] ', uv_poles_0_temp[0][0]
+		print 'uv_poles_0_temp[3][3] ', uv_poles_0_temp[3][3]
+		
+		# get ready to recast to vector
+		uv_poles_0 = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
+		uv_poles_1 = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
+		
+		
+		for i in range(0,4):
+			for j in range(0,4):
+				uv_poles_0[i][j]= Base.Vector(uv_poles_0_temp[i][j][0],uv_poles_0_temp[i][j][1],uv_poles_0_temp[i][j][2])
+			print uv_poles_0
+			
+		for i in range(0,4):
+			for j in range(0,4):
+				uv_poles_1[i][j]= Base.Vector(uv_poles_1_temp[i][j][0],uv_poles_1_temp[i][j][1],uv_poles_1_temp[i][j][2])
+			print uv_poles_1
+			
+		
+		print 'uv_poles_0', uv_poles_0
+		print 'uv_poles_1', uv_poles_1		
+		
+		#b=Base.Vector(a[0],a[1],a[2])
+		
+		# run ControlPoly6_FilletBezier or equivalent internal function on each pair runnning across the seam
+		row_0 = blend_poly_2x4_1x6(uv_poles_0[0], uv_weights_0[0], uv_poles_1[0], uv_weights_1[0], fp.scale_tangent_0, fp.scale_inner_0[0], fp.scale_inner_1[0], fp.scale_tangent_1)
+		blend_poles_0 = row_0[0]
+		blend_weights_0 = row_0[1]
+				
+		
+		Leg0=Part.Line(blend_poles_0[0], blend_poles_0[1])
+		Leg1=Part.Line(blend_poles_0[1], blend_poles_0[2])
+		Leg2=Part.Line(blend_poles_0[2], blend_poles_0[3])
+		Leg3=Part.Line(blend_poles_0[3], blend_poles_0[4])
+		Leg4=Part.Line(blend_poles_0[4], blend_poles_0[5])
+		
+		
+		
 		# stack the ControlPoly6s into a 64 grid - poles and weights
-		#build the leg list for viz
-		Legs=[0]*1
-
-		fp.Legs=Legs
+		# build the leg list for viz
+		fp.Legs=[Leg0, Leg1, Leg2, Leg3, Leg4]
 		fp.Shape = Part.Shape(fp.Legs)
-
 
 
 
