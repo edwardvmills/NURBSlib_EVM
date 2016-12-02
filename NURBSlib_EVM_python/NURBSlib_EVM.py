@@ -2771,14 +2771,16 @@ class ControlGrid44_EdgeSegment:
 		if t1>1:
 			t1=1
 
-		# create surface segment
+		# create surface segment. this works very nicely most of the time, but! 
+		#sometimes .segment returns [[vector],[vector],[vector],[vector]] instad of a whole grid.
+		
 		print 'sgdir: ', segdir 
 		print 't0 ', t0
 		print 't1 ', t1
 		if segdir=='u':
 			surface.segment(t0,t1,0,1)
 		if segdir=='v':
-			surface.segment(0,1,t0,t1)
+			surface.segment(0,1,t0,t1) # 
 		# extract the control grid information from the surface segment
 		poles_2dArray = surface.getPoles()
 		print(poles_2dArray)
