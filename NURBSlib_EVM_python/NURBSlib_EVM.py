@@ -2732,8 +2732,8 @@ class ControlGrid44_EdgeSegment:
 		obj.addProperty("App::PropertyLink","NL_Surface","ControlGrid44_EdgeSegment","Base Surface").NL_Surface = NL_Surface
 		obj.addProperty("App::PropertyLink","NL_Curve","ControlGrid44_EdgeSegment","reference Curve").NL_Curve = NL_Curve
 		obj.addProperty("Part::PropertyGeometryList","Legs","ControlGrid44_EdgeSegment","control segments").Legs
-		obj.addProperty("App::PropertyVectorList","Poles","ControlPoly4_3L","Poles").Poles
-		obj.addProperty("App::PropertyFloatList","Weights","ControlPoly4_3L","Weights").Weights
+		obj.addProperty("App::PropertyVectorList","Poles","ControlGrid44_EdgeSegment","Poles").Poles
+		obj.addProperty("App::PropertyFloatList","Weights","ControlGrid44_EdgeSegment","Weights").Weights
 		obj.Proxy = self
 
 	def execute(self, fp):
@@ -2839,6 +2839,161 @@ class ControlGrid44_EdgeSegment:
 			Legs[i]=Part.Line(fp.Poles[i-12],fp.Poles[i-8])
 		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
+
+class ControlGrid44_2EdgeSegments:
+	def __init__(self, obj , NL_Surface, NL_Curve_a,NL_Curve_b):
+		''' Add the properties '''
+		FreeCAD.Console.PrintMessage("\nControlGrid44_2EdgeSegments class Init\n")
+		obj.addProperty("App::PropertyLink","NL_Surface","ControlGrid44_2EdgeSegments","Base Surface").NL_Surface = NL_Surface
+		obj.addProperty("App::PropertyLink","NL_Curve_a","ControlGrid44_2EdgeSegments","reference Curve a").NL_Curve_a = NL_Curve_a
+		obj.addProperty("App::PropertyLink","NL_Curve_b","ControlGrid44_2EdgeSegments","reference Curve b").NL_Curve_b = NL_Curve_b		
+		obj.addProperty("Part::PropertyGeometryList","Legs","ControlGrid44_2EdgeSegments","control segments").Legs
+		obj.addProperty("App::PropertyVectorList","Poles","ControlGrid44_2EdgeSegments","Poles").Poles
+		obj.addProperty("App::PropertyFloatList","Weights","ControlGrid44_2EdgeSegments","Weights").Weights
+		obj.Proxy = self
+
+	def execute(self, fp):
+		'''Do something when doing a recomputation, this method is mandatory'''
+		# get surface
+		surface=fp.NL_Surface.Shape.Surface
+		# get cutting points from curve
+		curve_a=fp.NL_Curve_a.Shape.Curve
+		a0 = curve_a.StartPoint
+		a1 = curve_a.EndPoint
+		
+		curve_b=fp.NL_Curve_b.Shape.Curve
+		b0 = curve_b.StartPoint
+		b1 = curve_b.EndPoint
+		
+		
+		# determine u or v segmentation and get parameter span fron cutting points for curve a
+		param_a0=surface.parameter(a0)
+		print 'param_a0: ', param_a0
+		param_a1=surface.parameter(a1)
+		print 'param_a1: ', param_a1
+		if ((param_a0[0]<0.001 and param_a1[0]<0.001) or (param_a0[0]>0.999 and param_a1[0]>0.999)): # if u is constant 0 or constant 1 along curve
+			segdira = 'v'
+			if param_a0[1] < param_a1[1]:
+				s0=param_a0[1]
+				s1=param_a1[1]
+			if param_a0[1] > param_a1[1]:
+				s0=param_a1[1]
+				s1=param_a0[1]
+		if ((param_a0[1]<0.001 and param_a1[1]<0.001) or (param_a0[1]>0.999 and param_a1[1]>0.999)): # if v is constant 0 or constant 1 along curve
+			segdira = 'u'
+			if param_a0[0] < param_a1[0]:
+				s0=param_a0[0]
+				s1=param_a1[0]
+			if param_a0[0] > param_a1[0]:
+				s0=param_a1[0]
+				s1=param_a0[0]
+		# filter out s0<0 and s1>1 that may occur when the xyz position is projected to uv
+		if s0<0:
+			s0=0
+		if s1>1:
+			s1=1
+
+		# determine u or v segmentation and get parameter span fron cutting points for curve b
+		param_b0=surface.parameter(b0)
+		print 'param_b0: ', param_b0
+		param_b1=surface.parameter(b1)
+		print 'param_b1: ', param_b1
+		if ((param_b0[0]<0.001 and param_b1[0]<0.001) or (param_b0[0]>0.999 and param_b1[0]>0.999)): # if u is constant 0 or constant 1 along curve
+			segdirb = 'v'
+			if param_b0[1] < param_b1[1]:
+				t0=param_b0[1]
+				t1=param_b1[1]
+			if param_b0[1] > param_b1[1]:
+				t0=param_b1[1]
+				t1=param_b0[1]
+		if ((param_b0[1]<0.001 and param_b1[1]<0.001) or (param_b0[1]>0.999 and param_b1[1]>0.999)): # if v is constant 0 or constant 1 along curve
+			segdirb = 'u'
+			if param_b0[0] < param_b1[0]:
+				t0=param_b0[0]
+				t1=param_b1[0]
+			if param_b0[0] > param_b1[0]:
+				t0=param_b1[0]
+				t1=param_b0[0]
+		# filter out t0<0 and t1>1 that may occur when the xyz position is projected to uv
+		if t0<0:
+			t0=0
+		if t1>1:
+			t1=1			
+			
+			
+		# create surface segment. this works very nicely most of the time, but! 
+		#sometimes .segment returns [[vector],[vector],[vector],[vector]] instad of a whole grid.
+		
+		print 'sgdira: ', segdira
+		print 'sgdirb: ', segdirb
+		print 's0 ', s0
+		print 's1 ', s1		
+		print 't0 ', t0
+		print 't1 ', t1
+		
+		if segdira=='u' and segdirb=='v':
+			surface.segment(s0,s1,t0,t1)
+		if segdira=='v' and segdirb=='u':
+			surface.segment(t0,t1,s0,s1) # 
+		# extract the control grid information from the surface segment
+		poles_2dArray = surface.getPoles()
+		print(poles_2dArray)
+		fp.Poles = [poles_2dArray[0][0],
+					poles_2dArray[0][1],
+					poles_2dArray[0][2],
+					poles_2dArray[0][3],
+					poles_2dArray[1][0],
+					poles_2dArray[1][1],
+					poles_2dArray[1][2],
+					poles_2dArray[1][3],
+					poles_2dArray[2][0],
+					poles_2dArray[2][1],
+					poles_2dArray[2][2],
+					poles_2dArray[2][3],
+					poles_2dArray[3][0],
+					poles_2dArray[3][1],
+					poles_2dArray[3][2],
+					poles_2dArray[3][3]]
+
+		weights_2dArray = surface.getWeights()
+		print(weights_2dArray)
+		fp.Weights = [weights_2dArray[0][0],
+					weights_2dArray[0][1],
+					weights_2dArray[0][2],
+					weights_2dArray[0][3],
+					weights_2dArray[1][0],
+					weights_2dArray[1][1],
+					weights_2dArray[1][2],
+					weights_2dArray[1][3],
+					weights_2dArray[2][0],
+					weights_2dArray[2][1],
+					weights_2dArray[2][2],
+					weights_2dArray[2][3],
+					weights_2dArray[3][0],
+					weights_2dArray[3][1],
+					weights_2dArray[3][2],
+					weights_2dArray[3][3]]
+
+
+
+		Legs=[0]*24
+		for i in range(0,3):
+			Legs[i]=Part.Line(fp.Poles[i],fp.Poles[i+1])
+		for i in range(3,6):
+			Legs[i]=Part.Line(fp.Poles[i+1],fp.Poles[i+2])
+		for i in range(6,9):
+			Legs[i]=Part.Line(fp.Poles[i+2],fp.Poles[i+3])
+		for i in range(9,12):
+			Legs[i]=Part.Line(fp.Poles[i+3],fp.Poles[i+4])
+		for i in range(12,16):
+			Legs[i]=Part.Line(fp.Poles[i-12],fp.Poles[i-8])
+		for i in range(16,20):
+			Legs[i]=Part.Line(fp.Poles[i-12],fp.Poles[i-8])
+		for i in range(20,24):
+			Legs[i]=Part.Line(fp.Poles[i-12],fp.Poles[i-8])
+		fp.Legs=Legs
+		fp.Shape = Part.Shape(fp.Legs)
+
 
 		
 # 11/25/2016
