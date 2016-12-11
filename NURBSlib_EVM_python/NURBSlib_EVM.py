@@ -2399,8 +2399,8 @@ class ControlPoly6_FilletBezier:
 		obj.addProperty("App::PropertyLink","CubicCurve4_1","ControlPoly6_FilletBezier","Second reference Bezier Curve").CubicCurve4_1 = cubiccurve4_1
 		obj.addProperty("App::PropertyFloat","Scale_1","ControlPoly6_FilletBezier","First curve tangent scaling").Scale_1 = 2.0
 		obj.addProperty("App::PropertyFloat","Scale_4","ControlPoly6_FilletBezier","Second curve tangent scaling").Scale_4 = 2.0
-		obj.addProperty("App::PropertyFloat","Scale_2","ControlPoly6_FilletBezier","First curve inner scaling").Scale_2 = 2.0
-		obj.addProperty("App::PropertyFloat","Scale_3","ControlPoly6_FilletBezier","Second curve inner scaling").Scale_3 = 2.0
+		obj.addProperty("App::PropertyFloat","Scale_2","ControlPoly6_FilletBezier","First curve inner scaling").Scale_2 = 3.0
+		obj.addProperty("App::PropertyFloat","Scale_3","ControlPoly6_FilletBezier","Second curve inner scaling").Scale_3 = 3.0
 		obj.addProperty("Part::PropertyGeometryList","Legs","ControlPoly6_FilletBezier","control segments").Legs
 		obj.addProperty("App::PropertyVectorList","Poles","ControlPoly6_FilletBezier","Poles").Poles
 		obj.addProperty("App::PropertyFloatList","Weights","ControlPoly6_FilletBezier","Weights").Weights = [1.0,1.0,1.0,1.0]
@@ -2723,6 +2723,43 @@ class CubicSurface_64:
 		# the legacy function below sets the degree and knot vector
 		fp.Shape = NURBS_Cubic_64_surf(WeightedPoles).toShape()
 
+# 11/25/2016. update 12/09/2016.
+# There a mess to clean up in re. passing the pole/weight list to FreeCAD. 
+# The 3 legacy _surf functions used above want a list of 16 X [[x,y,z],w] as input,
+# but internally, they run two loops to break it back into 2D array form to feed into the actual BSplineSurface(). 
+# This is only because this was the first working example i found for BSplineSurface. This was fine for a long time.
+# To rotate grids easily, i need to rewrite all the code to stay in 2D array form at all times. 'All the code': grid generators and nurbs surfaces.
+#
+# a BSplineSurface with u along x, v along y, looked at from the top returns the following poles list
+#
+# [[00,01,02,03],[10,11,12,13],[20,21,22,23],[30,31,32,33]]
+#
+# with the following topology (rows of the list read UP in xyz topo)
+#	v=1			1,1
+#	03 13 23 33
+#	02 12 22 32
+#	01 11 21 31
+#	00 10 20 30 	
+#u,v=0,0		u=1
+#
+# So the pole list is  list of pole columns
+# But the list reads as follows in the interpreter (rows DOWN)
+#	00 10 20 30
+#	01 11 21 31
+#	02 12 22 23
+#	03 13 23 33
+#
+# numpy.Rot90(array,n) operates ccw on the DOWN version, which is cw in xyz topo.
+#
+# Unfortunately, all my grid numbering schemes so far were row>column, as in
+#
+#	30 31 32 33 
+#	20 21 22 23
+#	10 11 12 13
+#	00 01 02 03
+#
+# this will be annoying to rewrite.				
+		
 #### surface derived objects (+surf to input)		
 		
 class ControlGrid44_EdgeSegment:
@@ -2993,36 +3030,6 @@ class ControlGrid44_2EdgeSegments:
 			Legs[i]=Part.Line(fp.Poles[i-12],fp.Poles[i-8])
 		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
-
-
-		
-# 11/25/2016
-# There a mess to clean up in re. passing the pole/weight list to FreeCAD. 
-# The 3 legacy _surf functions above want a list of 16 X [[x,y,z],w] as input,
-# but internally, they run two loops to break it back into 2D array form to feed into the actual BSplineSurface(). 
-# This is only because this was the first working example i found for BSplineSurface. and this was fine for a long time.
-# To rotate grids easily, i need to rewrite all the code to stay in 2D array form at all times
-#
-# a BSplineSurface with u along x, v along y, looked at from the top returns the following poles list
-#
-# [[00,01,02,03],[10,11,12,13],[20,21,22,23],[30,31,32,33]]
-#
-# with the following topology 
-#	v=1			1,1
-#	03 13 23 33
-#	02 12 22 32
-#	01 11 21 31
-#	00 10 20 30 	
-#u,v=0,0		u=1
-#
-# so the pole list is  list of pole columns. Unfortunately, all my grid numbering schemes so far were row>column, as in
-#
-#	30 31 32 33 
-#	20 21 22 23
-#	10 11 12 13
-#	00 01 02 03
-#
-# this will be annoying to rewrite.		
 		
 class ControlGrid64_2Grid44:  # surfaces not strictly used as input, but this is the logical position
 	def __init__(self, obj , Grid_0, Grid_1):
@@ -3032,8 +3039,8 @@ class ControlGrid64_2Grid44:  # surfaces not strictly used as input, but this is
 		obj.addProperty("App::PropertyLink","Grid_1","ControlGrid64_2Grid44","second reference 4X4 grid").Grid_1 = Grid_1
 		obj.addProperty("App::PropertyFloat","scale_tangent_0","ControlGrid64_2Grid44","first grid tangent scale").scale_tangent_0 = 2
 		obj.addProperty("App::PropertyFloat","scale_tangent_1","ControlGrid64_2Grid44","second grid tangent scale").scale_tangent_1 = 2
-		obj.addProperty("App::PropertyFloatList","scale_inner_0","ControlGrid64_2Grid44","first side inner scale").scale_inner_0 = [2, 2, 2, 2]
-		obj.addProperty("App::PropertyFloatList","scale_inner_1","ControlGrid64_2Grid44","second side inner scale").scale_inner_1 = [2, 2, 2, 2]
+		obj.addProperty("App::PropertyFloatList","scale_inner_0","ControlGrid64_2Grid44","first side inner scale").scale_inner_0 = [3, 3, 3, 3]
+		obj.addProperty("App::PropertyFloatList","scale_inner_1","ControlGrid64_2Grid44","second side inner scale").scale_inner_1 = [3, 3, 3, 3]
 		obj.addProperty("Part::PropertyGeometryList","Legs","ControlGrid64_2Grid44","control segments").Legs
 		obj.addProperty("App::PropertyVectorList","Poles","ControlGrid64_2Grid44","Poles").Poles
 		obj.addProperty("App::PropertyFloatList","Weights","ControlGrid64_2Grid44","Weights").Weights
@@ -3048,10 +3055,6 @@ class ControlGrid64_2Grid44:  # surfaces not strictly used as input, but this is
 		# -blend: upgrade, stitch, scale
 		# -stack each blend poly back into a grid
 		
-		# scratch pad copypasta for array manipulation
-		# numpy.asarray(l).T.tolist()
-		# np.rot90(m, 2)
-
 		# extract corner points
 		corners_0=[fp.Grid_0.Poles[0],fp.Grid_0.Poles[3],fp.Grid_0.Poles[15],fp.Grid_0.Poles[12]]
 		corners_1=[fp.Grid_1.Poles[0],fp.Grid_1.Poles[3],fp.Grid_1.Poles[15],fp.Grid_1.Poles[12]]
@@ -3230,56 +3233,256 @@ class ControlGrid64_2Grid44:  # surfaces not strictly used as input, but this is
 				blend_weights_3[5]]	
 	
 		# build the leg list for viz		
-		Legs=[0]*20
-		
-		Legs[0]=Part.Line(blend_poles_0[0], blend_poles_0[1])
-		Legs[1]=Part.Line(blend_poles_0[1], blend_poles_0[2])
-		Legs[2]=Part.Line(blend_poles_0[2], blend_poles_0[3])
-		Legs[3]=Part.Line(blend_poles_0[3], blend_poles_0[4])
-		Legs[4]=Part.Line(blend_poles_0[4], blend_poles_0[5])
-		
-		Legs[5]=Part.Line(blend_poles_1[0], blend_poles_1[1])
-		Legs[6]=Part.Line(blend_poles_1[1], blend_poles_1[2])
-		Legs[7]=Part.Line(blend_poles_1[2], blend_poles_1[3])
-		Legs[8]=Part.Line(blend_poles_1[3], blend_poles_1[4])
-		Legs[9]=Part.Line(blend_poles_1[4], blend_poles_1[5])
-		
-		Legs[10]=Part.Line(blend_poles_2[0], blend_poles_2[1])
-		Legs[11]=Part.Line(blend_poles_2[1], blend_poles_2[2])
-		Legs[12]=Part.Line(blend_poles_2[2], blend_poles_2[3])
-		Legs[13]=Part.Line(blend_poles_2[3], blend_poles_2[4])
-		Legs[14]=Part.Line(blend_poles_2[4], blend_poles_2[5])
-		
-		Legs[15]=Part.Line(blend_poles_3[0], blend_poles_3[1])
-		Legs[16]=Part.Line(blend_poles_3[1], blend_poles_3[2])
-		Legs[17]=Part.Line(blend_poles_3[2], blend_poles_3[3])
-		Legs[18]=Part.Line(blend_poles_3[3], blend_poles_3[4])
-		Legs[19]=Part.Line(blend_poles_3[4], blend_poles_3[5])
-		
-		# stack the ControlPoly6s into a 64 grid - poles and weights
+		Legs=[0]*38
+		for i in range(0,5):
+			Legs[i]=Part.Line(fp.Poles[i],fp.Poles[i+1])
+		for i in range(5,10):
+			Legs[i]=Part.Line(fp.Poles[i+1],fp.Poles[i+2])
+		for i in range(10,15):
+			Legs[i]=Part.Line(fp.Poles[i+2],fp.Poles[i+3])
+		for i in range(15,20):
+			Legs[i]=Part.Line(fp.Poles[i+3],fp.Poles[i+4])
+
+		for i in range(20,26):
+			Legs[i]=Part.Line(fp.Poles[i-20],fp.Poles[i-14])
+		for i in range(26,32):
+			Legs[i]=Part.Line(fp.Poles[i-20],fp.Poles[i-14])
+		for i in range(32,38):
+			Legs[i]=Part.Line(fp.Poles[i-20],fp.Poles[i-14])
 		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
 
+class SubGrid33_2Grid64s:
+	def __init__(self, obj , Grid_0, Grid_1):
+		''' Add the properties '''
+		FreeCAD.Console.PrintMessage("\nSubGrid33_2Grid64s class Init\n")
+		obj.addProperty("App::PropertyLink","Grid_0","SubGrid33_2Grid64s","first reference 6X4 grid").Grid_0 = Grid_0
+		obj.addProperty("App::PropertyLink","Grid_1","SubGrid33_2Grid64s","second reference 6X4 grid").Grid_1 = Grid_1
+		obj.addProperty("Part::PropertyGeometryList","Legs","SubGrid33_2Grid64s","control segments").Legs
+		obj.addProperty("App::PropertyVectorList","u_row_poles","SubGrid33_2Grid64s","u_row_poles").u_row_poles
+		obj.addProperty("App::PropertyVectorList","v_col_poles","SubGrid33_2Grid64s","v_col_poles").v_col_poles
+		obj.addProperty("App::PropertyFloatList","u_row_weights","SubGrid33_2Grid64s","u_row_weights").u_row_weights		
+		obj.addProperty("App::PropertyFloatList","v_col_weights","SubGrid33_2Grid64s","v_col_weights").v_col_weights
+		obj.Proxy = self
 
 
+	def execute(self, fp):
+		'''Do something when doing a recomputation, this method is mandatory'''
+		# outline:
+		# -find shared corner
+		# -set 'u' row - imagine the future surface as uvn (n is normal). 
+		# -set 'v' row - imagine the future surface as uvn (n is normal).
+		# -build a corner focused 33 grid using the same logic as the corner focused 66 grid. 
+		#the $10 question here is whether this even maintains G1? maybe...it has been many steps since the bezier surface was segmented.
+		
+		# extract corner points
+		corners_0=[fp.Grid_0.Poles[0],fp.Grid_0.Poles[5],fp.Grid_0.Poles[18],fp.Grid_0.Poles[23]]
+		corners_1=[fp.Grid_1.Poles[0],fp.Grid_1.Poles[5],fp.Grid_1.Poles[18],fp.Grid_1.Poles[23]]
+		# find the common point
+		for i in range(0,4):
+			for j in range(0,4):
+				if corners_0[i] == corners_1[j]:
+					common=[i,j]
+		print 'common ', common
+		# tested-runs-
+		
+		# the two '6s' fo each grid should form a V when looking at the future grid
+		# a is the left leg of the V, i.e. common[0] = 0 or 3
+		# b is the right leg of the V i.e. common[1] = 2 or 1
+		
+		# check input grid order, swap grids if necessary
+		if (common[0] == 1 or common[0] == 2) and (common[1] == 0 or common[1] == 3):
+			print 'swapping grid order'
+			temp=fp.Grid_0
+			fp.Grid_0=fp.Grid_1
+			fp.Grid_1=temp
+			# get the corners again
+			corners_0=[fp.Grid_0.Poles[0],fp.Grid_0.Poles[5],fp.Grid_0.Poles[18],fp.Grid_0.Poles[23]]
+			corners_1=[fp.Grid_1.Poles[0],fp.Grid_1.Poles[5],fp.Grid_1.Poles[18],fp.Grid_1.Poles[23]]
+			# find common again
+			for i in range(0,4):
+				for j in range(0,4):
+					if corners_0[i] == corners_1[j]:
+						common=[i,j]
+			print 'common ', common
+		
+		if common[0] == 0:
+			fp.u_row_poles = [fp.Grid_0.Poles[0],fp.Grid_0.Poles[1],fp.Grid_0.Poles[2]]
+			fp.u_row_weights = [fp.Grid_0.Weights[0],fp.Grid_0.Weights[1],fp.Grid_0.Weights[2]]
+		
+		if common[0] == 3:
+			fp.u_row_poles = [fp.Grid_0.Poles[23],fp.Grid_0.Poles[22],fp.Grid_0.Poles[21]]
+			fp.u_row_weights = [fp.Grid_0.Weights[23],fp.Grid_0.Weights[22],fp.Grid_0.Weights[21]]
+		
+		if common[1] == 1:
+			fp.v_col_poles = [fp.Grid_1.Poles[5],fp.Grid_1.Poles[4],fp.Grid_1.Poles[3]]
+			fp.v_col_weights = [fp.Grid_1.Weights[5],fp.Grid_1.Weights[4],fp.Grid_1.Weights[3]]
+		
+		if common[1] == 2:
+			fp.v_col_poles = [fp.Grid_1.Poles[18],fp.Grid_1.Poles[19],fp.Grid_1.Poles[20]]
+			fp.v_col_weights = [fp.Grid_1.Weights[18],fp.Grid_1.Weights[19],fp.Grid_1.Weights[20]]
+		
+		Legs=[0]*4
 
+		Legs[0]=Part.Line(fp.u_row_poles[0], fp.u_row_poles[1])
+		Legs[1]=Part.Line(fp.u_row_poles[1], fp.u_row_poles[2])
+		
+		Legs[2]=Part.Line(fp.v_col_poles[0], fp.v_col_poles[1])
+		Legs[3]=Part.Line(fp.v_col_poles[1], fp.v_col_poles[2])		
+		
+		fp.Legs=Legs
+		fp.Shape = Part.Shape(fp.Legs)
 
+class ControlGrid66_4Subs:
+	def __init__(self, obj , SubGrid_0, SubGrid_1, SubGrid_2, SubGrid_3):
+		''' Add the properties '''
+		FreeCAD.Console.PrintMessage("\nControlGrid66_4Subs class Init\n")
+		obj.addProperty("App::PropertyLink","SubGrid_0","ControlGrid66_4Subs","first reference 3X3 sub grid").SubGrid_0 = SubGrid_0
+		obj.addProperty("App::PropertyLink","SubGrid_1","ControlGrid66_4Subs","second reference 3X3 sub grid").SubGrid_1 = SubGrid_1
+		obj.addProperty("App::PropertyLink","SubGrid_2","ControlGrid66_4Subs","third reference 3X3 sub grid").SubGrid_2 = SubGrid_2	
+		obj.addProperty("App::PropertyLink","SubGrid_3","ControlGrid66_4Subs","fourth reference 3X3 sub grid").SubGrid_3 = SubGrid_3		
+		obj.addProperty("Part::PropertyGeometryList","Legs","ControlGrid66_4Subs","control segments").Legs
+		obj.addProperty("App::PropertyVectorList","Poles","ControlGrid66_4Subs","Poles").Poles
+		obj.addProperty("App::PropertyFloatList","Weights","ControlGrid66_4Subs","Weights").Weights
+		obj.Proxy = self
 
+	def execute(self, fp):
+		'''Do something when doing a recomputation, this method is mandatory'''
+		p00 = fp.SubGrid_0.u_row_poles[0]
+		p01 = fp.SubGrid_0.u_row_poles[1]
+		p02 = fp.SubGrid_0.u_row_poles[2]
+		p03 = fp.SubGrid_1.v_col_poles[2]
+		p04 = fp.SubGrid_1.v_col_poles[1]
+		p05 = fp.SubGrid_1.v_col_poles[0]
+		
+		p15 = fp.SubGrid_1.u_row_poles[1]
+		p25 = fp.SubGrid_1.u_row_poles[2]
+		p35 = fp.SubGrid_2.v_col_poles[2]
+		p45 = fp.SubGrid_2.v_col_poles[1]
+		p55 = fp.SubGrid_2.v_col_poles[0]
+		
+		p54 = fp.SubGrid_2.u_row_poles[1]
+		p53 = fp.SubGrid_2.u_row_poles[2]
+		p52 = fp.SubGrid_3.v_col_poles[2]
+		p51 = fp.SubGrid_3.v_col_poles[1]
+		p50 = fp.SubGrid_3.v_col_poles[0]
+		
+		p40 = fp.SubGrid_3.u_row_poles[1]
+		p30 = fp.SubGrid_3.u_row_poles[2]
+		p20 = fp.SubGrid_0.v_col_poles[2]
+		p10 = fp.SubGrid_0.v_col_poles[1]
+		
+		p11 = p01 + (p10 - p00)
+		p14 = p04 + (p15 - p05)
+		p41 = p51 + (p40 - p50)
+		p44 = p45 + (p54 - p55)
+		p12 = p02 + (p10 - p00)
+		p13 = p03 + (p15 - p05)	
+		p24 = p25 + (p04 - p05)
+		p34 = p35 + (p54 - p55)	
+		p42 = p52 + (p40 - p50)
+		p43 = p53 + (p45 - p55)
+		p21 = p20 + (p01 - p00)
+		p31 = p30 + (p51 - p50)
+		p22 = p12 + (p20 - p10)
+		p23 = p13 + (p25 - p15)
+		p32 = p42 + (p30 - p40)
+		p33 = p43 + (p35 - p45)
+		fp.Poles = [p00, p01, p02, p03, p04, p05,
+					p10, p11, p12, p13, p14, p15,
+					p20, p21, p22, p23, p24, p25,
+					p30, p31, p32, p33, p34, p35,
+					p40, p41, p42, p43, p44, p45,
+					p50, p51, p52, p53, p54, p55]
+		w00 = fp.SubGrid_0.u_row_weights[0]
+		w01 = fp.SubGrid_0.u_row_weights[1]
+		w02 = fp.SubGrid_0.u_row_weights[2]
+		w03 = fp.SubGrid_1.v_col_weights[2]
+		w04 = fp.SubGrid_1.v_col_weights[1]
+		w05 = fp.SubGrid_1.v_col_weights[0]
+		w15 = fp.SubGrid_1.u_row_weights[1]
+		w25 = fp.SubGrid_1.u_row_weights[2]
+		w35 = fp.SubGrid_2.v_col_weights[2]
+		w45 = fp.SubGrid_2.v_col_weights[1]
+		w55 = fp.SubGrid_2.v_col_weights[0]
+		w54 = fp.SubGrid_2.u_row_weights[1]
+		w53 = fp.SubGrid_2.u_row_weights[2]
+		w52 = fp.SubGrid_3.v_col_weights[2]
+		w51 = fp.SubGrid_3.v_col_weights[1]
+		w50 = fp.SubGrid_3.v_col_weights[0]
+		w40 = fp.SubGrid_3.u_row_weights[1]
+		w30 = fp.SubGrid_3.u_row_weights[2]
+		w20 = fp.SubGrid_0.v_col_weights[2]
+		w10 = fp.SubGrid_0.v_col_weights[1]
+		# maybe i should average instead of multiply? needs testing.
+		# currently based on the idea all wights are between 0 and 1.
+		# previous used cumulative neighbor mulitplication. this drives weights too low.
+		# current method multiplies the two weights along isos to the closest edge
+		w11 = w01*w10
+		w12 = w02*w10 
+		w21 = w01*w20
+		w22 = w02*w20
+		w14 = w04*w15
+		w13 = w03*w15
+		w24 = w04*w25
+		w23 = w03*w25
+		w44 = w45*w54
+		w34 = w35*w54
+		w43 = w54*w45
+		w33 = w35*w53
+		w41 = w40*w51
+		w31 = w30*w51
+		w42 = w52*w40
+		w32 = w30*w52
 
+		fp.Weights = [w00, w01, w02, w03, w04, w05,
+					w10, w11, w12, w13, w14, w15,
+					w20, w21, w22, w23, w24, w25,
+					w30, w31, w32, w33, w34, w35,
+					w40, w41, w42, w43, w44, w45,
+					w50, w51, w52, w53, w54, w55]
+		Legs=[0]*60
+		for i in range(0,5):
+			Legs[i]=Part.Line(fp.Poles[i],fp.Poles[i+1])
+		for i in range(5,10):
+			Legs[i]=Part.Line(fp.Poles[i+1],fp.Poles[i+2])
+		for i in range(10,15):
+			Legs[i]=Part.Line(fp.Poles[i+2],fp.Poles[i+3])
+		for i in range(15,20):
+			Legs[i]=Part.Line(fp.Poles[i+3],fp.Poles[i+4])
+		for i in range(20,25):
+			Legs[i]=Part.Line(fp.Poles[i+4],fp.Poles[i+5])
+		for i in range(25,30):
+			Legs[i]=Part.Line(fp.Poles[i+5],fp.Poles[i+6])	
+		for i in range(30,36):
+			Legs[i]=Part.Line(fp.Poles[i-30],fp.Poles[i-24])
+		for i in range(36,42):
+			Legs[i]=Part.Line(fp.Poles[i-30],fp.Poles[i-24])
+		for i in range(42,48):
+			Legs[i]=Part.Line(fp.Poles[i-30],fp.Poles[i-24])
+		for i in range(48,54):
+			Legs[i]=Part.Line(fp.Poles[i-30],fp.Poles[i-24])
+		for i in range(54,60):
+			Legs[i]=Part.Line(fp.Poles[i-30],fp.Poles[i-24])
+		
+		fp.Legs=Legs
+		fp.Shape = Part.Shape(fp.Legs)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 
