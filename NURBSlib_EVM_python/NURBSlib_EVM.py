@@ -3259,10 +3259,14 @@ class SubGrid33_2Grid64s:
 		obj.addProperty("App::PropertyLink","Grid_0","SubGrid33_2Grid64s","first reference 6X4 grid").Grid_0 = Grid_0
 		obj.addProperty("App::PropertyLink","Grid_1","SubGrid33_2Grid64s","second reference 6X4 grid").Grid_1 = Grid_1
 		obj.addProperty("Part::PropertyGeometryList","Legs","SubGrid33_2Grid64s","control segments").Legs
-		obj.addProperty("App::PropertyVectorList","u_row_poles","SubGrid33_2Grid64s","u_row_poles").u_row_poles
-		obj.addProperty("App::PropertyVectorList","v_col_poles","SubGrid33_2Grid64s","v_col_poles").v_col_poles
-		obj.addProperty("App::PropertyFloatList","u_row_weights","SubGrid33_2Grid64s","u_row_weights").u_row_weights		
-		obj.addProperty("App::PropertyFloatList","v_col_weights","SubGrid33_2Grid64s","v_col_weights").v_col_weights
+		obj.addProperty("App::PropertyVectorList","u_row0_poles","SubGrid33_2Grid64s","u_row0_poles").u_row0_poles
+		obj.addProperty("App::PropertyVectorList","u_row1_poles","SubGrid33_2Grid64s","u_row1_poles").u_row1_poles		
+		obj.addProperty("App::PropertyVectorList","v_col0_poles","SubGrid33_2Grid64s","v_col0_poles").v_col0_poles
+		obj.addProperty("App::PropertyVectorList","v_col1_poles","SubGrid33_2Grid64s","v_col1_poles").v_col1_poles		
+		obj.addProperty("App::PropertyFloatList","u_row0_weights","SubGrid33_2Grid64s","u_row0_weights").u_row0_weights
+		obj.addProperty("App::PropertyFloatList","u_row1_weights","SubGrid33_2Grid64s","u_row1_weights").u_row1_weights		
+		obj.addProperty("App::PropertyFloatList","v_col0_weights","SubGrid33_2Grid64s","v_col0_weights").v_col0_weights
+		obj.addProperty("App::PropertyFloatList","v_col1_weights","SubGrid33_2Grid64s","v_col1_weights").v_col1_weights		
 		obj.Proxy = self
 
 
@@ -3307,29 +3311,45 @@ class SubGrid33_2Grid64s:
 			print 'common ', common
 		
 		if common[0] == 0:
-			fp.u_row_poles = [fp.Grid_0.Poles[0],fp.Grid_0.Poles[1],fp.Grid_0.Poles[2]]
-			fp.u_row_weights = [fp.Grid_0.Weights[0],fp.Grid_0.Weights[1],fp.Grid_0.Weights[2]]
+			fp.u_row0_poles = [fp.Grid_0.Poles[0],fp.Grid_0.Poles[1],fp.Grid_0.Poles[2]]
+			fp.u_row0_weights = [fp.Grid_0.Weights[0],fp.Grid_0.Weights[1],fp.Grid_0.Weights[2]]
+			fp.u_row1_poles = [fp.Grid_0.Poles[6],fp.Grid_0.Poles[7],fp.Grid_0.Poles[8]]
+			fp.u_row1_weights = [fp.Grid_0.Weights[6],fp.Grid_0.Weights[7],fp.Grid_0.Weights[8]]			
 		
 		if common[0] == 3:
-			fp.u_row_poles = [fp.Grid_0.Poles[23],fp.Grid_0.Poles[22],fp.Grid_0.Poles[21]]
-			fp.u_row_weights = [fp.Grid_0.Weights[23],fp.Grid_0.Weights[22],fp.Grid_0.Weights[21]]
+			fp.u_row0_poles = [fp.Grid_0.Poles[23],fp.Grid_0.Poles[22],fp.Grid_0.Poles[21]]
+			fp.u_row0_weights = [fp.Grid_0.Weights[23],fp.Grid_0.Weights[22],fp.Grid_0.Weights[21]]
+			fp.u_row1_poles = [fp.Grid_0.Poles[17],fp.Grid_0.Poles[16],fp.Grid_0.Poles[15]]
+			fp.u_row1_weights = [fp.Grid_0.Weights[17],fp.Grid_0.Weights[16],fp.Grid_0.Weights[15]]					
 		
 		if common[1] == 1:
-			fp.v_col_poles = [fp.Grid_1.Poles[5],fp.Grid_1.Poles[4],fp.Grid_1.Poles[3]]
-			fp.v_col_weights = [fp.Grid_1.Weights[5],fp.Grid_1.Weights[4],fp.Grid_1.Weights[3]]
-		
+			fp.v_col0_poles = [fp.Grid_1.Poles[5],fp.Grid_1.Poles[4],fp.Grid_1.Poles[3]]
+			fp.v_col0_weights = [fp.Grid_1.Weights[5],fp.Grid_1.Weights[4],fp.Grid_1.Weights[3]]
+			fp.v_col1_poles = [fp.Grid_1.Poles[11],fp.Grid_1.Poles[10],fp.Grid_1.Poles[9]]
+			fp.v_col1_weights = [fp.Grid_1.Weights[11],fp.Grid_1.Weights[10],fp.Grid_1.Weights[9]]					
+			
 		if common[1] == 2:
-			fp.v_col_poles = [fp.Grid_1.Poles[18],fp.Grid_1.Poles[19],fp.Grid_1.Poles[20]]
-			fp.v_col_weights = [fp.Grid_1.Weights[18],fp.Grid_1.Weights[19],fp.Grid_1.Weights[20]]
-		
-		Legs=[0]*4
+			fp.v_col0_poles = [fp.Grid_1.Poles[18],fp.Grid_1.Poles[19],fp.Grid_1.Poles[20]]
+			fp.v_col0_weights = [fp.Grid_1.Weights[18],fp.Grid_1.Weights[19],fp.Grid_1.Weights[20]]
+			fp.v_col1_poles = [fp.Grid_1.Poles[12],fp.Grid_1.Poles[13],fp.Grid_1.Poles[14]]
+			fp.v_col1_weights = [fp.Grid_1.Weights[12],fp.Grid_1.Weights[13],fp.Grid_1.Weights[14]]					
+			
+		Legs=[0]*10
 
-		Legs[0]=Part.Line(fp.u_row_poles[0], fp.u_row_poles[1])
-		Legs[1]=Part.Line(fp.u_row_poles[1], fp.u_row_poles[2])
+		Legs[0]=Part.Line(fp.u_row0_poles[0], fp.u_row0_poles[1])
+		Legs[1]=Part.Line(fp.u_row0_poles[1], fp.u_row0_poles[2])
 		
-		Legs[2]=Part.Line(fp.v_col_poles[0], fp.v_col_poles[1])
-		Legs[3]=Part.Line(fp.v_col_poles[1], fp.v_col_poles[2])		
+		Legs[2]=Part.Line(fp.u_row0_poles[0], fp.u_row1_poles[0])
+		Legs[3]=Part.Line(fp.u_row0_poles[1], fp.u_row1_poles[1])
+		Legs[4]=Part.Line(fp.u_row0_poles[2], fp.u_row1_poles[2])
 		
+		Legs[5]=Part.Line(fp.v_col0_poles[0], fp.v_col0_poles[1])
+		Legs[6]=Part.Line(fp.v_col0_poles[1], fp.v_col0_poles[2])
+
+		Legs[7]=Part.Line(fp.v_col0_poles[0], fp.v_col1_poles[0])
+		Legs[8]=Part.Line(fp.v_col0_poles[1], fp.v_col1_poles[1])
+		Legs[9]=Part.Line(fp.v_col0_poles[2], fp.v_col1_poles[2])
+
 		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
 
@@ -3486,3 +3506,4 @@ class ControlGrid66_4Subs:
 		
 		
 
+		

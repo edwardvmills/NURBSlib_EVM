@@ -15,7 +15,15 @@ s1=s[1].SubObjects[0].Curve
 
 v1=Base.Vector(s0.EndPoint-s0.StartPoint)
 v2=Base.Vector(s1.EndPoint-s1.StartPoint)
-
 test = v1.cross(v2)
+diag = (test.Length / (v1.Length*v2.Length))
 
 print 'test cross product: ', test
+print 'magnitude 1 :', v1.Length
+print 'magnitude 2 :', v2.Length
+print 'magnitude 1 :', test.Length
+print 'ortho crossp check :', diag
+if diag > 0.0001:
+	print 'estimate ', diag*100, '% misalignment'
+elif diag < 0.0001:
+	print 'well aligned'
