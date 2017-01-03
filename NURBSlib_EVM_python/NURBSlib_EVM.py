@@ -1001,7 +1001,7 @@ def BezBiCubic_surf(grid_44):	# obsolete - this was made to check against Bezier
 			n=n+1
 	return surf
 
-def  Bezier_Bicubic_surf(grid_44):
+def Bezier_Bicubic_surf(grid_44):
 	# len(knot_u) := nNodes_u + degree_u + 1
 	# len(knot_v) := nNodes_v + degree_v + 1
 	degree_u=3
@@ -3252,7 +3252,7 @@ class ControlGrid64_2Grid44:  # surfaces not strictly used as input, but this is
 		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
 
-class SubGrid33_2Grid64s:
+class SubGrid33_2Grid64s_old:
 	def __init__(self, obj , Grid_0, Grid_1):
 		''' Add the properties '''
 		FreeCAD.Console.PrintMessage("\nSubGrid33_2Grid64s class Init\n")
@@ -3334,6 +3334,7 @@ class SubGrid33_2Grid64s:
 			fp.v_col1_poles = [fp.Grid_1.Poles[12],fp.Grid_1.Poles[13],fp.Grid_1.Poles[14]]
 			fp.v_col1_weights = [fp.Grid_1.Weights[12],fp.Grid_1.Weights[13],fp.Grid_1.Weights[14]]					
 			
+		
 		Legs=[0]*10
 
 		Legs[0]=Part.Line(fp.u_row0_poles[0], fp.u_row0_poles[1])
@@ -3353,7 +3354,138 @@ class SubGrid33_2Grid64s:
 		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
 
-class ControlGrid66_4Subs:
+class SubGrid33_2Grid64s:
+	def __init__(self, obj , Grid_0, Grid_1):
+		''' Add the properties '''
+		FreeCAD.Console.PrintMessage("\nSubGrid33_2Grid64s class Init\n")
+		obj.addProperty("App::PropertyLink","Grid_0","SubGrid33_2Grid64s","first reference 6X4 grid").Grid_0 = Grid_0
+		obj.addProperty("App::PropertyLink","Grid_1","SubGrid33_2Grid64s","second reference 6X4 grid").Grid_1 = Grid_1
+		obj.addProperty("Part::PropertyGeometryList","Legs","SubGrid33_2Grid64s","control segments").Legs
+		obj.addProperty("App::PropertyVectorList","Poles","SubGrid33_2Grid64s","Poles").Poles
+		obj.addProperty("App::PropertyFloatList","Weights","SubGrid33_2Grid64s","Weights").Weights
+	
+		obj.Proxy = self
+
+	def execute(self, fp):
+		'''Do something when doing a recomputation, this method is mandatory'''
+		# outline:
+		# -find shared corner
+		# -set 'u' row - imagine the future surface as uvn (n is normal). 
+		# -set 'v' row - imagine the future surface as uvn (n is normal).
+		# -build a corner focused 33 grid using the same logic as the corner focused 66 grid. 
+		#the $10 question here is whether this even maintains G1? maybe...it has been many steps since the bezier surface was segmented.
+		
+		# extract corner points
+		corners_0=[fp.Grid_0.Poles[0],fp.Grid_0.Poles[5],fp.Grid_0.Poles[18],fp.Grid_0.Poles[23]]
+		corners_1=[fp.Grid_1.Poles[0],fp.Grid_1.Poles[5],fp.Grid_1.Poles[18],fp.Grid_1.Poles[23]]
+		# find the common point
+		for i in range(0,4):
+			for j in range(0,4):
+				if corners_0[i] == corners_1[j]:
+					common=[i,j]
+		print 'common ', common
+		# tested-runs-
+		
+		# the two '6s' fo each grid should form a V when looking at the future grid
+		# a is the left leg of the V, i.e. common[0] = 0 or 3
+		# b is the right leg of the V i.e. common[1] = 2 or 1
+		
+		# check input grid order, swap grids if necessary
+		if (common[0] == 1 or common[0] == 2) and (common[1] == 0 or common[1] == 3):
+			print 'swapping grid order'
+			temp=fp.Grid_0
+			fp.Grid_0=fp.Grid_1
+			fp.Grid_1=temp
+			# get the corners again
+			corners_0=[fp.Grid_0.Poles[0],fp.Grid_0.Poles[5],fp.Grid_0.Poles[18],fp.Grid_0.Poles[23]]
+			corners_1=[fp.Grid_1.Poles[0],fp.Grid_1.Poles[5],fp.Grid_1.Poles[18],fp.Grid_1.Poles[23]]
+			# find common again
+			for i in range(0,4):
+				for j in range(0,4):
+					if corners_0[i] == corners_1[j]:
+						common=[i,j]
+			print 'common ', common
+		
+		if common[0] == 0:
+			u_row0_poles = [fp.Grid_0.Poles[0],fp.Grid_0.Poles[1],fp.Grid_0.Poles[2]]
+			u_row0_weights = [fp.Grid_0.Weights[0],fp.Grid_0.Weights[1],fp.Grid_0.Weights[2]]
+			u_row1_poles = [fp.Grid_0.Poles[6],fp.Grid_0.Poles[7],fp.Grid_0.Poles[8]]
+			u_row1_weights = [fp.Grid_0.Weights[6],fp.Grid_0.Weights[7],fp.Grid_0.Weights[8]]			
+		
+		if common[0] == 3:
+			u_row0_poles = [fp.Grid_0.Poles[23],fp.Grid_0.Poles[22],fp.Grid_0.Poles[21]]
+			u_row0_weights = [fp.Grid_0.Weights[23],fp.Grid_0.Weights[22],fp.Grid_0.Weights[21]]
+			u_row1_poles = [fp.Grid_0.Poles[17],fp.Grid_0.Poles[16],fp.Grid_0.Poles[15]]
+			u_row1_weights = [fp.Grid_0.Weights[17],fp.Grid_0.Weights[16],fp.Grid_0.Weights[15]]					
+		
+		if common[1] == 1:
+			v_col0_poles = [fp.Grid_1.Poles[5],fp.Grid_1.Poles[4],fp.Grid_1.Poles[3]]
+			v_col0_weights = [fp.Grid_1.Weights[5],fp.Grid_1.Weights[4],fp.Grid_1.Weights[3]]
+			v_col1_poles = [fp.Grid_1.Poles[11],fp.Grid_1.Poles[10],fp.Grid_1.Poles[9]]
+			v_col1_weights = [fp.Grid_1.Weights[11],fp.Grid_1.Weights[10],fp.Grid_1.Weights[9]]					
+			
+		if common[1] == 2:
+			v_col0_poles = [fp.Grid_1.Poles[18],fp.Grid_1.Poles[19],fp.Grid_1.Poles[20]]
+			v_col0_weights = [fp.Grid_1.Weights[18],fp.Grid_1.Weights[19],fp.Grid_1.Weights[20]]
+			v_col1_poles = [fp.Grid_1.Poles[12],fp.Grid_1.Poles[13],fp.Grid_1.Poles[14]]
+			v_col1_weights = [fp.Grid_1.Weights[12],fp.Grid_1.Weights[13],fp.Grid_1.Weights[14]]					
+			
+		u_tan_ratio = (u_row0_poles[1]-u_row0_poles[0]).Length / (v_col1_poles[0]-v_col0_poles[0]).Length
+		v_tan_ratio = (v_col0_poles[1]-v_col0_poles[0]).Length / (u_row1_poles[0]-u_row0_poles[0]).Length
+		
+		p00 = u_row0_poles[0]
+		p01 = u_row0_poles[1]
+		p02 = u_row0_poles[2]		
+		p10 = v_col0_poles[1]
+		p20 = v_col0_poles[2]
+		p11_u = p01 + (u_row0_poles[1]-u_row1_poles[1])*v_tan_ratio
+		p12 = p02 + (u_row0_poles[2]-u_row1_poles[2])*v_tan_ratio
+		p11_v = p10 + (v_col0_poles[1]-v_col1_poles[1])*u_tan_ratio
+		p21 = p20 + (v_col0_poles[2]-v_col1_poles[2])*u_tan_ratio	
+		p11 = (p11_u + p11_v) * 0.5
+		p22_u = p12 + (p21-p11)
+		p22_v = p21 + (p12-p11)		
+		p22 = (p22_u + p22_v) * 0.5
+		
+		fp.Poles = [p00, p01, p02, p10, p11, p12, p20, p21, p22]
+		
+		w00 = u_row0_weights[0]
+		w01 = u_row0_weights[1]
+		w02 = u_row0_weights[2]		
+		w10 = v_col0_weights[1]
+		w20 = v_col0_weights[2]		
+		
+		w11 = w01 * w10
+		w12 = w02 * w10
+		w21 = w01 * w20
+		w22 = w02 * w20
+		
+		fp.Weights = [w00, w01, w02, w10, w11, w12, w20, w21, w22]
+		
+		Legs=[0]*12
+		
+		Legs[0]=Part.Line(p00,p01)
+		Legs[1]=Part.Line(p01,p02)
+		
+		Legs[2]=Part.Line(p00,p10)
+		Legs[3]=Part.Line(p10,p20)
+		
+		Legs[4]=Part.Line(p01,p11)
+		Legs[5]=Part.Line(p02,p12)
+		
+		Legs[6]=Part.Line(p10,p11)
+		Legs[7]=Part.Line(p20,p21)
+		
+		Legs[8]=Part.Line(p11,p12)
+		Legs[9]=Part.Line(p11,p21)
+
+		Legs[10]=Part.Line(p12,p22)
+		Legs[11]=Part.Line(p21,p22)
+		
+		fp.Legs=Legs
+		fp.Shape = Part.Shape(fp.Legs)
+		
+class ControlGrid66_4Subs_old:
 	def __init__(self, obj , SubGrid_0, SubGrid_1, SubGrid_2, SubGrid_3):
 		''' Add the properties '''
 		FreeCAD.Console.PrintMessage("\nControlGrid66_4Subs class Init\n")
@@ -3488,22 +3620,149 @@ class ControlGrid66_4Subs:
 		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
 
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+class ControlGrid66_4Subs:
+	def __init__(self, obj , SubGrid_0, SubGrid_1, SubGrid_2, SubGrid_3):
+		''' Add the properties '''
+		FreeCAD.Console.PrintMessage("\nControlGrid66_4Subs class Init\n")
+		obj.addProperty("App::PropertyLink","SubGrid_0","ControlGrid66_4Subs","first reference 3X3 sub grid").SubGrid_0 = SubGrid_0
+		obj.addProperty("App::PropertyLink","SubGrid_1","ControlGrid66_4Subs","second reference 3X3 sub grid").SubGrid_1 = SubGrid_1
+		obj.addProperty("App::PropertyLink","SubGrid_2","ControlGrid66_4Subs","third reference 3X3 sub grid").SubGrid_2 = SubGrid_2	
+		obj.addProperty("App::PropertyLink","SubGrid_3","ControlGrid66_4Subs","fourth reference 3X3 sub grid").SubGrid_3 = SubGrid_3		
+		obj.addProperty("Part::PropertyGeometryList","Legs","ControlGrid66_4Subs","control segments").Legs
+		obj.addProperty("App::PropertyVectorList","Poles","ControlGrid66_4Subs","Poles").Poles
+		obj.addProperty("App::PropertyFloatList","Weights","ControlGrid66_4Subs","Weights").Weights
+		obj.Proxy = self
 
+	def execute(self, fp):
+		'''Do something when doing a recomputation, this method is mandatory'''
+		p00 = fp.SubGrid_0.Poles[0]
+		p01 = fp.SubGrid_0.Poles[1]
+		p02 = fp.SubGrid_0.Poles[2]
+		p03 = fp.SubGrid_1.Poles[6]
+		p04 = fp.SubGrid_1.Poles[3]
+		p05 = fp.SubGrid_1.Poles[0]
 		
+		p15 = fp.SubGrid_1.Poles[1]
+		p25 = fp.SubGrid_1.Poles[2]
+		p35 = fp.SubGrid_2.Poles[6]
+		p45 = fp.SubGrid_2.Poles[3]
+		p55 = fp.SubGrid_2.Poles[0]
+		
+		p54 = fp.SubGrid_2.Poles[1]
+		p53 = fp.SubGrid_2.Poles[2]
+		p52 = fp.SubGrid_3.Poles[6]
+		p51 = fp.SubGrid_3.Poles[3]
+		p50 = fp.SubGrid_3.Poles[0]
+		
+		p40 = fp.SubGrid_3.Poles[1]
+		p30 = fp.SubGrid_3.Poles[2]
+		p20 = fp.SubGrid_0.Poles[6]
+		p10 = fp.SubGrid_0.Poles[3]
+		
+		p11 = fp.SubGrid_0.Poles[4]
+		p12 = fp.SubGrid_0.Poles[5]
+		p13 = fp.SubGrid_1.Poles[7]
+		p14 = fp.SubGrid_1.Poles[4]
+
+		p24 = fp.SubGrid_1.Poles[5]
+		p34 = fp.SubGrid_2.Poles[7]
+		p44 = fp.SubGrid_2.Poles[4]
+		
+		p43 = fp.SubGrid_2.Poles[5]		
+		p42 = fp.SubGrid_3.Poles[7]
+		p41 = fp.SubGrid_3.Poles[4]
+
+		p31 = fp.SubGrid_3.Poles[5]
+		p21 = fp.SubGrid_0.Poles[7]
+
+		p22 = fp.SubGrid_0.Poles[8]
+		p23 = fp.SubGrid_1.Poles[8]
+		p33 = fp.SubGrid_2.Poles[8]
+		p32 = fp.SubGrid_3.Poles[8]
+
+		fp.Poles = [p00, p01, p02, p03, p04, p05,
+					p10, p11, p12, p13, p14, p15,
+					p20, p21, p22, p23, p24, p25,
+					p30, p31, p32, p33, p34, p35,
+					p40, p41, p42, p43, p44, p45,
+					p50, p51, p52, p53, p54, p55]
+					
+		w00 = fp.SubGrid_0.Weights[0]
+		w01 = fp.SubGrid_0.Weights[1]
+		w02 = fp.SubGrid_0.Weights[2]
+		w03 = fp.SubGrid_1.Weights[6]
+		w04 = fp.SubGrid_1.Weights[3]
+		w05 = fp.SubGrid_1.Weights[0]
+		
+		w15 = fp.SubGrid_1.Weights[1]
+		w25 = fp.SubGrid_1.Weights[2]
+		w35 = fp.SubGrid_2.Weights[6]
+		w45 = fp.SubGrid_2.Weights[3]
+		w55 = fp.SubGrid_2.Weights[0]
+		
+		w54 = fp.SubGrid_2.Weights[1]
+		w53 = fp.SubGrid_2.Weights[2]
+		w52 = fp.SubGrid_3.Weights[6]
+		w51 = fp.SubGrid_3.Weights[3]
+		w50 = fp.SubGrid_3.Weights[0]
+		
+		w40 = fp.SubGrid_3.Weights[1]
+		w30 = fp.SubGrid_3.Weights[2]
+		w20 = fp.SubGrid_0.Weights[6]
+		w10 = fp.SubGrid_0.Weights[3]
+		
+		w11 = fp.SubGrid_0.Weights[4]
+		w12 = fp.SubGrid_0.Weights[5]
+		w13 = fp.SubGrid_1.Weights[7]
+		w14 = fp.SubGrid_1.Weights[4]
+
+		w24 = fp.SubGrid_1.Weights[5]
+		w34 = fp.SubGrid_2.Weights[7]
+		w44 = fp.SubGrid_2.Weights[4]
+		
+		w43 = fp.SubGrid_2.Weights[5]		
+		w42 = fp.SubGrid_3.Weights[7]
+		w41 = fp.SubGrid_3.Weights[4]
+
+		w31 = fp.SubGrid_3.Weights[5]
+		w21 = fp.SubGrid_0.Weights[7]
+
+		w22 = fp.SubGrid_0.Weights[8]
+		w23 = fp.SubGrid_1.Weights[8]
+		w33 = fp.SubGrid_2.Weights[8]
+		w32 = fp.SubGrid_3.Weights[8]
+
+		fp.Weights = [w00, w01, w02, w03, w04, w05,
+					w10, w11, w12, w13, w14, w15,
+					w20, w21, w22, w23, w24, w25,
+					w30, w31, w32, w33, w34, w35,
+					w40, w41, w42, w43, w44, w45,
+					w50, w51, w52, w53, w54, w55]
+		Legs=[0]*60
+		for i in range(0,5):
+			Legs[i]=Part.Line(fp.Poles[i],fp.Poles[i+1])
+		for i in range(5,10):
+			Legs[i]=Part.Line(fp.Poles[i+1],fp.Poles[i+2])
+		for i in range(10,15):
+			Legs[i]=Part.Line(fp.Poles[i+2],fp.Poles[i+3])
+		for i in range(15,20):
+			Legs[i]=Part.Line(fp.Poles[i+3],fp.Poles[i+4])
+		for i in range(20,25):
+			Legs[i]=Part.Line(fp.Poles[i+4],fp.Poles[i+5])
+		for i in range(25,30):
+			Legs[i]=Part.Line(fp.Poles[i+5],fp.Poles[i+6])	
+		for i in range(30,36):
+			Legs[i]=Part.Line(fp.Poles[i-30],fp.Poles[i-24])
+		for i in range(36,42):
+			Legs[i]=Part.Line(fp.Poles[i-30],fp.Poles[i-24])
+		for i in range(42,48):
+			Legs[i]=Part.Line(fp.Poles[i-30],fp.Poles[i-24])
+		for i in range(48,54):
+			Legs[i]=Part.Line(fp.Poles[i-30],fp.Poles[i-24])
+		for i in range(54,60):
+			Legs[i]=Part.Line(fp.Poles[i-30],fp.Poles[i-24])
+		
+		fp.Legs=Legs
+		fp.Shape = Part.Shape(fp.Legs)
+
+
