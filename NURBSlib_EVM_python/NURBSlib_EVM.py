@@ -1290,9 +1290,9 @@ class ControlPoly4_2N:
 			cir0=obj00
 		if obj01.__class__==Part.Circle:
 			cir0=obj01
-		if obj00.__class__==Part.Line or obj00.__class__==Part.LineSegment:
+		if obj00.__class__==Part.LineSegment:
 			lin0=obj00
-		if obj01.__class__==Part.Line or obj01.__class__==Part.LineSegment:
+		if obj01.__class__==Part.LineSegment:
 			lin0=obj01
 		p00s=cir0.Center
 		if lin0.StartPoint==p00s:
@@ -1310,9 +1310,9 @@ class ControlPoly4_2N:
 			cir1=obj10
 		if obj11.__class__==Part.Circle:
 			cir1=obj11
-		if obj10.__class__==Part.Line or obj10.__class__==Part.LineSegment:
+		if obj10.__class__==Part.LineSegment:
 			lin1=obj10
-		if obj11.__class__==Part.Line or obj11.__class__==Part.LineSegment:
+		if obj11.__class__==Part.LineSegment:
 			lin1=obj11
 		p11s=cir1.Center
 		if lin1.StartPoint==p11s:
