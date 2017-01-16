@@ -3,7 +3,7 @@ My python scripts for creating surfaces in [FreeCAD](http://freecadweb.org/).
 Extremely early release. 
 
 ![Best example of current state]
-(https://github.com/edwardvmills/NURBSlib_EVM/blob/b33835dcd1e7ab148f09706c385ce4218eaf73d5/development_FC_models/parametric/begin%20transition%20to%200.17/Bezier%20primary%20Surface%20Volume%2032-12.png?raw=true)  
+(https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/begin%20transition%20to%200.17/Bezier%20primary%20Surface%20Volume%2032-12.png?raw=true)  
 
 ![A semi decent G2 seam between two surfaces](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/Bezier%20surface%20segment%20and%20blend/Bezier%20surface%20segment%20and%20blend%2021/Bezier%20surface%20segment%20and%20blend%2021.gif?raw=true)   
 
