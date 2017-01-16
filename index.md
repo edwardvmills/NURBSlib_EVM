@@ -2,20 +2,18 @@
 My python scripts for creating surfaces in [FreeCAD](http://freecadweb.org/).   
 Extremely early release. 
 
-![Best example of current state]
-(https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/begin%20transition%20to%200.17/Bezier%20primary%20Surface%20Volume%2032-12.png?raw=true)  
+![Best example of current state](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/begin%20transition%20to%200.17/Bezier%20primary%20Surface%20Volume%2032-12.png)  
 
 ![A semi decent G2 seam between two surfaces](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/Bezier%20surface%20segment%20and%20blend/Bezier%20surface%20segment%20and%20blend%2021/Bezier%20surface%20segment%20and%20blend%2021.gif?raw=true)   
 
-![manipulating model above]
-(https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/Bezier%20surface%20segment%20and%20blend/Bezier%20surface%20segment%20and%20blend%2018/1f7g55.gif?raw=true)  
-
-THIS PAGE IS OUT OF DATE (01-15-2017) I don't have time to update user instructions until i finish the next big development phase. If interested, please refer directly to the repository.  
+![manipulating model above](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/Bezier%20surface%20segment%20and%20blend/Bezier%20surface%20segment%20and%20blend%2018/1f7g55.gif?raw=true)  
 
 All scripts in this repository are offered under the terms of the 
 [GPLv3](http://www.gnu.org/licenses/gpl-3.0.en.html)   
 All models in this repository are offered under the terms of 
 [CC-BY](http://creativecommons.org/licenses/by/2.0/)   
+
+THIS PAGE IS OUT OF DATE (01-15-2017) I don't have time to update user instructions until i finish the next big development phase. If interested, please refer directly to the repository.  
 
 For the time being, this page is intended to give a quick explanation of each tool along with pictures. 
 You can read more about the project [here](README.md)
