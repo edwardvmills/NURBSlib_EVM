@@ -1,0 +1,8 @@
+title: NURBSlib_EVM
+description: python scripts and macros to make NURBS surfaces in FreeCAD -
+google_analytics: 
+show_downloads: true
+theme: jekyll-theme-minimal
+
+gems:
+  - jekyll-mentions
