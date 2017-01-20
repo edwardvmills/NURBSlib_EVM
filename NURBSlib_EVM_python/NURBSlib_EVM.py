@@ -30,8 +30,8 @@
 ## Pinned knot vector: k=Order, first k knots are equal, last k knots are equal
 
 ####
-#### SECTION 1: DIRECT FUNCTIONS - NO PARAMETRIC LINKING BETWEEN OBJECT - LEGACY
-#### SECTION 2: PYTHON FEATURE CLASSES - PARAMETRIC LINKING BETWEEN OBJECT - IN PROGRESS (start around line 1150)
+#### SECTION 1: DIRECT FUNCTIONS - NO PARAMETRIC LINKING BETWEEN OBJECTS - LEGACY
+#### SECTION 2: PYTHON FEATURE CLASSES - PARAMETRIC LINKING BETWEEN OBJECTS - IN PROGRESS (start around line 1150)
 ####
 
 
@@ -815,21 +815,21 @@ def grid_64_tri(c1,c2,c3): # prepare 6 x 4 control point triangular patch from t
 
 def poly_grid_44(grid_44):
 	# start around the perimeter
-	l_00_01 = Part.Line(grid_44[0][0], grid_44[1][0])
-	l_01_02 = Part.Line(grid_44[1][0], grid_44[2][0])
-	l_02_03 = Part.Line(grid_44[2][0], grid_44[3][0])
-	l_03_13 = Part.Line(grid_44[3][0], grid_44[7][0])
-	l_13_23 = Part.Line(grid_44[7][0], grid_44[11][0])
-	l_23_33 = Part.Line(grid_44[11][0], grid_44[15][0])
-	l_33_32 = Part.Line(grid_44[15][0], grid_44[14][0])
-	l_32_31 = Part.Line(grid_44[14][0], grid_44[13][0])
-	l_31_30 = Part.Line(grid_44[13][0], grid_44[12][0])
+	l_00_01 = Part.LineSegment(grid_44[0][0], grid_44[1][0])
+	l_01_02 = Part.LineSegment(grid_44[1][0], grid_44[2][0])
+	l_02_03 = Part.LineSegment(grid_44[2][0], grid_44[3][0])
+	l_03_13 = Part.LineSegment(grid_44[3][0], grid_44[7][0])
+	l_13_23 = Part.LineSegment(grid_44[7][0], grid_44[11][0])
+	l_23_33 = Part.LineSegment(grid_44[11][0], grid_44[15][0])
+	l_33_32 = Part.LineSegment(grid_44[15][0], grid_44[14][0])
+	l_32_31 = Part.LineSegment(grid_44[14][0], grid_44[13][0])
+	l_31_30 = Part.LineSegment(grid_44[13][0], grid_44[12][0])
 
 	# check for triangular patches - collapsed fourth edge
 	if grid_44[0] != grid_44[12]: #normal case, four sided patch
-		l_00_10=Part.Line(grid_44[0][0], grid_44[4][0])
-		l_10_20=Part.Line(grid_44[4][0], grid_44[8][0])
-		l_20_30=Part.Line(grid_44[8][0], grid_44[12][0])
+		l_00_10=Part.LineSegment(grid_44[0][0], grid_44[4][0])
+		l_10_20=Part.LineSegment(grid_44[4][0], grid_44[8][0])
+		l_20_30=Part.LineSegment(grid_44[8][0], grid_44[12][0])
 	else: # triangle case
 		l_00_10=Part.Point(grid_44[0][0])
 		l_10_20=Part.Point(grid_44[0][0])
@@ -839,30 +839,30 @@ def poly_grid_44(grid_44):
 
 	# check for triangular patches with collapsed fourth edge AND collpapsed fourth corner.
 	if grid_44[1] != grid_44[13]: #normal case, four sided patch, or unique tangents on triangle patch
-		l_01_11=Part.Line(grid_44[1][0], grid_44[5][0])
-		l_31_21=Part.Line(grid_44[13][0], grid_44[9][0])
+		l_01_11=Part.LineSegment(grid_44[1][0], grid_44[5][0])
+		l_31_21=Part.LineSegment(grid_44[13][0], grid_44[9][0])
 	else: #triangle case, collapsed tangents
 		l_01_11=Part.Point(grid_44[1][0])
 		l_31_21=Part.Point(grid_44[13][0])
 
 
 	## l_01_11 above
-	l_10_11=Part.Line(grid_44[4][0], grid_44[5][0])
-	l_02_12=Part.Line(grid_44[2][0], grid_44[6][0])
-	l_13_12=Part.Line(grid_44[7][0], grid_44[6][0])
-	l_23_22=Part.Line(grid_44[11][0], grid_44[10][0])
-	l_32_22=Part.Line(grid_44[14][0], grid_44[10][0])
+	l_10_11=Part.LineSegment(grid_44[4][0], grid_44[5][0])
+	l_02_12=Part.LineSegment(grid_44[2][0], grid_44[6][0])
+	l_13_12=Part.LineSegment(grid_44[7][0], grid_44[6][0])
+	l_23_22=Part.LineSegment(grid_44[11][0], grid_44[10][0])
+	l_32_22=Part.LineSegment(grid_44[14][0], grid_44[10][0])
 	## l_31_21
-	l_20_21=Part.Line(grid_44[8][0], grid_44[9][0])
+	l_20_21=Part.LineSegment(grid_44[8][0], grid_44[9][0])
 
-	l_11_12=Part.Line(grid_44[5][0], grid_44[6][0])
-	l_12_22=Part.Line(grid_44[6][0], grid_44[10][0])
-	l_21_22=Part.Line(grid_44[9][0], grid_44[10][0])
+	l_11_12=Part.LineSegment(grid_44[5][0], grid_44[6][0])
+	l_12_22=Part.LineSegment(grid_44[6][0], grid_44[10][0])
+	l_21_22=Part.LineSegment(grid_44[9][0], grid_44[10][0])
 
 	if (grid_44[5][0]==grid_44[9][0]):
 		l_11_21=Part.Point(grid_44[5][0])
 	else:
-		l_11_21=Part.Line(grid_44[5][0], grid_44[9][0])
+		l_11_21=Part.LineSegment(grid_44[5][0], grid_44[9][0])
 
 	poly_grid_44=[l_00_01, l_01_02, l_02_03,
 				l_03_13, l_13_23, l_23_33,
@@ -875,59 +875,59 @@ def poly_grid_44(grid_44):
 
 def poly_grid_64(grid_64):
 	# start around the perimeter
-	l_00_01 = Part.Line(grid_64[0], grid_64[1])
-	l_01_02 = Part.Line(grid_64[1], grid_64[2])
-	l_02_03 = Part.Line(grid_64[2], grid_64[3])
-	l_03_04 = Part.Line(grid_64[3], grid_64[4])
-	l_04_05 = Part.Line(grid_64[4], grid_64[5])
+	l_00_01 = Part.LineSegment(grid_64[0], grid_64[1])
+	l_01_02 = Part.LineSegment(grid_64[1], grid_64[2])
+	l_02_03 = Part.LineSegment(grid_64[2], grid_64[3])
+	l_03_04 = Part.LineSegment(grid_64[3], grid_64[4])
+	l_04_05 = Part.LineSegment(grid_64[4], grid_64[5])
 
-	l_05_15 = Part.Line(grid_64[5], grid_64[11])
-	l_15_25 = Part.Line(grid_64[11], grid_64[17])
-	l_25_35 = Part.Line(grid_64[17], grid_64[23])
+	l_05_15 = Part.LineSegment(grid_64[5], grid_64[11])
+	l_15_25 = Part.LineSegment(grid_64[11], grid_64[17])
+	l_25_35 = Part.LineSegment(grid_64[17], grid_64[23])
 
-	l_34_35 = Part.Line(grid_64[22], grid_64[23])
-	l_33_34 = Part.Line(grid_64[21], grid_64[22])
-	l_32_33 = Part.Line(grid_64[20], grid_64[21])
-	l_31_32 = Part.Line(grid_64[19], grid_64[20])
-	l_30_31 = Part.Line(grid_64[18], grid_64[19])
+	l_34_35 = Part.LineSegment(grid_64[22], grid_64[23])
+	l_33_34 = Part.LineSegment(grid_64[21], grid_64[22])
+	l_32_33 = Part.LineSegment(grid_64[20], grid_64[21])
+	l_31_32 = Part.LineSegment(grid_64[19], grid_64[20])
+	l_30_31 = Part.LineSegment(grid_64[18], grid_64[19])
 
-	l_20_30=Part.Line(grid_64[12], grid_64[18])
-	l_10_20=Part.Line(grid_64[6], grid_64[12])
-	l_00_10=Part.Line(grid_64[0], grid_64[6])
+	l_20_30=Part.LineSegment(grid_64[12], grid_64[18])
+	l_10_20=Part.LineSegment(grid_64[6], grid_64[12])
+	l_00_10=Part.LineSegment(grid_64[0], grid_64[6])
 
 	# Internal controls - along the edges
-	l_01_11 =Part.Line(grid_64[1], grid_64[7])
-	l_02_12 =Part.Line(grid_64[2], grid_64[8])
-	l_03_13 =Part.Line(grid_64[3], grid_64[9])
-	l_04_14 =Part.Line(grid_64[4], grid_64[10])
+	l_01_11 =Part.LineSegment(grid_64[1], grid_64[7])
+	l_02_12 =Part.LineSegment(grid_64[2], grid_64[8])
+	l_03_13 =Part.LineSegment(grid_64[3], grid_64[9])
+	l_04_14 =Part.LineSegment(grid_64[4], grid_64[10])
 
-	l_14_15 =Part.Line(grid_64[10], grid_64[11])
-	l_24_25 =Part.Line(grid_64[16], grid_64[17])
+	l_14_15 =Part.LineSegment(grid_64[10], grid_64[11])
+	l_24_25 =Part.LineSegment(grid_64[16], grid_64[17])
 
-	l_24_34 =Part.Line(grid_64[16], grid_64[22])
-	l_23_33 =Part.Line(grid_64[15], grid_64[21])
-	l_22_32 =Part.Line(grid_64[14], grid_64[20])
-	l_21_31 =Part.Line(grid_64[13], grid_64[19])
+	l_24_34 =Part.LineSegment(grid_64[16], grid_64[22])
+	l_23_33 =Part.LineSegment(grid_64[15], grid_64[21])
+	l_22_32 =Part.LineSegment(grid_64[14], grid_64[20])
+	l_21_31 =Part.LineSegment(grid_64[13], grid_64[19])
 
-	l_20_21 =Part.Line(grid_64[12], grid_64[13])
-	l_10_11 =Part.Line(grid_64[6], grid_64[7])
+	l_20_21 =Part.LineSegment(grid_64[12], grid_64[13])
+	l_10_11 =Part.LineSegment(grid_64[6], grid_64[7])
 
 	# Internal controls - the three innermost cells
 
-	l_11_12 =Part.Line(grid_64[7], grid_64[8])
-	l_12_13 =Part.Line(grid_64[8], grid_64[9])
-	l_13_14 =Part.Line(grid_64[9], grid_64[10])
+	l_11_12 =Part.LineSegment(grid_64[7], grid_64[8])
+	l_12_13 =Part.LineSegment(grid_64[8], grid_64[9])
+	l_13_14 =Part.LineSegment(grid_64[9], grid_64[10])
 
-	l_14_24 =Part.Line(grid_64[10], grid_64[16])
+	l_14_24 =Part.LineSegment(grid_64[10], grid_64[16])
 
-	l_23_24 =Part.Line(grid_64[15], grid_64[16])
-	l_22_23 =Part.Line(grid_64[14], grid_64[15])
-	l_21_22 =Part.Line(grid_64[13], grid_64[14])
+	l_23_24 =Part.LineSegment(grid_64[15], grid_64[16])
+	l_22_23 =Part.LineSegment(grid_64[14], grid_64[15])
+	l_21_22 =Part.LineSegment(grid_64[13], grid_64[14])
 
-	l_11_21 =Part.Line(grid_64[7], grid_64[13])
+	l_11_21 =Part.LineSegment(grid_64[7], grid_64[13])
 
-	l_12_22 =Part.Line(grid_64[8], grid_64[14])
-	l_13_23 =Part.Line(grid_64[9], grid_64[15])
+	l_12_22 =Part.LineSegment(grid_64[8], grid_64[14])
+	l_13_23 =Part.LineSegment(grid_64[9], grid_64[15])
 
 	poly_grid_64=[l_00_01, l_01_02, l_02_03,l_03_04,l_04_05,
 				l_00_10,l_01_11,l_02_12,l_03_13,l_04_14,l_05_15,
@@ -940,47 +940,47 @@ def poly_grid_64(grid_64):
 
 def poly_grid_64_tri(grid_64):
 	## start around the perimeter
-	l_00_01 = Part.Line(grid_64[0][0], grid_64[1][0])
-	l_01_02 = Part.Line(grid_64[1][0], grid_64[2][0])
-	l_02_03 = Part.Line(grid_64[2][0], grid_64[3][0])
-	l_03_04 = Part.Line(grid_64[3][0], grid_64[4][0])
-	l_04_05 = Part.Line(grid_64[4][0], grid_64[5][0])
+	l_00_01 = Part.LineSegment(grid_64[0][0], grid_64[1][0])
+	l_01_02 = Part.LineSegment(grid_64[1][0], grid_64[2][0])
+	l_02_03 = Part.LineSegment(grid_64[2][0], grid_64[3][0])
+	l_03_04 = Part.LineSegment(grid_64[3][0], grid_64[4][0])
+	l_04_05 = Part.LineSegment(grid_64[4][0], grid_64[5][0])
 
-	l_05_15 = Part.Line(grid_64[5][0], grid_64[11][0])
-	l_15_25 = Part.Line(grid_64[11][0], grid_64[17][0])
-	l_25_35 = Part.Line(grid_64[17][0], grid_64[23][0])
+	l_05_15 = Part.LineSegment(grid_64[5][0], grid_64[11][0])
+	l_15_25 = Part.LineSegment(grid_64[11][0], grid_64[17][0])
+	l_25_35 = Part.LineSegment(grid_64[17][0], grid_64[23][0])
 
 	# skip top edge
 
-	l_20_30=Part.Line(grid_64[12][0], grid_64[18][0])
-	l_10_20=Part.Line(grid_64[6][0], grid_64[12][0])
-	l_00_10=Part.Line(grid_64[0][0], grid_64[6][0])
+	l_20_30=Part.LineSegment(grid_64[12][0], grid_64[18][0])
+	l_10_20=Part.LineSegment(grid_64[6][0], grid_64[12][0])
+	l_00_10=Part.LineSegment(grid_64[0][0], grid_64[6][0])
 
 	## Internal controls - along the edges
 	#bottom
-	l_01_11 =Part.Line(grid_64[1][0], grid_64[7][0])
-	l_02_12 =Part.Line(grid_64[2][0], grid_64[8][0])
-	l_03_13 =Part.Line(grid_64[3][0], grid_64[9][0])
-	l_04_14 =Part.Line(grid_64[4][0], grid_64[10][0])
+	l_01_11 =Part.LineSegment(grid_64[1][0], grid_64[7][0])
+	l_02_12 =Part.LineSegment(grid_64[2][0], grid_64[8][0])
+	l_03_13 =Part.LineSegment(grid_64[3][0], grid_64[9][0])
+	l_04_14 =Part.LineSegment(grid_64[4][0], grid_64[10][0])
 
 	#right
-	l_14_15 =Part.Line(grid_64[10][0], grid_64[11][0])
-	l_24_25 =Part.Line(grid_64[16][0], grid_64[17][0])
+	l_14_15 =Part.LineSegment(grid_64[10][0], grid_64[11][0])
+	l_24_25 =Part.LineSegment(grid_64[16][0], grid_64[17][0])
 
 	# skip anything connecting to top edge
-	l_21_31 = Part.Line(grid_64[13][0], grid_64[23][0])  #this is not a real control leg. just a visual indication of the collapsed corner
+	l_21_31 = Part.LineSegment(grid_64[13][0], grid_64[23][0])  #this is not a real control leg. just a visual indication of the collapsed corner
 
 	# left
-	l_20_21 =Part.Line(grid_64[12][0], grid_64[13][0])
-	l_10_11 =Part.Line(grid_64[6][0], grid_64[7][0])
+	l_20_21 =Part.LineSegment(grid_64[12][0], grid_64[13][0])
+	l_10_11 =Part.LineSegment(grid_64[6][0], grid_64[7][0])
 
 	## Internal controls - the center triangle
 
-	l_12_13 =Part.Line(grid_64[8][0], grid_64[9][0]) #
+	l_12_13 =Part.LineSegment(grid_64[8][0], grid_64[9][0]) #
 
-	l_14_24 =Part.Line(grid_64[10][0], grid_64[16][0]) #
+	l_14_24 =Part.LineSegment(grid_64[10][0], grid_64[16][0]) #
 
-	l_11_21 =Part.Line(grid_64[7][0], grid_64[13][0]) #
+	l_11_21 =Part.LineSegment(grid_64[7][0], grid_64[13][0]) #
 
 	poly_grid_64_tri=[l_00_01, l_01_02, l_02_03,l_03_04,l_04_05, #keep whole
 				l_00_10,l_01_11,l_02_12,l_03_13,l_04_14,l_05_15, #keep whole
@@ -1157,7 +1157,9 @@ def  isect_curve_surf(curve, surf):
 
 # ControlPoly4_3L(sketch) 					# made from a single sketch containing 3 line objects
 # ControlPoly4_2N(sketch0, sketch1)			# made from 2 node sketches. each node sketch contain one line (tangent), and one circle (endpoint) located at one end of the line.
-# ControlPoly4_Arc(sketch)					# made from a single sketch containing 1 arc object
+# ControlPoly4_Arc(sketch)					# made from a single sketch containing 1 arc object - need to rename. will now be used
+											# to convert the first element in the input sketch. arc, ellipse, parabola, line, etc.
+
 
 ## 6 points, for use in 6 point NURBS cubic curves.
 
@@ -1262,9 +1264,9 @@ class ControlPoly4_3L:
 		#for now assume
 		fp.Poles=[p00,p01,p20,p21]
 		# prepare the lines to draw the polyline
-		Leg0=Part.Line(p00,p01)
-		Leg1=Part.Line(p01,p20)
-		Leg2=Part.Line(p20,p21)
+		Leg0=Part.LineSegment(p00,p01)
+		Leg1=Part.LineSegment(p01,p20)
+		Leg2=Part.LineSegment(p20,p21)
 		#set the polygon legs property
 		fp.Legs=[Leg0, Leg1, Leg2]
 		# define the shape for visualization
@@ -1326,9 +1328,9 @@ class ControlPoly4_2N:
 		# set the poles
 		fp.Poles=[p00,p01,p10,p11]
 		# prepare the polygon
-		Leg0=Part.Line(p00,p01)
-		Leg1=Part.Line(p01,p10)
-		Leg2=Part.Line(p10,p11)
+		Leg0=Part.LineSegment(p00,p01)
+		Leg1=Part.LineSegment(p01,p10)
+		Leg2=Part.LineSegment(p10,p11)
 		#set the polygon legs property
 		fp.Legs=[Leg0, Leg1, Leg2]
 		# define the shape for visualization
@@ -1363,9 +1365,9 @@ class ControlPoly4_Arc:
 		# set the weights
 		fp.Weights = ArcNurbs.getWeights()
 		# prepare the lines to draw the polyline
-		Leg0=Part.Line(p0,p1)
-		Leg1=Part.Line(p1,p2)
-		Leg2=Part.Line(p2,p3)
+		Leg0=Part.LineSegment(p0,p1)
+		Leg1=Part.LineSegment(p1,p2)
+		Leg2=Part.LineSegment(p2,p3)
 		#set the polygon legs property
 		fp.Legs=[Leg0, Leg1, Leg2]
 		# define the shape for visualization
@@ -1405,11 +1407,11 @@ class ControlPoly6_5L:
 		#for now assume
 		fp.Poles=[p00,p01,p20,p21,p40,p41]
 		# prepare the lines to draw the polyline
-		Leg0=Part.Line(p00,p01)
-		Leg1=Part.Line(p01,p20)
-		Leg2=Part.Line(p20,p21)
-		Leg4=Part.Line(p21,p40)
-		Leg5=Part.Line(p40,p41)
+		Leg0=Part.LineSegment(p00,p01)
+		Leg1=Part.LineSegment(p01,p20)
+		Leg2=Part.LineSegment(p20,p21)
+		Leg4=Part.LineSegment(p21,p40)
+		Leg5=Part.LineSegment(p40,p41)
 		#set the polygon legs property
 		fp.Legs=[Leg0, Leg1, Leg2, Leg4, Leg5]
 		# define the shape for visualization
@@ -1457,11 +1459,11 @@ class ControlPoly6_2N:
 		# set the poles
 		fp.Poles=[p00,p01,p02,p10,p11, p12]
 		# prepare the polygon
-		Leg0=Part.Line(p00,p01)
-		Leg1=Part.Line(p01,p02)
-		Leg2=Part.Line(p02,p10)
-		Leg3=Part.Line(p10,p11)
-		Leg4=Part.Line(p11,p12)
+		Leg0=Part.LineSegment(p00,p01)
+		Leg1=Part.LineSegment(p01,p02)
+		Leg2=Part.LineSegment(p02,p10)
+		Leg3=Part.LineSegment(p10,p11)
+		Leg4=Part.LineSegment(p11,p12)
 		#set the polygon legs property
 		fp.Legs=[Leg0, Leg1, Leg2, Leg3, Leg4]
 		# define the shape for visualization
@@ -1504,11 +1506,11 @@ class ControlPoly6_Arc:
 		# set the weights
 		fp.Weights = ArcNurbs.getWeights()
 		# prepare the lines to draw the polyline
-		Leg0=Part.Line(p0,p1)
-		Leg1=Part.Line(p1,p2)
-		Leg2=Part.Line(p2,p3)
-		Leg3=Part.Line(p3,p4)
-		Leg4=Part.Line(p4,p5)
+		Leg0=Part.LineSegment(p0,p1)
+		Leg1=Part.LineSegment(p1,p2)
+		Leg2=Part.LineSegment(p2,p3)
+		Leg3=Part.LineSegment(p3,p4)
+		Leg4=Part.LineSegment(p4,p5)
 		#set the polygon legs property
 		fp.Legs=[Leg0, Leg1, Leg2, Leg3, Leg4]
 		# define the shape for visualization
@@ -1594,19 +1596,19 @@ class ControlGrid44_4:
 					w30, w31, w32, w33]
 		Legs=[0]*24
 		for i in range(0,3):
-			Legs[i]=Part.Line(fp.Poles[i],fp.Poles[i+1])
+			Legs[i]=Part.LineSegment(fp.Poles[i],fp.Poles[i+1])
 		for i in range(3,6):
-			Legs[i]=Part.Line(fp.Poles[i+1],fp.Poles[i+2])
+			Legs[i]=Part.LineSegment(fp.Poles[i+1],fp.Poles[i+2])
 		for i in range(6,9):
-			Legs[i]=Part.Line(fp.Poles[i+2],fp.Poles[i+3])
+			Legs[i]=Part.LineSegment(fp.Poles[i+2],fp.Poles[i+3])
 		for i in range(9,12):
-			Legs[i]=Part.Line(fp.Poles[i+3],fp.Poles[i+4])
+			Legs[i]=Part.LineSegment(fp.Poles[i+3],fp.Poles[i+4])
 		for i in range(12,16):
-			Legs[i]=Part.Line(fp.Poles[i-12],fp.Poles[i-8])
+			Legs[i]=Part.LineSegment(fp.Poles[i-12],fp.Poles[i-8])
 		for i in range(16,20):
-			Legs[i]=Part.Line(fp.Poles[i-12],fp.Poles[i-8])
+			Legs[i]=Part.LineSegment(fp.Poles[i-12],fp.Poles[i-8])
 		for i in range(20,24):
-			Legs[i]=Part.Line(fp.Poles[i-12],fp.Poles[i-8])
+			Legs[i]=Part.LineSegment(fp.Poles[i-12],fp.Poles[i-8])
 		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
 
@@ -1701,19 +1703,19 @@ class ControlGrid44_3:
 					w30, w31, w32, w33]
 		Legs=[0]*20
 		for i in range(0,3):
-			Legs[i]=Part.Line(fp.Poles[i],fp.Poles[i+1])
+			Legs[i]=Part.LineSegment(fp.Poles[i],fp.Poles[i+1])
 		for i in range(3,6):
-			Legs[i]=Part.Line(fp.Poles[i+1],fp.Poles[i+2])
+			Legs[i]=Part.LineSegment(fp.Poles[i+1],fp.Poles[i+2])
 		for i in range(6,9):
-			Legs[i]=Part.Line(fp.Poles[i+2],fp.Poles[i+3])
+			Legs[i]=Part.LineSegment(fp.Poles[i+2],fp.Poles[i+3])
 		for i in range(9,12):
-			Legs[i]=Part.Line(fp.Poles[i+3],fp.Poles[i+4])
+			Legs[i]=Part.LineSegment(fp.Poles[i+3],fp.Poles[i+4])
 		for i in range(12,15): #skip 0-4
-			Legs[i]=Part.Line(fp.Poles[i-11],fp.Poles[i-7])
+			Legs[i]=Part.LineSegment(fp.Poles[i-11],fp.Poles[i-7])
 		for i in range(15,17): #skip 4-8 and 5-9
-			Legs[i]=Part.Line(fp.Poles[i-9],fp.Poles[i-5])
+			Legs[i]=Part.LineSegment(fp.Poles[i-9],fp.Poles[i-5])
 		for i in range(17,20): #skip 8-12
-			Legs[i]=Part.Line(fp.Poles[i-8],fp.Poles[i-4])
+			Legs[i]=Part.LineSegment(fp.Poles[i-8],fp.Poles[i-4])
 		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
 
@@ -1843,27 +1845,27 @@ class ControlGrid66_4:
 					w50, w51, w52, w53, w54, w55]
 		Legs=[0]*60
 		for i in range(0,5):
-			Legs[i]=Part.Line(fp.Poles[i],fp.Poles[i+1])
+			Legs[i]=Part.LineSegment(fp.Poles[i],fp.Poles[i+1])
 		for i in range(5,10):
-			Legs[i]=Part.Line(fp.Poles[i+1],fp.Poles[i+2])
+			Legs[i]=Part.LineSegment(fp.Poles[i+1],fp.Poles[i+2])
 		for i in range(10,15):
-			Legs[i]=Part.Line(fp.Poles[i+2],fp.Poles[i+3])
+			Legs[i]=Part.LineSegment(fp.Poles[i+2],fp.Poles[i+3])
 		for i in range(15,20):
-			Legs[i]=Part.Line(fp.Poles[i+3],fp.Poles[i+4])
+			Legs[i]=Part.LineSegment(fp.Poles[i+3],fp.Poles[i+4])
 		for i in range(20,25):
-			Legs[i]=Part.Line(fp.Poles[i+4],fp.Poles[i+5])
+			Legs[i]=Part.LineSegment(fp.Poles[i+4],fp.Poles[i+5])
 		for i in range(25,30):
-			Legs[i]=Part.Line(fp.Poles[i+5],fp.Poles[i+6])
+			Legs[i]=Part.LineSegment(fp.Poles[i+5],fp.Poles[i+6])
 		for i in range(30,36):
-			Legs[i]=Part.Line(fp.Poles[i-30],fp.Poles[i-24])
+			Legs[i]=Part.LineSegment(fp.Poles[i-30],fp.Poles[i-24])
 		for i in range(36,42):
-			Legs[i]=Part.Line(fp.Poles[i-30],fp.Poles[i-24])
+			Legs[i]=Part.LineSegment(fp.Poles[i-30],fp.Poles[i-24])
 		for i in range(42,48):
-			Legs[i]=Part.Line(fp.Poles[i-30],fp.Poles[i-24])
+			Legs[i]=Part.LineSegment(fp.Poles[i-30],fp.Poles[i-24])
 		for i in range(48,54):
-			Legs[i]=Part.Line(fp.Poles[i-30],fp.Poles[i-24])
+			Legs[i]=Part.LineSegment(fp.Poles[i-30],fp.Poles[i-24])
 		for i in range(54,60):
-			Legs[i]=Part.Line(fp.Poles[i-30],fp.Poles[i-24])
+			Legs[i]=Part.LineSegment(fp.Poles[i-30],fp.Poles[i-24])
 
 		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
@@ -1965,20 +1967,20 @@ class ControlGrid64_4:
 					w30, w31, w32, w33, w34, w35]
 		Legs=[0]*38
 		for i in range(0,5):
-			Legs[i]=Part.Line(fp.Poles[i],fp.Poles[i+1])
+			Legs[i]=Part.LineSegment(fp.Poles[i],fp.Poles[i+1])
 		for i in range(5,10):
-			Legs[i]=Part.Line(fp.Poles[i+1],fp.Poles[i+2])
+			Legs[i]=Part.LineSegment(fp.Poles[i+1],fp.Poles[i+2])
 		for i in range(10,15):
-			Legs[i]=Part.Line(fp.Poles[i+2],fp.Poles[i+3])
+			Legs[i]=Part.LineSegment(fp.Poles[i+2],fp.Poles[i+3])
 		for i in range(15,20):
-			Legs[i]=Part.Line(fp.Poles[i+3],fp.Poles[i+4])
+			Legs[i]=Part.LineSegment(fp.Poles[i+3],fp.Poles[i+4])
 
 		for i in range(20,26):
-			Legs[i]=Part.Line(fp.Poles[i-20],fp.Poles[i-14])
+			Legs[i]=Part.LineSegment(fp.Poles[i-20],fp.Poles[i-14])
 		for i in range(26,32):
-			Legs[i]=Part.Line(fp.Poles[i-20],fp.Poles[i-14])
+			Legs[i]=Part.LineSegment(fp.Poles[i-20],fp.Poles[i-14])
 		for i in range(32,38):
-			Legs[i]=Part.Line(fp.Poles[i-20],fp.Poles[i-14])
+			Legs[i]=Part.LineSegment(fp.Poles[i-20],fp.Poles[i-14])
 		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
 
@@ -1996,6 +1998,7 @@ class ControlGrid64_3:
 
 	def execute(self, fp):
 		'''Do something when doing a recomputation, this method is mandatory'''
+		print 'first one'
 		poles4_0=fp.Poly4_0.Poles
 		poles6_1=fp.Poly6_1.Poles
 		poles4_2=fp.Poly4_2.Poles
@@ -2083,146 +2086,22 @@ class ControlGrid64_3:
 					w30, w31, w32, w33, w34, w35]
 		Legs=[0]*22
 		for i in range(0,5):
-			Legs[i]=Part.Line(fp.Poles[i],fp.Poles[i+1])
-		Legs[5]=Part.Line(p10,p11)
-		Legs[6]=Part.Line(p12,p13)
-		Legs[7]=Part.Line(p14,p15)
-		Legs[8]=Part.Line(p20,p21)
-		Legs[9]=Part.Line(p24,p25)
+			Legs[i]=Part.LineSegment(fp.Poles[i],fp.Poles[i+1])
+		Legs[5]=Part.LineSegment(p10,p11)
+		Legs[6]=Part.LineSegment(p12,p13)
+		Legs[7]=Part.LineSegment(p14,p15)
+		Legs[8]=Part.LineSegment(p20,p21)
+		Legs[9]=Part.LineSegment(p24,p25)
 		
 		for i in range(10,16):
-			Legs[i]=Part.Line(fp.Poles[i-10],fp.Poles[i-4])
+			Legs[i]=Part.LineSegment(fp.Poles[i-10],fp.Poles[i-4])
 		
-		Legs[16]=Part.Line(p10,p20)
-		Legs[17]=Part.Line(p11,p21)
-		Legs[18]=Part.Line(p14,p24)
-		Legs[19]=Part.Line(p15,p25)
-		Legs[20]=Part.Line(p20,p30)
-		Legs[21]=Part.Line(p25,p35)
-		
-		fp.Legs=Legs
-		fp.Shape = Part.Shape(fp.Legs)
-
-class ControlGrid64_3:
-	def __init__(self, obj , CubicSurface_44, ControlPoly6_FilletBezier):
-		''' Add the properties '''
-		FreeCAD.Console.PrintMessage("\nControlGrid64_4 class Init\n")
-		obj.addProperty("App::PropertyLink","CubicSurface_44","ControlGrid64_3_1Surf44","Reference Bezier Surface").CubicSurface_44 = CubicSurface_44
-		obj.addProperty("App::PropertyLink","ControlPoly6_FilletBezier","ControlGrid64_3_1Surf44","Corner blending curve").ControlPoly6_FilletBezier = ControlPoly6_FilletBezier
-		obj.addProperty("Part::PropertyGeometryList","Legs","ControlGrid64_3_1Surf44","control segments").Legs
-		obj.addProperty("App::PropertyVectorList","Poles","ControlGrid64_3_1Surf44","Poles").Poles
-		obj.addProperty("App::PropertyFloatList","Weights","ControlGrid64_3_1Surf44","Weights").Weights
-		obj.Proxy = self
-
-	def execute(self, fp):
-		'''Do something when doing a recomputation, this method is mandatory'''
-		# get the control poly of the bezier
-		grid_44 = CubicSurface_44.Grid
-		
-
-		poles4_0=fp.Poly4_0.Poles
-		poles6_1=fp.Poly6_1.Poles
-		poles4_2=fp.Poly4_2.Poles
-
-		weights4_0=fp.Poly4_0.Weights
-		weights6_1=fp.Poly6_1.Weights
-		weights4_2=fp.Poly4_2.Weights
-
-		sext12 = orient_a_to_b(poles6_1,poles4_2)
-		quad23 = orient_a_to_b(poles4_2,poles4_0)
-		quad31 = orient_a_to_b(poles4_0,poles6_1)
-
-		if sext12[0]!=poles6_1[0] and sext12[0]==poles6_1[-1]:
-			weights6_1=weights6_1[::-1]
-		if quad23[0]!=poles4_2[0] and quad23[0]==poles4_2[-1]:
-			weights4_2=weights4_2[::-1]
-		if quad31[0]!=poles4_0[0] and quad31[0]==poles4_0[-1]:
-			weights4_0=weights4_0[::-1]
-
-		p00 = sext12[0]
-		p01 = sext12[1]
-		p02 = sext12[2]	
-		p03 = sext12[3]
-		p04 = sext12[4]
-		p05 = sext12[5]
-
-		p15 = quad23[1]
-		p25 = quad23[2]
-		p35 = quad23[3]
-
-		p34 = p35
-		p33 = p35
-		p32 = p35
-		p31 = p35
-		p30 = p35
-
-		p20 = quad31[1]
-		p10 = quad31[2]
-
-		p11 = p01 + (p10 - p00)
-		p14 = p04 + (p15 - p05)
-		p12 = p11
-		p13 = p14
-		p21 = p20 + (p25 - p35)
-		p22 = p21
-		p23 = p21
-		p24 = p21
-		fp.Poles = [p00, p01, p02, p03, p04, p05,
-					p10, p11, p12, p13, p14, p15,
-					p20, p21, p22, p23, p24, p25,
-					p30, p31, p32, p33, p34, p35]
-
-		w00 = weights6_1[0]
-		w01 = weights6_1[1]
-		w02 = weights6_1[2]
-		w03 = weights6_1[3]
-		w04 = weights6_1[4]
-		w05 = weights6_1[5]
-		w15 = weights4_2[1]
-		w25 = weights4_2[2]
-		w35 = weights4_2[3]
-		w34 = 1
-		w33 = 1
-		w32 = 1
-		w31 = 1
-		w30 = weights4_0[0]
-		w20 = weights4_0[1]
-		w10 = weights4_0[2]
-		
-		# maybe i should average instead of multiply? needs testing.
-		# currently based on the idea all weights are between 0 and 1.
-		# previous used cumulative neighbor mulitplication. this drives weights too low.
-		# current method multiplies the two weights along isos to the closest edge
-		w11 = w01*w10*0.5
-		w12 = w02*w10*0.5
-		w13 = w03*w15*0.5
-		w14 = w04*w15*0.5
-		w21 = w31*w20*0.25
-		w22 = w32*w20*0.25		
-		w23 = w33*w25*0.25		
-		w24 = w34*w25*0.25
-		fp.Weights = [w00, w01, w02, w03, w04, w05,
-					w10, w11, w12, w13, w14, w15,
-					w20, w21, w22, w23, w24, w25,
-					w30, w31, w32, w33, w34, w35]
-		Legs=[0]*22
-		for i in range(0,5):
-			Legs[i]=Part.Line(fp.Poles[i],fp.Poles[i+1])
-		Legs[5]=Part.Line(p10,p11)
-		Legs[6]=Part.Line(p12,p13)
-		Legs[7]=Part.Line(p14,p15)
-		Legs[8]=Part.Line(p20,p21)
-		Legs[9]=Part.Line(p24,p25)
-		
-		for i in range(10,16):
-			Legs[i]=Part.Line(fp.Poles[i-10],fp.Poles[i-4])
-		
-		Legs[16]=Part.Line(p10,p20)
-		Legs[17]=Part.Line(p11,p21)
-		Legs[18]=Part.Line(p14,p24)
-		Legs[19]=Part.Line(p15,p25)
-		Legs[20]=Part.Line(p20,p30)
-		Legs[21]=Part.Line(p25,p35)
+		Legs[16]=Part.LineSegment(p10,p20)
+		Legs[17]=Part.LineSegment(p11,p21)
+		Legs[18]=Part.LineSegment(p14,p24)
+		Legs[19]=Part.LineSegment(p15,p25)
+		Legs[20]=Part.LineSegment(p20,p30)
+		Legs[21]=Part.LineSegment(p25,p35)
 		
 		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
@@ -2297,11 +2176,11 @@ class ControlPoly6_Bezier:
 		# set the weights
 		fp.Weights = curve.getWeights()
 		# prepare the lines to draw the polyline
-		Leg0=Part.Line(p0,p1)
-		Leg1=Part.Line(p1,p2)
-		Leg2=Part.Line(p2,p3)
-		Leg3=Part.Line(p3,p4)
-		Leg4=Part.Line(p4,p5)
+		Leg0=Part.LineSegment(p0,p1)
+		Leg1=Part.LineSegment(p1,p2)
+		Leg2=Part.LineSegment(p2,p3)
+		Leg3=Part.LineSegment(p3,p4)
+		Leg4=Part.LineSegment(p4,p5)
 		#set the polygon legs property
 		fp.Legs=[Leg0, Leg1, Leg2, Leg3, Leg4]
 		# define the shape for visualization
@@ -2529,11 +2408,11 @@ class ControlPoly6_FilletBezier:
 		# it would probably be a mess, since the curvature formulas above do not incorporate weights yet.
 		fp.Weights = [p0[1], p1[1], p2[1], p3[1], p4[1], p5[1]]
 		# prepare the lines to draw the polyline
-		Leg0=Part.Line(p0[0],p1_scl[0])
-		Leg1=Part.Line(p1_scl[0],p2_scl[0])
-		Leg2=Part.Line(p2_scl[0],p3_scl[0])
-		Leg3=Part.Line(p3_scl[0],p4_scl[0])
-		Leg4=Part.Line(p4_scl[0],p5[0])
+		Leg0=Part.LineSegment(p0[0],p1_scl[0])
+		Leg1=Part.LineSegment(p1_scl[0],p2_scl[0])
+		Leg2=Part.LineSegment(p2_scl[0],p3_scl[0])
+		Leg3=Part.LineSegment(p3_scl[0],p4_scl[0])
+		Leg4=Part.LineSegment(p4_scl[0],p5[0])
 		#set the polygon legs property
 		fp.Legs=[Leg0, Leg1, Leg2, Leg3, Leg4]
 		# define the shape for visualization
@@ -2593,9 +2472,9 @@ class ControlPoly4_segment:
 		p21=fp.Poles[3]
 
 		# prepare the lines to draw the polyline
-		Leg0=Part.Line(p00,p01)
-		Leg1=Part.Line(p01,p20)
-		Leg2=Part.Line(p20,p21)
+		Leg0=Part.LineSegment(p00,p01)
+		Leg1=Part.LineSegment(p01,p20)
+		Leg2=Part.LineSegment(p20,p21)
 		#set the polygon legs property
 		fp.Legs=[Leg0, Leg1, Leg2]
 		# define the shape for visualization
@@ -2861,19 +2740,19 @@ class ControlGrid44_EdgeSegment:
 
 		Legs=[0]*24
 		for i in range(0,3):
-			Legs[i]=Part.Line(fp.Poles[i],fp.Poles[i+1])
+			Legs[i]=Part.LineSegment(fp.Poles[i],fp.Poles[i+1])
 		for i in range(3,6):
-			Legs[i]=Part.Line(fp.Poles[i+1],fp.Poles[i+2])
+			Legs[i]=Part.LineSegment(fp.Poles[i+1],fp.Poles[i+2])
 		for i in range(6,9):
-			Legs[i]=Part.Line(fp.Poles[i+2],fp.Poles[i+3])
+			Legs[i]=Part.LineSegment(fp.Poles[i+2],fp.Poles[i+3])
 		for i in range(9,12):
-			Legs[i]=Part.Line(fp.Poles[i+3],fp.Poles[i+4])
+			Legs[i]=Part.LineSegment(fp.Poles[i+3],fp.Poles[i+4])
 		for i in range(12,16):
-			Legs[i]=Part.Line(fp.Poles[i-12],fp.Poles[i-8])
+			Legs[i]=Part.LineSegment(fp.Poles[i-12],fp.Poles[i-8])
 		for i in range(16,20):
-			Legs[i]=Part.Line(fp.Poles[i-12],fp.Poles[i-8])
+			Legs[i]=Part.LineSegment(fp.Poles[i-12],fp.Poles[i-8])
 		for i in range(20,24):
-			Legs[i]=Part.Line(fp.Poles[i-12],fp.Poles[i-8])
+			Legs[i]=Part.LineSegment(fp.Poles[i-12],fp.Poles[i-8])
 		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
 
@@ -3015,19 +2894,19 @@ class ControlGrid44_2EdgeSegments:
 
 		Legs=[0]*24
 		for i in range(0,3):
-			Legs[i]=Part.Line(fp.Poles[i],fp.Poles[i+1])
+			Legs[i]=Part.LineSegment(fp.Poles[i],fp.Poles[i+1])
 		for i in range(3,6):
-			Legs[i]=Part.Line(fp.Poles[i+1],fp.Poles[i+2])
+			Legs[i]=Part.LineSegment(fp.Poles[i+1],fp.Poles[i+2])
 		for i in range(6,9):
-			Legs[i]=Part.Line(fp.Poles[i+2],fp.Poles[i+3])
+			Legs[i]=Part.LineSegment(fp.Poles[i+2],fp.Poles[i+3])
 		for i in range(9,12):
-			Legs[i]=Part.Line(fp.Poles[i+3],fp.Poles[i+4])
+			Legs[i]=Part.LineSegment(fp.Poles[i+3],fp.Poles[i+4])
 		for i in range(12,16):
-			Legs[i]=Part.Line(fp.Poles[i-12],fp.Poles[i-8])
+			Legs[i]=Part.LineSegment(fp.Poles[i-12],fp.Poles[i-8])
 		for i in range(16,20):
-			Legs[i]=Part.Line(fp.Poles[i-12],fp.Poles[i-8])
+			Legs[i]=Part.LineSegment(fp.Poles[i-12],fp.Poles[i-8])
 		for i in range(20,24):
-			Legs[i]=Part.Line(fp.Poles[i-12],fp.Poles[i-8])
+			Legs[i]=Part.LineSegment(fp.Poles[i-12],fp.Poles[i-8])
 		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
 		
@@ -3235,20 +3114,20 @@ class ControlGrid64_2Grid44:  # surfaces not strictly used as input, but this is
 		# build the leg list for viz		
 		Legs=[0]*38
 		for i in range(0,5):
-			Legs[i]=Part.Line(fp.Poles[i],fp.Poles[i+1])
+			Legs[i]=Part.LineSegment(fp.Poles[i],fp.Poles[i+1])
 		for i in range(5,10):
-			Legs[i]=Part.Line(fp.Poles[i+1],fp.Poles[i+2])
+			Legs[i]=Part.LineSegment(fp.Poles[i+1],fp.Poles[i+2])
 		for i in range(10,15):
-			Legs[i]=Part.Line(fp.Poles[i+2],fp.Poles[i+3])
+			Legs[i]=Part.LineSegment(fp.Poles[i+2],fp.Poles[i+3])
 		for i in range(15,20):
-			Legs[i]=Part.Line(fp.Poles[i+3],fp.Poles[i+4])
+			Legs[i]=Part.LineSegment(fp.Poles[i+3],fp.Poles[i+4])
 
 		for i in range(20,26):
-			Legs[i]=Part.Line(fp.Poles[i-20],fp.Poles[i-14])
+			Legs[i]=Part.LineSegment(fp.Poles[i-20],fp.Poles[i-14])
 		for i in range(26,32):
-			Legs[i]=Part.Line(fp.Poles[i-20],fp.Poles[i-14])
+			Legs[i]=Part.LineSegment(fp.Poles[i-20],fp.Poles[i-14])
 		for i in range(32,38):
-			Legs[i]=Part.Line(fp.Poles[i-20],fp.Poles[i-14])
+			Legs[i]=Part.LineSegment(fp.Poles[i-20],fp.Poles[i-14])
 		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
 
@@ -3277,7 +3156,7 @@ class SubGrid33_2Grid64s_old:
 		# -set 'u' row - imagine the future surface as uvn (n is normal). 
 		# -set 'v' row - imagine the future surface as uvn (n is normal).
 		# -build a corner focused 33 grid using the same logic as the corner focused 66 grid. 
-		#the $10 question here is whether this even maintains G1? maybe...it has been many steps since the bezier surface was segmented.
+		# the $10 question here is whether this even maintains G1? maybe...it has been many steps since the bezier surface was segmented.
 		
 		# extract corner points
 		corners_0=[fp.Grid_0.Poles[0],fp.Grid_0.Poles[5],fp.Grid_0.Poles[18],fp.Grid_0.Poles[23]]
@@ -3337,19 +3216,19 @@ class SubGrid33_2Grid64s_old:
 		
 		Legs=[0]*10
 
-		Legs[0]=Part.Line(fp.u_row0_poles[0], fp.u_row0_poles[1])
-		Legs[1]=Part.Line(fp.u_row0_poles[1], fp.u_row0_poles[2])
+		Legs[0]=Part.LineSegment(fp.u_row0_poles[0], fp.u_row0_poles[1])
+		Legs[1]=Part.LineSegment(fp.u_row0_poles[1], fp.u_row0_poles[2])
 		
-		Legs[2]=Part.Line(fp.u_row0_poles[0], fp.u_row1_poles[0])
-		Legs[3]=Part.Line(fp.u_row0_poles[1], fp.u_row1_poles[1])
-		Legs[4]=Part.Line(fp.u_row0_poles[2], fp.u_row1_poles[2])
+		Legs[2]=Part.LineSegment(fp.u_row0_poles[0], fp.u_row1_poles[0])
+		Legs[3]=Part.LineSegment(fp.u_row0_poles[1], fp.u_row1_poles[1])
+		Legs[4]=Part.LineSegment(fp.u_row0_poles[2], fp.u_row1_poles[2])
 		
-		Legs[5]=Part.Line(fp.v_col0_poles[0], fp.v_col0_poles[1])
-		Legs[6]=Part.Line(fp.v_col0_poles[1], fp.v_col0_poles[2])
+		Legs[5]=Part.LineSegment(fp.v_col0_poles[0], fp.v_col0_poles[1])
+		Legs[6]=Part.LineSegment(fp.v_col0_poles[1], fp.v_col0_poles[2])
 
-		Legs[7]=Part.Line(fp.v_col0_poles[0], fp.v_col1_poles[0])
-		Legs[8]=Part.Line(fp.v_col0_poles[1], fp.v_col1_poles[1])
-		Legs[9]=Part.Line(fp.v_col0_poles[2], fp.v_col1_poles[2])
+		Legs[7]=Part.LineSegment(fp.v_col0_poles[0], fp.v_col1_poles[0])
+		Legs[8]=Part.LineSegment(fp.v_col0_poles[1], fp.v_col1_poles[1])
+		Legs[9]=Part.LineSegment(fp.v_col0_poles[2], fp.v_col1_poles[2])
 
 		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
@@ -3360,6 +3239,8 @@ class SubGrid33_2Grid64s:
 		FreeCAD.Console.PrintMessage("\nSubGrid33_2Grid64s class Init\n")
 		obj.addProperty("App::PropertyLink","Grid_0","SubGrid33_2Grid64s","first reference 6X4 grid").Grid_0 = Grid_0
 		obj.addProperty("App::PropertyLink","Grid_1","SubGrid33_2Grid64s","second reference 6X4 grid").Grid_1 = Grid_1
+		obj.addProperty("App::PropertyFloat","adjust_0","SubGrid33_2Grid64s","adjust along Grid_0").adjust_0 = 0
+		obj.addProperty("App::PropertyFloat","adjust_1","SubGrid33_2Grid64s","adjust along Grid_1").adjust_1 = 0
 		obj.addProperty("Part::PropertyGeometryList","Legs","SubGrid33_2Grid64s","control segments").Legs
 		obj.addProperty("App::PropertyVectorList","Poles","SubGrid33_2Grid64s","Poles").Poles
 		obj.addProperty("App::PropertyFloatList","Weights","SubGrid33_2Grid64s","Weights").Weights
@@ -3445,7 +3326,9 @@ class SubGrid33_2Grid64s:
 		p11 = (p11_u + p11_v) * 0.5
 		p22_u = p12 + (p21-p11)
 		p22_v = p21 + (p12-p11)		
-		p22 = (p22_u + p22_v) * 0.5
+		p22_temp = (p22_u + p22_v) * 0.5
+		
+		p22 = p22_temp + fp.adjust_0 * (p01-p00) + fp.adjust_1 * (p10-p00)
 		
 		fp.Poles = [p00, p01, p02, p10, p11, p12, p20, p21, p22]
 		
@@ -3464,23 +3347,23 @@ class SubGrid33_2Grid64s:
 		
 		Legs=[0]*12
 		
-		Legs[0]=Part.Line(p00,p01)
-		Legs[1]=Part.Line(p01,p02)
+		Legs[0]=Part.LineSegment(p00,p01)
+		Legs[1]=Part.LineSegment(p01,p02)
 		
-		Legs[2]=Part.Line(p00,p10)
-		Legs[3]=Part.Line(p10,p20)
+		Legs[2]=Part.LineSegment(p00,p10)
+		Legs[3]=Part.LineSegment(p10,p20)
 		
-		Legs[4]=Part.Line(p01,p11)
-		Legs[5]=Part.Line(p02,p12)
+		Legs[4]=Part.LineSegment(p01,p11)
+		Legs[5]=Part.LineSegment(p02,p12)
 		
-		Legs[6]=Part.Line(p10,p11)
-		Legs[7]=Part.Line(p20,p21)
+		Legs[6]=Part.LineSegment(p10,p11)
+		Legs[7]=Part.LineSegment(p20,p21)
 		
-		Legs[8]=Part.Line(p11,p12)
-		Legs[9]=Part.Line(p11,p21)
+		Legs[8]=Part.LineSegment(p11,p12)
+		Legs[9]=Part.LineSegment(p11,p21)
 
-		Legs[10]=Part.Line(p12,p22)
-		Legs[11]=Part.Line(p21,p22)
+		Legs[10]=Part.LineSegment(p12,p22)
+		Legs[11]=Part.LineSegment(p21,p22)
 		
 		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
@@ -3595,27 +3478,27 @@ class ControlGrid66_4Subs_old:
 					w50, w51, w52, w53, w54, w55]
 		Legs=[0]*60
 		for i in range(0,5):
-			Legs[i]=Part.Line(fp.Poles[i],fp.Poles[i+1])
+			Legs[i]=Part.LineSegment(fp.Poles[i],fp.Poles[i+1])
 		for i in range(5,10):
-			Legs[i]=Part.Line(fp.Poles[i+1],fp.Poles[i+2])
+			Legs[i]=Part.LineSegment(fp.Poles[i+1],fp.Poles[i+2])
 		for i in range(10,15):
-			Legs[i]=Part.Line(fp.Poles[i+2],fp.Poles[i+3])
+			Legs[i]=Part.LineSegment(fp.Poles[i+2],fp.Poles[i+3])
 		for i in range(15,20):
-			Legs[i]=Part.Line(fp.Poles[i+3],fp.Poles[i+4])
+			Legs[i]=Part.LineSegment(fp.Poles[i+3],fp.Poles[i+4])
 		for i in range(20,25):
-			Legs[i]=Part.Line(fp.Poles[i+4],fp.Poles[i+5])
+			Legs[i]=Part.LineSegment(fp.Poles[i+4],fp.Poles[i+5])
 		for i in range(25,30):
-			Legs[i]=Part.Line(fp.Poles[i+5],fp.Poles[i+6])	
+			Legs[i]=Part.LineSegment(fp.Poles[i+5],fp.Poles[i+6])	
 		for i in range(30,36):
-			Legs[i]=Part.Line(fp.Poles[i-30],fp.Poles[i-24])
+			Legs[i]=Part.LineSegment(fp.Poles[i-30],fp.Poles[i-24])
 		for i in range(36,42):
-			Legs[i]=Part.Line(fp.Poles[i-30],fp.Poles[i-24])
+			Legs[i]=Part.LineSegment(fp.Poles[i-30],fp.Poles[i-24])
 		for i in range(42,48):
-			Legs[i]=Part.Line(fp.Poles[i-30],fp.Poles[i-24])
+			Legs[i]=Part.LineSegment(fp.Poles[i-30],fp.Poles[i-24])
 		for i in range(48,54):
-			Legs[i]=Part.Line(fp.Poles[i-30],fp.Poles[i-24])
+			Legs[i]=Part.LineSegment(fp.Poles[i-30],fp.Poles[i-24])
 		for i in range(54,60):
-			Legs[i]=Part.Line(fp.Poles[i-30],fp.Poles[i-24])
+			Legs[i]=Part.LineSegment(fp.Poles[i-30],fp.Poles[i-24])
 		
 		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
@@ -3740,29 +3623,219 @@ class ControlGrid66_4Subs:
 					w50, w51, w52, w53, w54, w55]
 		Legs=[0]*60
 		for i in range(0,5):
-			Legs[i]=Part.Line(fp.Poles[i],fp.Poles[i+1])
+			Legs[i]=Part.LineSegment(fp.Poles[i],fp.Poles[i+1])
 		for i in range(5,10):
-			Legs[i]=Part.Line(fp.Poles[i+1],fp.Poles[i+2])
+			Legs[i]=Part.LineSegment(fp.Poles[i+1],fp.Poles[i+2])
 		for i in range(10,15):
-			Legs[i]=Part.Line(fp.Poles[i+2],fp.Poles[i+3])
+			Legs[i]=Part.LineSegment(fp.Poles[i+2],fp.Poles[i+3])
 		for i in range(15,20):
-			Legs[i]=Part.Line(fp.Poles[i+3],fp.Poles[i+4])
+			Legs[i]=Part.LineSegment(fp.Poles[i+3],fp.Poles[i+4])
 		for i in range(20,25):
-			Legs[i]=Part.Line(fp.Poles[i+4],fp.Poles[i+5])
+			Legs[i]=Part.LineSegment(fp.Poles[i+4],fp.Poles[i+5])
 		for i in range(25,30):
-			Legs[i]=Part.Line(fp.Poles[i+5],fp.Poles[i+6])	
+			Legs[i]=Part.LineSegment(fp.Poles[i+5],fp.Poles[i+6])	
 		for i in range(30,36):
-			Legs[i]=Part.Line(fp.Poles[i-30],fp.Poles[i-24])
+			Legs[i]=Part.LineSegment(fp.Poles[i-30],fp.Poles[i-24])
 		for i in range(36,42):
-			Legs[i]=Part.Line(fp.Poles[i-30],fp.Poles[i-24])
+			Legs[i]=Part.LineSegment(fp.Poles[i-30],fp.Poles[i-24])
 		for i in range(42,48):
-			Legs[i]=Part.Line(fp.Poles[i-30],fp.Poles[i-24])
+			Legs[i]=Part.LineSegment(fp.Poles[i-30],fp.Poles[i-24])
 		for i in range(48,54):
-			Legs[i]=Part.Line(fp.Poles[i-30],fp.Poles[i-24])
+			Legs[i]=Part.LineSegment(fp.Poles[i-30],fp.Poles[i-24])
 		for i in range(54,60):
-			Legs[i]=Part.Line(fp.Poles[i-30],fp.Poles[i-24])
+			Legs[i]=Part.LineSegment(fp.Poles[i-30],fp.Poles[i-24])
 		
 		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
 
+class ControlGrid64_3_Grid44:
+	def __init__(self, obj , ControlGrid44, Corner):
+		''' Add the properties '''
+		FreeCAD.Console.PrintMessage("\nControlGrid64_3_Grid44 class Init\n")
+		obj.addProperty("App::PropertyLink","ControlGrid44","ControlGrid64_3_Grid44","Reference Bezier Surface").ControlGrid44 = ControlGrid44
+		obj.addProperty("App::PropertyFloat","Corner","ControlGrid64_3_Grid44","Corner blending curve").Corner = Corner
+		obj.addProperty("Part::PropertyGeometryList","Legs","ControlGrid64_3_Grid44","control segments").Legs
+		obj.addProperty("App::PropertyVectorList","Poles","ControlGrid64_3_Grid44","Poles").Poles
+		obj.addProperty("App::PropertyFloatList","Weights","ControlGrid64_3_Grid44","Weights").Weights
+		obj.Proxy = self
 
+	def execute(self, fp):
+		'''Do something when doing a recomputation, this method is mandatory'''
+		# get the control poly of the bezier
+		grid_44 = fp.ControlGrid44
+		# get the target corner
+		corner = fp.Corner
+		
+		if corner == 0:
+			rotate = 0
+		elif corner == 1:
+			rotate = 1
+		elif corner == 2:
+			rotate = 2			
+		elif corner == 3:
+			rotate = 3
+			
+		# rotate the grid so that the corner is in the 00 position
+				# get grid data back into array
+		lin_poles = grid_44.Poles
+		lin_weights = grid_44.Weights
+		
+		# first shot: simple partition.this is an array of rows
+		Apoles = [[lin_poles[0], lin_poles[1], lin_poles[2], lin_poles[3]],
+					[lin_poles[4], lin_poles[5], lin_poles[6], lin_poles[7]],
+					[lin_poles[8], lin_poles[9], lin_poles[10], lin_poles[11]],
+					[lin_poles[12], lin_poles[13], lin_poles[14], lin_poles[15]]]
+		
+		Aweights = [[lin_weights[0], lin_weights[1], lin_weights[2], lin_weights[3]],
+					[lin_weights[4], lin_weights[5], lin_weights[6], lin_weights[7]],
+					[lin_weights[8], lin_weights[9], lin_weights[10], lin_weights[11]],
+					[lin_weights[12], lin_weights[13], lin_weights[14], lin_weights[15]]]		
+		
+		print 'Apoles', Apoles
+		
+		# apply rotation correction. vector type gets stripped in numpy
+		uv_poles_temp = np.rot90(Apoles,rotate).tolist()
+		uv_weights = np.rot90(Aweights,rotate).tolist()
+
+		print 'uv_poles_temp', uv_poles_temp
+		print 'uv_poles_temp[0][0] ', uv_poles_temp[0][0]
+		print 'uv_poles_temp[3][3] ', uv_poles_temp[3][3]
+		
+		# get ready to recast to vector
+		uv_poles = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
+		
+		for i in range(0,4):
+			for j in range(0,4):
+				uv_poles[i][j]= Base.Vector(uv_poles_temp[i][j][0],uv_poles_temp[i][j][1],uv_poles_temp[i][j][2])
+			print uv_poles
+		
+		print 'uv_poles', uv_poles
+		
+		set_poles = [ uv_poles[0][0],
+		uv_poles[0][1],
+		uv_poles[0][2],
+		uv_poles[0][3],
+		uv_poles[1][0],
+		uv_poles[1][1],
+		uv_poles[1][2],
+		uv_poles[1][3],
+		uv_poles[2][0],
+		uv_poles[2][1],
+		uv_poles[2][2],
+		uv_poles[2][3],
+		uv_poles[3][0],
+		uv_poles[3][1],
+		uv_poles[3][2],
+		uv_poles[3][3]]
+		
+		set_weights = [ uv_weights[0][0],
+		uv_weights[0][1],
+		uv_weights[0][2],
+		uv_weights[0][3],
+		uv_weights[1][0],
+		uv_weights[1][1],
+		uv_weights[1][2],
+		uv_weights[1][3],
+		uv_weights[2][0],
+		uv_weights[2][1],
+		uv_weights[2][2],
+		uv_weights[2][3],
+		uv_weights[3][0],
+		uv_weights[3][1],
+		uv_weights[3][2],
+		uv_weights[3][3]]
+		
+		
+		#first degenerate topology try. naive Grid44 to Grid64 triangle mapping with some midpoints
+		p00=set_poles[12]
+		p01=set_poles[8]
+		p02=set_poles[4]
+		p03=set_poles[1]
+		p04=set_poles[2]
+		p05=set_poles[3]
+		
+		p10=set_poles[13]
+		p11=set_poles[9]
+		
+		p14=set_poles[6]
+		p15=set_poles[7]
+		
+		p20=set_poles[14]
+		p21=set_poles[10]
+		p22=set_poles[10]
+		p23=set_poles[10]
+		p24=set_poles[10]
+		p25=set_poles[11]
+		
+		p30=set_poles[15]
+		p31=set_poles[15]
+		p32=set_poles[15]
+		p33=set_poles[15]
+		p34=set_poles[15]
+		p35=set_poles[15]
+		
+		p12=(p02+p21).multiply(0.5)
+		p13=(p03+p24).multiply(0.5)
+					
+		
+		fp.Poles = [p00, p01, p02, p03, p04, p05,
+					p10, p11, p12, p13, p14, p15,
+					p20, p21, p22, p23, p24, p25,
+					p30, p31, p32, p33, p34, p35]
+
+		w00=set_weights[12]
+		w01=set_weights[8]
+		w02=set_weights[4]
+		w03=set_weights[1]
+		w04=set_weights[2]
+		w05=set_weights[3]
+		
+		w10=set_weights[13]
+		w11=set_weights[9]
+		
+		w14=set_weights[6]
+		w15=set_weights[7]
+		
+		w20=set_weights[14]
+		w21=set_weights[10]
+		w22=set_weights[10]
+		w23=set_weights[10]
+		w24=set_weights[10]
+		w25=set_weights[11]
+		
+		w30=set_weights[15]
+		w31=set_weights[15]
+		w32=set_weights[15]
+		w33=set_weights[15]
+		w34=set_weights[15]
+		w35=set_weights[15]
+		
+		w12=(w02+w21)/2
+		w13=(w03+w24)/2
+					
+		fp.Weights = [w00, w01, w02, w03, w04, w05,
+					w10, w11, w12, w13, w14, w15,
+					w20, w21, w22, w23, w24, w25,
+					w30, w31, w32, w33, w34, w35]
+		Legs=[0]*22
+		for i in range(0,5):
+			Legs[i]=Part.LineSegment(fp.Poles[i],fp.Poles[i+1])
+		Legs[5]=Part.LineSegment(p10,p11)
+		Legs[6]=Part.LineSegment(p12,p13)
+		Legs[7]=Part.LineSegment(p14,p15)
+		Legs[8]=Part.LineSegment(p20,p21)
+		Legs[9]=Part.LineSegment(p24,p25)
+		
+		for i in range(10,16):
+			Legs[i]=Part.LineSegment(fp.Poles[i-10],fp.Poles[i-4])
+		
+		Legs[16]=Part.LineSegment(p10,p20)
+		Legs[17]=Part.LineSegment(p11,p21)
+		Legs[18]=Part.LineSegment(p14,p24)
+		Legs[19]=Part.LineSegment(p15,p25)
+		Legs[20]=Part.LineSegment(p20,p30)
+		Legs[21]=Part.LineSegment(p25,p35)
+		
+		fp.Legs=Legs
+		fp.Shape = Part.Shape(fp.Legs)
+		
