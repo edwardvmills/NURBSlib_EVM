@@ -3,6 +3,8 @@ My python scripts for creating surfaces in [FreeCAD](http://freecadweb.org/).
 
 This is the rough workflow prototyping phase. most basic objects are now parametric. The workflow is based on sketches drawn in FreeCAD 0.17 or later. The sketches are used to comtrol NURBS curves and surfaces. 
 
+![Best example of current state](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/begin%20transition%20to%200.17/Bezier%20primary%20Surface%20Volume%2041-07.bmp.png?raw=true)  
+
 The ultimate goal is to implement a set of tools that require *very few points and tangents/normals* to generate NURBS surfaces of high continuity. I have some ideas as to what constitutes an efficient and intuitive input/interface structure. This is very personal, and cannot address all individual preferences. 
 
 Ideally, the user interaction with the points/normals would be analogous to manipulating a coarse mesh, like subdivision surfaces. The main difference with subdivision surfaces being that with full NURBS, we can have perfect conics, no intrinsic continuity limits, and the 'handles' <i>stay on the surface itself</i>. So when we dimension/constrain the handles, we are dimensioning the surface itself.
