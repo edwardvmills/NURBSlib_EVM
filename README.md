@@ -20,7 +20,7 @@ All models (file extension .fcstd). and icon files (file extension .svg) in this
 Current state can be seen [here](http://forum.freecadweb.org/viewtopic.php?f=24&t=19736), in the FreeCAD forum
 
 
-ALL INFO BELOW IS OUT OF DATE AS OF 2017 - 01 -20 9the specifics are incorrect but the general lines are still valid)
+ALL INFO BELOW IS OUT OF DATE AS OF 2017 - 01 -20 (the specifics are incorrect but the general lines are still valid)
 
 ###In this repo:   
 -a single .py with all the 'geometry' functions, where i try to use the most basic inputs.   
