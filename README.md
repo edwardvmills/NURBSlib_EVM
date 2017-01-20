@@ -1,7 +1,7 @@
 ## NURBSlib_EVM
 My python scripts for creating surfaces in [FreeCAD](http://freecadweb.org/).   
 
-At this time, none of the entities created by these scripts are parametric. This is the rough workflow prototyping phase. If/when the surface creation methods reach my minimum goals, i intend to make them parametric (currently underway. most basic objects are now parametric. manipulation tools still needed).
+This is the rough workflow prototyping phase. most basic objects are now parametric. The workflow is based on sketches drawn in FreeCAD 0.17 or later. The sketches are used to comtrol NURBS curves and surfaces. 
 
 The ultimate goal is to implement a set of tools that require *very few points and tangents/normals* to generate NURBS surfaces of high continuity. I have some ideas as to what constitutes an efficient and intuitive input/interface structure. This is very personal, and cannot address all individual preferences. 
 
@@ -10,10 +10,15 @@ Ideally, the user interaction with the points/normals would be analogous to mani
 What this means in practice is that eventually the user will not need to know *anything* about control points, knot vectors, or weights. At this stage however, a minimum understanding of control points is still necessary to use the tools.
 
 **These are not the 'classic' surfacing tools like sweep, loft, blend, trim, etc**, although there are many parallels.    
-FreeCAD already has some of these tools in the Part module and i believe the PartDesign module is slated to get improved versions soon. OpenCascade itself already has all of these functions built in, but i am not a programmer, so i cannot use OpenCascade directly. 
+FreeCAD already has some of these tools in the Part module and i believe the PartDesign module is slated to get improved versions soon. OpenCascade itself already has all of these functions built in, but c++ is beyond my skills right now, so i'll stick yo python. 
 
 All scripts (file extension .py and .fcmacro) in this repository are offered under the terms of the [GPLv3](http://www.gnu.org/licenses/gpl-3.0.en.html)   
 All models (file extension .fcstd). and icon files (file extension .svg) in this repository are offered under the terms of [CC-BY](http://creativecommons.org/licenses/by/2.0/)
+
+Current state can be seen [here](http://forum.freecadweb.org/viewtopic.php?f=24&t=19736), in the FreeCAD forum
+
+
+ALL INFO BELOW IS OUT OF DATE AS OF 2017 - 01 -20 9the specifics are incorrect but the general lines are still valid)
 
 ###In this repo:   
 -a single .py with all the 'geometry' functions, where i try to use the most basic inputs.   
