@@ -1,9 +1,16 @@
 ## NURBSlib_EVM
 My python scripts for creating surfaces in [FreeCAD](http://freecadweb.org/).   
 
-This is the rough workflow prototyping phase. most basic objects are now parametric. The workflow is based on sketches drawn in FreeCAD 0.17 or later. The sketches are used to comtrol NURBS curves and surfaces. 
+This is the rough workflow prototyping phase. most basic objects are now parametric. The workflow is based on sketches drawn in FreeCAD 0.17 or later. The sketches are used to control NURBS curves and surfaces. 
+
+What do it do right now? Here my favorite model so far. 
 
 ![Best example of current state](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/begin%20transition%20to%200.17/Bezier%20primary%20Surface%20Volume%2041-07.bmp.png?raw=true)  
+
+![A semi decent G2 seam between two surfaces](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/Bezier%20surface%20segment%20and%20blend/Bezier%20surface%20segment%20and%20blend%2021/Bezier%20surface%20segment%20and%20blend%2021.gif?raw=true) 
+
+![manipulating model above](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/Bezier%20surface%20segment%20and%20blend/Bezier%20surface%20segment%20and%20blend%2018/1f7g55.gif?raw=true)  
+
 
 The ultimate goal is to implement a set of tools that require *very few points and tangents/normals* to generate NURBS surfaces of high continuity. I have some ideas as to what constitutes an efficient and intuitive input/interface structure. This is very personal, and cannot address all individual preferences. 
 
