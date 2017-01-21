@@ -34,35 +34,8 @@ FreeCAD already has some of these tools in the Part module and i believe the Par
 All scripts (file extension .py and .fcmacro) in this repository are offered under the terms of the [GPLv3](http://www.gnu.org/licenses/gpl-3.0.en.html)   
 All models (file extension .fcstd). and icon files (file extension .svg) in this repository are offered under the terms of [CC-BY](http://creativecommons.org/licenses/by/2.0/)
 
-Current state can be seen [here](http://forum.freecadweb.org/viewtopic.php?f=24&t=19736), in the FreeCAD forum
+REMOVED OUTDATED INSTALL/USE INFO. workbench release planned soon
 
-
-ALL INFO BELOW IS OUT OF DATE AS OF 2017 - 01 -20 (the specifics are incorrect but the general lines are still valid)
-
-###In this repo:   
--a single .py with all the 'geometry' functions, where i try to use the most basic inputs.   
--individual .fcmacro files that tie the current GUI and selection behavior of FreeCAD to single modeling operations.   
--various utility .fcmacro functions to assist in creating sketches ('handles') to pass to the NURBS tools.   
--test FreeCAD model files. These model files are irrelevant to the scripts, i keep them in the repo for my ease of access. 
-___
-###Setup   
--from the top level of the repository, take NURBSlib_EVM.py, all  *.fcmacro files, and the icons folder
--put them somewhere FreeCAD can find them   
--link the fcmacro scripts to icons, descriptions, tooltips, etc. 
--put all those GUI macros in toolbars.   
--add that toolbar to the PartDesign workbench. The raw material will be PartDesign sketches, so this is a good place to put the toolbars for the time being.   
-
-[instructions for toolbars/macros in FreeCAD](http://freecadweb.org/wiki/index.php?title=Macros) 
-
-###Usage (basic knowledge of the FreeCAD PartDesign Sketcher is required)  
-More details on usage will be made available [here](http://edwardvmills.github.io/NURBSlib_EVM/) as time permits.
-
--draw sketches of lines/circles (read the curve macros to see what inputs they want)   
--select those lines/circles in the order specified by the macro, then hit the macro button > curve is created.   
--select 3/4 curves in a loop counterclockwise (surface normal will then point towards you), hit the surface macro button > surface is created.
-
-The surfaces are 100% controlled by the curves, which are 100% controlled by the sketches. This can be very powerful, but requires following strict rules for the sketches to obtain good results. Utilities to control the sketches and continuity are in various stages of planning/prototyping. I suspect much could already be done by using spreadsheets and expressions.
-___
 ###NURBS in general, and what these scripts are trying to do   
 
 For now, my focus is on skinning sets of 3 or 4 curves in a loop. 
