@@ -7,6 +7,9 @@ What does it do right now? Here is my favorite model so far. It shows control of
 
 ![Best example of current state](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/begin%20transition%20to%200.17/Bezier%20primary%20Surface%20Volume%2041-07.bmp.png?raw=true)  
 
+![Best example of current state](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/begin%20transition%20to%200.17/Bezier%20primary%20Surface%20Volume%2041-01.bmp.png?raw=true)  
+
+
 The next image shows the current required steps:   
 -create and position sketches using FreeCAD (white lines)   
 -convert the sketches to polygons (blues lines)   
