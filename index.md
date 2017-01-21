@@ -7,6 +7,9 @@ What does it do right now? Here is my favorite model so far. It shows control of
 
 ![Best example of current state](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/begin%20transition%20to%200.17/Bezier%20primary%20Surface%20Volume%2041-07.bmp.png?raw=true)  
 
+![Best example of current state](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/begin%20transition%20to%200.17/Bezier%20primary%20Surface%20Volume%2041-01.png?raw=true)  
+
+
 The next image shows the current required steps:   
 -create and position sketches using FreeCAD (white lines)   
 -convert the sketches to polygons (blues lines)   
@@ -56,4 +59,3 @@ For now, the Bezier curves and surfaces are considered to be 'rough drafts' of t
 In order to have isolated curvature at each curve endpoint, i made a 6 control point cubic curve and associated 6X6 surface. This surface type does not have a triangle version yet. Included are utilites to convert cubic Bezier and arcs to this curve type.   
 
 This will open up the possibility of using the 3rd and 4th points to control start and end curvature respectively. This can be done without interfering with the use of the 2nd and 5th control points to set tangents. Right now the curvature matching must be done by hand, but for any particular value of curvature desired at a curve connection, there are many possible control points positions. These additional degrees of freedom will (i hope) allow the possibility of controlling the derivative of curvature (highlight flow).
-
