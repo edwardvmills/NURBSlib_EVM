@@ -34,7 +34,8 @@ FreeCAD already has some of these tools in the Part module and i believe the Par
 All scripts (file extension .py and .fcmacro) in this repository are offered under the terms of the [GPLv3](http://www.gnu.org/licenses/gpl-3.0.en.html)   
 All models (file extension .fcstd). and icon files (file extension .svg) in this repository are offered under the terms of [CC-BY](http://creativecommons.org/licenses/by/2.0/)
 
-REMOVED OUTDATED INSTALL/USE INFO. workbench release planned soon
+#REMOVED OUTDATED INSTALL/USE INFO. 
+## Workbench release planned soon.
 
 ###NURBS in general, and what these scripts are trying to do   
 
