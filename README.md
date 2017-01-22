@@ -1,7 +1,29 @@
 ## NURBSlib_EVM
 My python scripts for creating surfaces in [FreeCAD](http://freecadweb.org/).   
 
-At this time, none of the entities created by these scripts are parametric. This is the rough workflow prototyping phase. If/when the surface creation methods reach my minimum goals, i intend to make them parametric (currently underway. most basic objects are now parametric. manipulation tools still needed).
+This is the rough workflow prototyping phase. most basic objects are now parametric. The workflow is based on sketches drawn in FreeCAD 0.17 or later. The sketches are used to control NURBS curves and surfaces. 
+
+What does it do right now? Here is my favorite model so far. It shows control of an overall shape with 'main' sketches, and automatic 'blending' of the corners of the main surfaces to obtain curvature continuity (G2).
+
+![Best example of current state](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/begin%20transition%20to%200.17/Bezier%20primary%20Surface%20Volume%2041-07.bmp.png?raw=true)  
+
+![Best example of current state](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/begin%20transition%20to%200.17/Bezier%20primary%20Surface%20Volume%2041-01.png?raw=true)  
+
+
+The next image shows the current required steps:   
+-create and position sketches using FreeCAD (white lines)   
+-convert the sketches to polygons (blues lines)   
+-convert the polygons to curves (black lines), or combine the polygons into grids (light blues lines)   
+-convert the grids to surfaces   
+-trim/clip sections of curves / surfaces (several steps needed here)   
+-blend the sections   
+
+![A semi decent G2 seam between two surfaces](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/Bezier%20surface%20segment%20and%20blend/Bezier%20surface%20segment%20and%20blend%2021/Bezier%20surface%20segment%20and%20blend%2021.gif?raw=true)   
+
+There is a fair amount of work to setup a blended model, but the payoff is that all the work is parametric, so one can go back and edit the initial overall sketch, and everything, including the blends will update. This is shown below. Moving the white lines of the sketch sculpts the blended surface.   
+
+![manipulating model above](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/Bezier%20surface%20segment%20and%20blend/Bezier%20surface%20segment%20and%20blend%2018/1f7g55.gif?raw=true)  
+
 
 The ultimate goal is to implement a set of tools that require *very few points and tangents/normals* to generate NURBS surfaces of high continuity. I have some ideas as to what constitutes an efficient and intuitive input/interface structure. This is very personal, and cannot address all individual preferences. 
 
@@ -10,35 +32,14 @@ Ideally, the user interaction with the points/normals would be analogous to mani
 What this means in practice is that eventually the user will not need to know *anything* about control points, knot vectors, or weights. At this stage however, a minimum understanding of control points is still necessary to use the tools.
 
 **These are not the 'classic' surfacing tools like sweep, loft, blend, trim, etc**, although there are many parallels.    
-FreeCAD already has some of these tools in the Part module and i believe the PartDesign module is slated to get improved versions soon. OpenCascade itself already has all of these functions built in, but i am not a programmer, so i cannot use OpenCascade directly. 
+FreeCAD already has some of these tools in the Part module and i believe the PartDesign module is slated to get improved versions soon. OpenCascade itself already has all of these functions built in, but c++ is beyond my skills right now, so i'll stick yo python. 
 
 All scripts (file extension .py and .fcmacro) in this repository are offered under the terms of the [GPLv3](http://www.gnu.org/licenses/gpl-3.0.en.html)   
 All models (file extension .fcstd). and icon files (file extension .svg) in this repository are offered under the terms of [CC-BY](http://creativecommons.org/licenses/by/2.0/)
 
-###In this repo:   
--a single .py with all the 'geometry' functions, where i try to use the most basic inputs.   
--individual .fcmacro files that tie the current GUI and selection behavior of FreeCAD to single modeling operations.   
--various utility .fcmacro functions to assist in creating sketches ('handles') to pass to the NURBS tools.   
--test FreeCAD model files. These model files are irrelevant to the scripts, i keep them in the repo for my ease of access. 
-___
-###Setup   
--from the top level of the repository, take NURBSlib_EVM.py, all  *.fcmacro files, and the icons folder
--put them somewhere FreeCAD can find them   
--link the fcmacro scripts to icons, descriptions, tooltips, etc. 
--put all those GUI macros in toolbars.   
--add that toolbar to the PartDesign workbench. The raw material will be PartDesign sketches, so this is a good place to put the toolbars for the time being.   
+#REMOVED OUTDATED INSTALL/USE INFO. 
+## Workbench release planned soon.
 
-[instructions for toolbars/macros in FreeCAD](http://freecadweb.org/wiki/index.php?title=Macros) 
-
-###Usage (basic knowledge of the FreeCAD PartDesign Sketcher is required)  
-More details on usage will be made available [here](http://edwardvmills.github.io/NURBSlib_EVM/) as time permits.
-
--draw sketches of lines/circles (read the curve macros to see what inputs they want)   
--select those lines/circles in the order specified by the macro, then hit the macro button > curve is created.   
--select 3/4 curves in a loop counterclockwise (surface normal will then point towards you), hit the surface macro button > surface is created.
-
-The surfaces are 100% controlled by the curves, which are 100% controlled by the sketches. This can be very powerful, but requires following strict rules for the sketches to obtain good results. Utilities to control the sketches and continuity are in various stages of planning/prototyping. I suspect much could already be done by using spreadsheets and expressions.
-___
 ###NURBS in general, and what these scripts are trying to do   
 
 For now, my focus is on skinning sets of 3 or 4 curves in a loop. 
