@@ -1,2 +1,3 @@
 import NURBSlib_EVM
 reload(NURBSlib_EVM)
+FreeCAD.ActiveDocument.recompute()

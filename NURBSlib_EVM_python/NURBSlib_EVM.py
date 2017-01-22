@@ -3746,7 +3746,10 @@ class ControlGrid64_3_Grid44:
 		uv_weights[3][3]]
 		
 		
-		#first degenerate topology try. naive Grid44 to Grid64 triangle mapping with some midpoints
+		#first degenerate topology try. naive Grid44 to Grid64 triangle mapping with some midpoints. p22=p23=p24=p25=set_poles[10]. this causes folding.
+		#second iteration: add tiny spacing around p22, p23, p24, p25. this will break G1 slightly. The goal is to balance G1 loss versus folding over.
+		#as these point 'un-degenerate' it is tempting to reintroduce curvature matching. On the other hand, aligning them for 0 curvature may help get G1 back.
+		#maybe some weighted average of these various avenues will be best.
 		p00=set_poles[12]
 		p01=set_poles[8]
 		p02=set_poles[4]
@@ -3760,13 +3763,29 @@ class ControlGrid64_3_Grid44:
 		p14=set_poles[6]
 		p15=set_poles[7]
 		
+
 		p20=set_poles[14]
+		''' # 1st strategy		
 		p21=set_poles[10]
 		p22=set_poles[10]
 		p23=set_poles[10]
 		p24=set_poles[10]
+		'''
 		p25=set_poles[11]
 		
+		# 2nd strategy
+		degen_tan_factor=0.5 #initial was 0.75
+		degen_curv_factor=1.0/6.0 #initial was 0.1
+		#trim tangent
+		p21=p20+(set_poles[10]-p20)*degen_tan_factor
+		# add a segment control line snippet towards the thrid control point of the underlying 44 grid
+		p22=p21+(p14-p21)*degen_curv_factor
+		#trim tangent
+		p24=p25+(set_poles[10]-p25)*degen_tan_factor
+		# add a segment control line snippet towards the thrid control point of the underlying 44 grid		
+		p23=p24+(p11-p24)*degen_curv_factor
+		
+				
 		p30=set_poles[15]
 		p31=set_poles[15]
 		p32=set_poles[15]
@@ -3774,8 +3793,8 @@ class ControlGrid64_3_Grid44:
 		p34=set_poles[15]
 		p35=set_poles[15]
 		
-		p12=(p02+p21).multiply(0.5)
-		p13=(p03+p24).multiply(0.5)
+		p12=(set_poles[5]+p11).multiply(0.5)
+		p13=(set_poles[5]+p14).multiply(0.5)
 					
 		
 		fp.Poles = [p00, p01, p02, p03, p04, p05,
@@ -3817,25 +3836,67 @@ class ControlGrid64_3_Grid44:
 					w10, w11, w12, w13, w14, w15,
 					w20, w21, w22, w23, w24, w25,
 					w30, w31, w32, w33, w34, w35]
-		Legs=[0]*22
+		Legs=[0]*33 # last used Legs index below + 1
+		
+		#rows
 		for i in range(0,5):
 			Legs[i]=Part.LineSegment(fp.Poles[i],fp.Poles[i+1])
-		Legs[5]=Part.LineSegment(p10,p11)
-		Legs[6]=Part.LineSegment(p12,p13)
-		Legs[7]=Part.LineSegment(p14,p15)
-		Legs[8]=Part.LineSegment(p20,p21)
-		Legs[9]=Part.LineSegment(p24,p25)
+		#Legs[0,1,2,3,4] used	
+		for i in range(6,11):
+			Legs[i-1]=Part.LineSegment(fp.Poles[i],fp.Poles[i+1])
+		#Legs[5,6,7,8,9] used
+		for i in range(12,17):
+			Legs[i-2]=Part.LineSegment(fp.Poles[i],fp.Poles[i+1])
+		#Legs[10,11,12,13,14] used
+		#skip top row
 		
-		for i in range(10,16):
-			Legs[i]=Part.LineSegment(fp.Poles[i-10],fp.Poles[i-4])
+		#columns
+		for i in range(0,6):
+			Legs[i+15]=Part.LineSegment(fp.Poles[i],fp.Poles[i+6])
+		#Legs[15,16,17,18,19,20] used	
+		for i in range(6,12):
+			Legs[i+15]=Part.LineSegment(fp.Poles[i],fp.Poles[i+6])
+		#Legs[21,22,23,24,25,26] used
+		for i in range(12,18):
+			Legs[i+15]=Part.LineSegment(fp.Poles[i],fp.Poles[i+6])
+		#Legs[27,28,29,30,31,32] used
 		
-		Legs[16]=Part.LineSegment(p10,p20)
-		Legs[17]=Part.LineSegment(p11,p21)
-		Legs[18]=Part.LineSegment(p14,p24)
-		Legs[19]=Part.LineSegment(p15,p25)
-		Legs[20]=Part.LineSegment(p20,p30)
-		Legs[21]=Part.LineSegment(p25,p35)
+		
+		
 		
 		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
