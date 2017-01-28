@@ -2772,7 +2772,7 @@ class ControlGrid44_2EdgeSegments:
 		'''Do something when doing a recomputation, this method is mandatory'''
 		# get surface
 		surface=fp.NL_Surface.Shape.Surface
-		# get cutting points from curve
+		# get cutting points from curves
 		curve_a=fp.NL_Curve_a.Shape.Curve
 		a0 = curve_a.StartPoint
 		a1 = curve_a.EndPoint
@@ -2784,9 +2784,9 @@ class ControlGrid44_2EdgeSegments:
 		
 		# determine u or v segmentation and get parameter span fron cutting points for curve a
 		param_a0=surface.parameter(a0)
-		print 'param_a0: ', param_a0
+		#print 'param_a0: ', param_a0
 		param_a1=surface.parameter(a1)
-		print 'param_a1: ', param_a1
+		#print 'param_a1: ', param_a1
 		if ((param_a0[0]<0.001 and param_a1[0]<0.001) or (param_a0[0]>0.999 and param_a1[0]>0.999)): # if u is constant 0 or constant 1 along curve
 			segdira = 'v'
 			if param_a0[1] < param_a1[1]:
@@ -2839,56 +2839,59 @@ class ControlGrid44_2EdgeSegments:
 			
 		# create surface segment. this works very nicely most of the time, but! 
 		#sometimes .segment returns [[vector],[vector],[vector],[vector]] instad of a whole grid.
-		
-		print 'sgdira: ', segdira
-		print 'sgdirb: ', segdirb
-		print 's0 ', s0
-		print 's1 ', s1		
-		print 't0 ', t0
-		print 't1 ', t1
-		
+			
 		if segdira=='u' and segdirb=='v':
 			surface.segment(s0,s1,t0,t1)
 		if segdira=='v' and segdirb=='u':
 			surface.segment(t0,t1,s0,s1) # 
 		# extract the control grid information from the surface segment
+		# first version flips the grid along v???? need to run down 3 to 0 on v while looping 0 to 3 on u ?????
 		poles_2dArray = surface.getPoles()
-		print(poles_2dArray)
-		fp.Poles = [poles_2dArray[0][0],
-					poles_2dArray[0][1],
-					poles_2dArray[0][2],
-					poles_2dArray[0][3],
-					poles_2dArray[1][0],
-					poles_2dArray[1][1],
-					poles_2dArray[1][2],
-					poles_2dArray[1][3],
+		if len(poles_2dArray[0]) == 1:
+			print 'collapsed surface segment'
+			print 'segdira: ', segdira
+			print 'segdirb: ', segdirb
+			print 's0 ', s0
+			print 's1 ', s1		
+			print 't0 ', t0
+			print 't1 ', t1
+			print 'poles_2dArray', poles_2dArray
+			
+			
+		fp.Poles = [poles_2dArray[3][0],
+					poles_2dArray[3][1],
+					poles_2dArray[3][2],
+					poles_2dArray[3][3],
 					poles_2dArray[2][0],
 					poles_2dArray[2][1],
 					poles_2dArray[2][2],
 					poles_2dArray[2][3],
-					poles_2dArray[3][0],
-					poles_2dArray[3][1],
-					poles_2dArray[3][2],
-					poles_2dArray[3][3]]
-
+					poles_2dArray[1][0],
+					poles_2dArray[1][1],
+					poles_2dArray[1][2],
+					poles_2dArray[1][3],
+					poles_2dArray[0][0],
+					poles_2dArray[0][1],
+					poles_2dArray[0][2],
+					poles_2dArray[0][3]]
+					
 		weights_2dArray = surface.getWeights()
-		print(weights_2dArray)
-		fp.Weights = [weights_2dArray[0][0],
-					weights_2dArray[0][1],
-					weights_2dArray[0][2],
-					weights_2dArray[0][3],
-					weights_2dArray[1][0],
-					weights_2dArray[1][1],
-					weights_2dArray[1][2],
-					weights_2dArray[1][3],
+		fp.Weights = [weights_2dArray[3][0],
+					weights_2dArray[3][1],
+					weights_2dArray[3][2],
+					weights_2dArray[3][3],
 					weights_2dArray[2][0],
 					weights_2dArray[2][1],
 					weights_2dArray[2][2],
 					weights_2dArray[2][3],
-					weights_2dArray[3][0],
-					weights_2dArray[3][1],
-					weights_2dArray[3][2],
-					weights_2dArray[3][3]]
+					weights_2dArray[1][0],
+					weights_2dArray[1][1],
+					weights_2dArray[1][2],
+					weights_2dArray[1][3],
+					weights_2dArray[0][0],
+					weights_2dArray[0][1],
+					weights_2dArray[0][2],
+					weights_2dArray[0][3]]
 
 
 
@@ -2974,7 +2977,7 @@ class ControlGrid64_2Grid44:  # surfaces not strictly used as input, but this is
 			rotate_1 = 1 
 		if seam_1 == [1,2] or seam_1 == [2,1]:
 			rotate_1 = 2 
-		if seam_1 == [0,4] or seam_1 == [4,0]:
+		if seam_1 == [3,2] or seam_1 == [2,3]:
 			rotate_1 = 3 
 						
 		print 'rotate left: ', rotate_0
@@ -3162,11 +3165,15 @@ class SubGrid33_2Grid64s_old:
 		corners_0=[fp.Grid_0.Poles[0],fp.Grid_0.Poles[5],fp.Grid_0.Poles[18],fp.Grid_0.Poles[23]]
 		corners_1=[fp.Grid_1.Poles[0],fp.Grid_1.Poles[5],fp.Grid_1.Poles[18],fp.Grid_1.Poles[23]]
 		# find the common point
+		common = 'not_found_yet'
 		for i in range(0,4):
 			for j in range(0,4):
 				if corners_0[i] == corners_1[j]:
 					common=[i,j]
-		print 'common ', common
+
+		if common == 'not_found_yet':
+			print 'common point of grids not found. If this object was working, this is an evaluation error'
+		#print 'common ', common
 		# tested-runs-
 		
 		# the two '6s' fo each grid should form a V when looking at the future grid
@@ -3253,21 +3260,24 @@ class SubGrid33_2Grid64s:
 		# -find shared corner
 		# -set 'u' row - imagine the future surface as uvn (n is normal). 
 		# -set 'v' row - imagine the future surface as uvn (n is normal).
-		# -build a corner focused 33 grid using the same logic as the corner focused 66 grid. 
+		# -build a corner focused 33 grid using similar logic as the corner focused 66 grid. 
 		#the $10 question here is whether this even maintains G1? maybe...it has been many steps since the bezier surface was segmented.
 		
 		# extract corner points
 		corners_0=[fp.Grid_0.Poles[0],fp.Grid_0.Poles[5],fp.Grid_0.Poles[18],fp.Grid_0.Poles[23]]
 		corners_1=[fp.Grid_1.Poles[0],fp.Grid_1.Poles[5],fp.Grid_1.Poles[18],fp.Grid_1.Poles[23]]
 		# find the common point
+		common = 'not_found_yet'
 		for i in range(0,4):
 			for j in range(0,4):
 				if corners_0[i] == corners_1[j]:
 					common=[i,j]
+		if common == 'not_found_yet':
+			print 'common point of grids not found. If this object was working previously, this is an evaluation error'
 		print 'common ', common
 		# tested-runs-
 		
-		# the two '6s' fo each grid should form a V when looking at the future grid
+		# the two 6 point sides of each grid should form a V when looking at the future grid
 		# a is the left leg of the V, i.e. common[0] = 0 or 3
 		# b is the right leg of the V i.e. common[1] = 2 or 1
 		
@@ -3288,28 +3298,28 @@ class SubGrid33_2Grid64s:
 			print 'common ', common
 		
 		if common[0] == 0:
-			u_row0_poles = [fp.Grid_0.Poles[0],fp.Grid_0.Poles[1],fp.Grid_0.Poles[2]]
-			u_row0_weights = [fp.Grid_0.Weights[0],fp.Grid_0.Weights[1],fp.Grid_0.Weights[2]]
-			u_row1_poles = [fp.Grid_0.Poles[6],fp.Grid_0.Poles[7],fp.Grid_0.Poles[8]]
-			u_row1_weights = [fp.Grid_0.Weights[6],fp.Grid_0.Weights[7],fp.Grid_0.Weights[8]]			
+			v_col0_poles = [fp.Grid_0.Poles[0],fp.Grid_0.Poles[1],fp.Grid_0.Poles[2]]
+			v_col0_weights = [fp.Grid_0.Weights[0],fp.Grid_0.Weights[1],fp.Grid_0.Weights[2]]
+			v_col1_poles = [fp.Grid_0.Poles[6],fp.Grid_0.Poles[7],fp.Grid_0.Poles[8]]
+			v_col1_weights = [fp.Grid_0.Weights[6],fp.Grid_0.Weights[7],fp.Grid_0.Weights[8]]			
 		
 		if common[0] == 3:
-			u_row0_poles = [fp.Grid_0.Poles[23],fp.Grid_0.Poles[22],fp.Grid_0.Poles[21]]
-			u_row0_weights = [fp.Grid_0.Weights[23],fp.Grid_0.Weights[22],fp.Grid_0.Weights[21]]
-			u_row1_poles = [fp.Grid_0.Poles[17],fp.Grid_0.Poles[16],fp.Grid_0.Poles[15]]
-			u_row1_weights = [fp.Grid_0.Weights[17],fp.Grid_0.Weights[16],fp.Grid_0.Weights[15]]					
+			v_col0_poles = [fp.Grid_0.Poles[23],fp.Grid_0.Poles[22],fp.Grid_0.Poles[21]]
+			v_col0_weights = [fp.Grid_0.Weights[23],fp.Grid_0.Weights[22],fp.Grid_0.Weights[21]]
+			v_col1_poles = [fp.Grid_0.Poles[17],fp.Grid_0.Poles[16],fp.Grid_0.Poles[15]]
+			v_col1_weights = [fp.Grid_0.Weights[17],fp.Grid_0.Weights[16],fp.Grid_0.Weights[15]]					
 		
 		if common[1] == 1:
-			v_col0_poles = [fp.Grid_1.Poles[5],fp.Grid_1.Poles[4],fp.Grid_1.Poles[3]]
-			v_col0_weights = [fp.Grid_1.Weights[5],fp.Grid_1.Weights[4],fp.Grid_1.Weights[3]]
-			v_col1_poles = [fp.Grid_1.Poles[11],fp.Grid_1.Poles[10],fp.Grid_1.Poles[9]]
-			v_col1_weights = [fp.Grid_1.Weights[11],fp.Grid_1.Weights[10],fp.Grid_1.Weights[9]]					
+			u_row0_poles = [fp.Grid_1.Poles[5],fp.Grid_1.Poles[4],fp.Grid_1.Poles[3]]
+			u_row0_weights = [fp.Grid_1.Weights[5],fp.Grid_1.Weights[4],fp.Grid_1.Weights[3]]
+			u_row1_poles = [fp.Grid_1.Poles[11],fp.Grid_1.Poles[10],fp.Grid_1.Poles[9]]
+			u_row1_weights = [fp.Grid_1.Weights[11],fp.Grid_1.Weights[10],fp.Grid_1.Weights[9]]					
 			
 		if common[1] == 2:
-			v_col0_poles = [fp.Grid_1.Poles[18],fp.Grid_1.Poles[19],fp.Grid_1.Poles[20]]
-			v_col0_weights = [fp.Grid_1.Weights[18],fp.Grid_1.Weights[19],fp.Grid_1.Weights[20]]
-			v_col1_poles = [fp.Grid_1.Poles[12],fp.Grid_1.Poles[13],fp.Grid_1.Poles[14]]
-			v_col1_weights = [fp.Grid_1.Weights[12],fp.Grid_1.Weights[13],fp.Grid_1.Weights[14]]					
+			u_row0_poles = [fp.Grid_1.Poles[18],fp.Grid_1.Poles[19],fp.Grid_1.Poles[20]]
+			u_row0_weights = [fp.Grid_1.Weights[18],fp.Grid_1.Weights[19],fp.Grid_1.Weights[20]]
+			u_row1_poles = [fp.Grid_1.Poles[12],fp.Grid_1.Poles[13],fp.Grid_1.Poles[14]]
+			u_row1_weights = [fp.Grid_1.Weights[12],fp.Grid_1.Weights[13],fp.Grid_1.Weights[14]]					
 			
 		u_tan_ratio = (u_row0_poles[1]-u_row0_poles[0]).Length / (v_col1_poles[0]-v_col0_poles[0]).Length
 		v_tan_ratio = (v_col0_poles[1]-v_col0_poles[0]).Length / (u_row1_poles[0]-u_row0_poles[0]).Length
@@ -3691,15 +3701,15 @@ class ControlGrid64_3_Grid44:
 					[lin_weights[8], lin_weights[9], lin_weights[10], lin_weights[11]],
 					[lin_weights[12], lin_weights[13], lin_weights[14], lin_weights[15]]]		
 		
-		print 'Apoles', Apoles
+		#print 'Apoles', Apoles
 		
 		# apply rotation correction. vector type gets stripped in numpy
 		uv_poles_temp = np.rot90(Apoles,rotate).tolist()
 		uv_weights = np.rot90(Aweights,rotate).tolist()
 
-		print 'uv_poles_temp', uv_poles_temp
-		print 'uv_poles_temp[0][0] ', uv_poles_temp[0][0]
-		print 'uv_poles_temp[3][3] ', uv_poles_temp[3][3]
+		#print 'uv_poles_temp', uv_poles_temp
+		#print 'uv_poles_temp[0][0] ', uv_poles_temp[0][0]
+		#print 'uv_poles_temp[3][3] ', uv_poles_temp[3][3]
 		
 		# get ready to recast to vector
 		uv_poles = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
@@ -3707,9 +3717,9 @@ class ControlGrid64_3_Grid44:
 		for i in range(0,4):
 			for j in range(0,4):
 				uv_poles[i][j]= Base.Vector(uv_poles_temp[i][j][0],uv_poles_temp[i][j][1],uv_poles_temp[i][j][2])
-			print uv_poles
+			#print uv_poles
 		
-		print 'uv_poles', uv_poles
+		#print 'uv_poles', uv_poles
 		
 		set_poles = [ uv_poles[0][0],
 		uv_poles[0][1],
