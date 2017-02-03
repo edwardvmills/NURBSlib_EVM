@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<FrozenViews SchemaVersion="1">
+  <Views Count="3">
+    <Camera settings="  OrthographicCamera {   viewportMapping ADJUST_CAMERA   position 102.09873 -344.35593 43.301922   orientation -1 0 0  4.712389   nearDistance 256.89325   farDistance 431.99313   aspectRatio 1   focalDistance 342.72559   height 164.24962  } "/>
+    <Camera settings="  OrthographicCamera {   viewportMapping ADJUST_CAMERA   position 210.90103 -3.2156525 55.5401   orientation 0.57735026 0.57735026 0.57735026  2.0943952   nearDistance 10.890131   farDistance 216.11696   aspectRatio 1   focalDistance 145.38246   height 188.14104  } "/>
+    <Camera settings="  PerspectiveCamera {   viewportMapping ADJUST_CAMERA   position 29.843857 -259.26031 156.00932   orientation -0.95304811 0.12829028 0.27430123  5.1233392   nearDistance 0.16063002   farDistance 659.25775   aspectRatio 1   focalDistance 295.77936   heightAngle 0.70151764  } "/>
+  </Views>
+</FrozenViews>
