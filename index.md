@@ -1,5 +1,7 @@
 ## NURBSlib_EVM
-My python scripts for creating surfaces in [FreeCAD](http://freecadweb.org/).   
+My python scripts for creating surfaces in [FreeCAD](http://freecadweb.org/).  
+
+[test link for multipage?](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/test_multipage.markdown)
 
 This is the rough workflow prototyping phase. most basic objects are now parametric. The workflow is based on sketches drawn in FreeCAD 0.17 or later. The sketches are used to control NURBS curves and surfaces. 
 
