@@ -74,5 +74,15 @@ Here's why:
 * I could spend a long time learning to nest objects inside of each other, but FreeCAD is not completely consistent as it is, and i'm not sure i even know _yet_ what the best nesting strategy is (i am aware of several competing methods).
 * in the meantime, i have complete freedom to name all the objects and organize them in folders as i like. It is actually really annoying when FreeCAD moves stuff around (for example when mirroring a surface)
 
+* Below are the rest of the pictures for the tutorial, i will complete the step descritopns ASAP, thanks for reading!
+![06](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_06%20the%20weight%20list%20of%20all%20ControlPoly4%20objects.png?raw=true)
 
+![07](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_07%20editing%20a%20specific%20weight%20of%20the%20ControlPoly4%20object.png?raw=true)
 
+![08](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_08%20the%20CubicCurve4%20object%20updates%20to%20the%20modified%20ControlPoly4%20weight.png?raw=true)
+
+![09](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_09%20a%20single%20Node%20sketch%20on%20xy.png?raw=true)
+
+![10](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_10%20a%20single%20Node%20sketch%20on%20yz.png?raw=true)
+
+![11](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_11%20run%20ControlPoly4%20macro%20on%20two%20Node%20sketches.png?raw=true)
