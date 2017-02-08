@@ -1,10 +1,13 @@
 
-# Presentation 0.01
+# Tutorial 0.01
 ##ControlPoly4 and CubicCurve4 macros in NURBSlib_EVM
 
 [return to main page](http://edwardvmills.github.io/NURBSlib_EVM/)
 
-This 'tutorial' is meant to give a glimpse of the NURBSlib_EVM _library
+This 'tutorial' is meant to give a glimpse of the NURBSlib_EVM _library_. This is not a FreeCAD tutorial.
+
+As a library, NURBSlib_EVM provides basic elements that _can_ be used to produce models, but are not streamlined. Some steps in this tutorial will feel repetitive. They _can_ be automated, and they _will_ be automated eventually, however, _at this time_, priority is given to stability and versatility of the objects
+
 
 ### Requirements to follow this presentation:
 * ability to set up a macro in [FreeCAD](http://www.freecadweb.org/)
@@ -12,7 +15,7 @@ This 'tutorial' is meant to give a glimpse of the NURBSlib_EVM _library
 * an understanding of the three basic planes in FreeCAD
 
 ### Specific investment of time required:
-* download three files from this repositiory
+* download three files from this repositiory (5 files if you want icons)
 * set up two FreeCAD macros
 * 5 minutes to read this pages
 
@@ -23,7 +26,11 @@ from [master](https://github.com/edwardvmills/NURBSlib_EVM) /NURBSlib_EVM_python
 * ControlPoly4.FCMacro
 * CubicCurve4.FCMacro
 
-Place them in your FreCAD macro folder
+Optional: from [master](https://github.com/edwardvmills/NURBSlib_EVM) /icons, copy:
+*ControlPoly4.svg
+*CubicCurve4.svg
+
+Place them in your FreCAD macro folder (and a suitable icon folder)
 
 In FreeCAD. set up macros for ControlPoly4 and CubicCurve4.
 
