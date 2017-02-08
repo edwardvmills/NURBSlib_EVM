@@ -34,7 +34,6 @@ Place them in your FreCAD macro folder (and a suitable icon folder)
 
 In FreeCAD. set up macros for ControlPoly4 and CubicCurve4.
 
-right now the icon names do not match the macro names. Ignore the icons folder. Sorry. Only two macros are used in this presentation so i think we'll survive.
 
 * In FreeCAd, open a new document. Draw a sketch with 3 lines connected end to end. 3 lines.
 ![01](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_01%20A%20sketch%20of%20three%20lines%20connected%20end%20to%20end.png?raw=true)
