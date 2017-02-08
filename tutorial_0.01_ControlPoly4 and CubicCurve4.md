@@ -30,8 +30,8 @@ from [master](https://github.com/edwardvmills/NURBSlib_EVM) /NURBSlib_EVM_python
 * CubicCurve4.FCMacro
 
 Optional: from [master](https://github.com/edwardvmills/NURBSlib_EVM) /icons, copy:
-*ControlPoly4.svg
-*CubicCurve4.svg
+* ControlPoly4.svg
+* CubicCurve4.svg
 
 Place them in your FreCAD macro folder (and a suitable icon folder)
 
@@ -39,7 +39,7 @@ In FreeCAD, set up macros for ControlPoly4 and CubicCurve4.
 
 ### Usage
 
-* In FreeCAd, open a new document. Draw a sketch with 3 lines connected end to end. Nothing else should be in the sketch (for now)
+* In FreeCAD, open a new document. Draw a sketch with 3 lines connected end to end. Nothing else should be in the sketch (for now)
 ![01](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_01%20A%20sketch%20of%20three%20lines%20connected%20end%20to%20end.png?raw=true)
 
 * Select the 3 line sketch and click the ControlPoly4 macro
@@ -51,5 +51,20 @@ In FreeCAD, set up macros for ControlPoly4 and CubicCurve4.
 In the Data Tab, you can see two parameters:
 * Sketch - this was the input selection, and it can be remapped to another sketch (also of exactly three lines end-to-end)
 * Weights - we'll talk about this again in a moment
+
+* Select the ControlPoly_3L object and click the CubicCurve4 macro
+![04](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/CubicCurve4.png?raw=true)
+
+* This creates a CubicCurve4 object in the document.
+![05](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_05%20CubicCurve4%20object.png?raw=true)
+
+In the Data Tab, you can see a single parameter:
+* Poly = ControlPoly4_3L. this was the input selection, and it can be remapped to _any ControlPoly4_ object (of which there are 3 varieties at this time)
+
+* Why isn't the curve directly mapped to the sketch? The weights could just be a property of the curve object, couldn't they? In fact i used to have it set up in that way, but i chose to separate the _Control Polygons_ from the NURBS objects _as much as possible_.   
+* Sometimes we need a polygon, but have no itention of calculating the NURBS curve.
+* Many properties of the NURBS can be determined directly from the polygon. These can be used to build other polygons.
+* Calculating curves and surfaces we don't need limits how much we can build before FreeCAD overloads and crashes.
+
 
 
