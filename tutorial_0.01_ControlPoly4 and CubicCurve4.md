@@ -10,7 +10,7 @@ As a library, NURBSlib_EVM provides basic elements that _can_ be used to produce
 
 
 ### Requirements to follow this presentation:
-* ability to set up a macro in [FreeCAD](http://www.freecadweb.org/)
+* ability to set up a macro in [FreeCAD](http://www.freecadweb.org/) 0.17 is required (Part.Line vs Part.LineSegment deprecation warning is fatal in 0.16)
 * ability to create sketches of lines and arcs in FreeCAD
 * an understanding of the three basic planes in FreeCAD
 
@@ -19,8 +19,11 @@ As a library, NURBSlib_EVM provides basic elements that _can_ be used to produce
 * set up two FreeCAD macros
 * 5 minutes to read this page
 
+### motivation? It will take a few tutorials, but here is the end result:
+![target](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/begin%20transition%20to%200.17/Bezier%20primary%20Surface%20Volume%2066-07.bmp.png?raw=true)
 
-### ControlPoly4 and CubicCurve4:
+
+### Setup ControlPoly4 and CubicCurve4:
 from [master](https://github.com/edwardvmills/NURBSlib_EVM) /NURBSlib_EVM_python, copy:
 * NURBSlib_EVM.py
 * ControlPoly4.FCMacro
@@ -32,14 +35,21 @@ Optional: from [master](https://github.com/edwardvmills/NURBSlib_EVM) /icons, co
 
 Place them in your FreCAD macro folder (and a suitable icon folder)
 
-In FreeCAD. set up macros for ControlPoly4 and CubicCurve4.
+In FreeCAD, set up macros for ControlPoly4 and CubicCurve4.
 
+### Usage
 
-* In FreeCAd, open a new document. Draw a sketch with 3 lines connected end to end. 3 lines.
+* In FreeCAd, open a new document. Draw a sketch with 3 lines connected end to end. Nothing else should be in the sketch (for now)
 ![01](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_01%20A%20sketch%20of%20three%20lines%20connected%20end%20to%20end.png?raw=true)
 
 * Select the 3 line sketch and click the ControlPoly4 macro
 ![02](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/ControlPoly4.png?raw=true)
 
-* This creates a cControlPoly4_3L object in the document
+* This creates a ControlPoly4_3L object in the document. Note the '_3L_' suffix. This is one of several different flavors of the ControlPoly4 category of objects
 ![03](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_03%20ControlPoly4_3L%20object.png?raw=true)
+
+In the Data Tab, you can see two parameters:
+* Sketch - this was the input selection, and it can be remapped to another sketch (also of exactly three lines end-to-end)
+* Weights - we'll talk about this again in a moment
+
+
