@@ -17,7 +17,7 @@ This 'tutorial' is meant to give a glimpse of the NURBSlib_EVM _library
 * 5 minutes to read this pages
 
 
-### Let us begin:
+### ControlPoly4 and CubicCurve4:
 from [master](https://github.com/edwardvmills/NURBSlib_EVM) /NURBSlib_EVM_python, copy:
 * NURBSlib_EVM.py
 * ControlPoly4.FCMacro
@@ -30,4 +30,4 @@ In FreeCAD. set up macros for ControlPoly4 and CubicCurve4.
 right now the icon names do not match the macro names. Ignore the icons folder. Sorry. Only two macros are used in this presentation so i think we'll survive.
 
 * Draw a sketch with 3 lines connected end to end. 3 lines. Exactly. Three shall be the number thou shalt count, and the number of the counting shall be three
-
+[aaa](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_01%20A%20sketch%20of%20three%20lines%20connected%20end%20to%20end.png?raw=true)
