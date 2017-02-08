@@ -12,7 +12,7 @@ As a library, NURBSlib_EVM provides basic elements that _can_ be used to produce
 * Triplus 
 * Microelly2
 * Chris_G if he's curious
-* anyone else who wants to, of course.
+* anyone else who wants to, of course, but it'll be hard to follow without context.
 
 ### Requirements to follow this presentation:
 * ability to set up a macro in [FreeCAD](http://www.freecadweb.org/) 0.17 is required (Part.Line vs Part.LineSegment deprecation warning is fatal in 0.16)
@@ -24,8 +24,9 @@ As a library, NURBSlib_EVM provides basic elements that _can_ be used to produce
 * set up two FreeCAD macros
 * 5 minutes to read this page
 
-### motivation? It will take a few tutorials, but here is the end result:
+### Motivation? It will take a few tutorials, but here is the goal:
 ![target](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/begin%20transition%20to%200.17/Bezier%20primary%20Surface%20Volume%2066-07.bmp.png?raw=true)
+NURBS have a _very_ steep learning curve (which is also a NURBS :)). If you know the curves well, the surfaces are not too bad.
 
 
 ### Setup ControlPoly4 and CubicCurve4:
@@ -72,9 +73,9 @@ Here's why:
 * Many properties of the NURBS can be determined directly from the polygon. These can be used to build other polygons.
 * Calculating curves and surfaces we don't need limits how much we can build before FreeCAD overloads and crashes.
 * I could spend a long time learning to nest objects inside of each other, but FreeCAD is not completely consistent as it is, and i'm not sure i even know _yet_ what the best nesting strategy is (i am aware of several competing methods).
-* in the meantime, i have complete freedom to name all the objects and organize them in folders as i like. It is actually really annoying when FreeCAD moves stuff around (for example when mirroring a surface)
+* in the meantime, i have complete freedom to name all the objects and organize them in folders as i like. It is actually really annoying when FreeCAD moves stuff around (for example when mirroring a surface)   
 
-* Below are the rest of the pictures for the tutorial, i will complete the step descriptions ASAP, thanks for reading!
+Below are the rest of the pictures for the tutorial, i will complete the step descriptions ASAP, thanks for reading!
 ![06](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_06%20the%20weight%20list%20of%20all%20ControlPoly4%20objects.png?raw=true)
 
 ![07](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_07%20editing%20a%20specific%20weight%20of%20the%20ControlPoly4%20object.png?raw=true)
