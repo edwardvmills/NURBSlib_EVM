@@ -17,7 +17,7 @@ As a library, NURBSlib_EVM provides basic elements that _can_ be used to produce
 ### Specific investment of time required:
 * download three files from this repositiory (5 files if you want icons)
 * set up two FreeCAD macros
-* 5 minutes to read this pages
+* 5 minutes to read this page
 
 
 ### ControlPoly4 and CubicCurve4:
