@@ -42,7 +42,7 @@ Optional: from [master](https://github.com/edwardvmills/NURBSlib_EVM) /icons, co
 
 Place them in your FreCAD macro folder (and a suitable icon folder)
 
-In FreeCAD, set up macros for ControlPoly4 and CubicCurve4.
+In FreeCAD, set up macros for ControlPoly4 and CubicCurve4. Wherever you do put them, add the Sketcher workbench 'Create a new sketch' button close by. All sketches in this tutorial must be from Sketcher workbench, not PartDesign workbench.
 
 ### Usage
 ####-1-
@@ -119,7 +119,7 @@ In the Data Tab, you can see three parameters:
 * Sketch1 - this was the second input selection, and it can be remapped to another sketch (must also be a node sketch)
 * Weights - exactly the same as in ControlPoly_3L
 
-At this stage, take a moment to hide/show the different objects by selecting them in the model tree. Turn the model around and inspect it. Note that the two nodes are in separate planes, and the COntrolPoly4_2N joins them to form a non planar polygon.
+At this stage, take a moment to hide/show the different objects by selecting them in the model tree. Turn the model around and inspect it. Note that the two nodes are in separate planes, and the ControlPoly4_2N joins them to form a non planar polygon.
 
 ####-10-
 Select the ControlPoly_2N object and click the CubicCurve4 macro
@@ -158,8 +158,25 @@ Note that this time, the weights are not the default [1,1,1,1]. The values gener
 Select the ControlPoly4_Arc object, and click the CubicCurve4 macro
 ![04](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/CubicCurve4.png?raw=true)
 
-![19](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_19%20run%20CubicCurve4%20on%20ControlPoly4_Arc.png?raw=true)
-
 ![20](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_20%20CubicCurve4%20exact%20arc%20object.png?raw=true)
+This creates one more CubicCurve4 object in the document.
+In the Data Tab, you can see a single parameter:
+* Poly = ControlPoly4_Arc. This was the input selection, and it can be remapped to _any ControlPoly4_ object (of which there are 3 varieties at this time)
 
-![21](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_21%20freebie%20elliptic%20arc%20and%20line%20come%20for%20free.png?raw=true)
+What is the point  of steps 13 and 14 if just end up with the same arc?
+* Sketcher arcs are quadratic NURBS
+* the CubicCurve4 version of the arc is a cubic NURBS
+* cubic NURBS are the simplest form that is suitable for free form modeling
+* Once it is in ControlPoly4_arc or CubicCurve4 form, our sketcher arc can now be used alongside the other curves to make surfaces
+* usually we only need the polygon, so we sketch the arc, make the polygon, and skip making a curve. There is little extra effort to ge the conversion
+
+here is an example picture of blending a sketcher arc extrusion to a freeform surface with _exact_ matching at the seam. OUT OF SCOPE for this tutorial, i just want to show a concrete example.
+![21](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/blend%20arc%20to%2066%20demo/live%2066%2002.PNG?raw=true)
+
+####-15- BONUS ROUND
+For any single sketch, the ControlPoly4 macro uses Arc mode if there aren't exactly 3 sketch objects (3L mode). This always applies to the first geometry object in the sketch.
+The net effect is 
+* elliptic arcs are converted exactly.
+* a line is automatically split into three (this is handy when you are too lazy to draw three lines, but a bad habit)
+* parabola and hyperbola don't work yet, but it's just a matter of exposing startpoint and endpoint. I'm not worried about it at this time
+![22](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_21%20freebie%20elliptic%20arc%20and%20line%20come%20for%20free.png?raw=true)
