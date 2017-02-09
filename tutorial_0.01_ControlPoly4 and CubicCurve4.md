@@ -148,7 +148,7 @@ Start a new sketch on the zx plane. Draw an arc of cirle, SUBTENDING 90 degrees 
 ####-14-
 Select the sketch with the arc, and click the ControlPoly4 macro
 ![02](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/ControlPoly4.png?raw=true)
-This creates a ControlPoly4_Arc object in the document. Note the '_2N_' suffix. This is the third flavor of the ControlPoly4 category of objects
+This creates a ControlPoly4_Arc object in the document. Note the '_Arc_' suffix. This is the third flavor of the ControlPoly4 category of objects
 ![18](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_18%20ControlPoly4_Arc%20object.png?raw=true)
 In the Data Tab, you can see two parameters:
 * Sketch - this was the input selection, and it can be remapped to another sketch (also of a sketch)
