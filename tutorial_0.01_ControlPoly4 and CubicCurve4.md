@@ -12,12 +12,13 @@
 
 This 'tutorial' is meant to give a glimpse of the NURBSlib_EVM _library_ to knowledgable users of FreeCAD. No explanations of basic FreeCAD actions are provided at this time.
 
-As a library, NURBSlib_EVM provides basic elements that _can_ be used to produce models, but are not streamlined. Some steps in this tutorial will feel repetitive. They can be automated, and they will be automated eventually, in the form of a workbench. At this time, priority is given to stability and versatility of the objects. The interface is minimal, Spartan even. This not necessarily a bad thing.
+As a library, NURBSlib_EVM provides basic elements that _can_ be used to produce models, but are not streamlined. Some steps in this tutorial will feel repetitive. They can be automated, and they will be automated eventually, in the form of a workbench. At this time, priority is given to stability and versatility of the objects. The interface is minimal, Spartan even. This is not necessarily a bad thing.
 
-### Requirements to follow this presentation:
+### Requirements to follow this tutorial / presentation
 * ability to set up a macro in [FreeCAD](http://www.freecadweb.org/) 0.17 is required (Part.Line vs Part.LineSegment deprecation warning is fatal in 0.16)
 * ability to create sketches of lines and arcs in FreeCAD
 * an understanding of the three basic planes in FreeCAD
+* having at least a vague notion of NURBS or Bezier curves, such as found in Inkscape or Illustrator is very helpful
 
 ### Specific investment of time required:
 * 15 minutes to read this page and get an idea of what you might get out of it
@@ -81,33 +82,34 @@ Here's why:
 * I could spend a long time learning to nest objects inside of each other, but FreeCAD is not completely consistent as it is, and i'm not sure i even know _yet_ what the best nesting strategy is (i am aware of several competing methods).
 * in the meantime, i have complete freedom to name all the objects and organize them in folders as i like. It is actually really annoying when FreeCAD moves stuff around in the model tree (for example when mirroring a surface)   
 
--hold here while editing- Below are the rest of the pictures for the tutorial, i will complete the step descriptions ASAP, thanks for reading!
-
 ####-4-
+Edit the original sketch. 'Drag' a line...the polygon and curve update very time you 'drop'
+
+####-5-
 Now that we have a CubicCurve4 attached to the ControlPoly4, let's go back to the ControlPoly4 object and examine the weight controls.
 
 In the data tab of the polygon, the weights are displayed as a list with default values [1,1,1,1]. Hitting the ... button on the right side of the list opens up a very simple list editor window. 
 ![06](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_06%20the%20weight%20list%20of%20all%20ControlPoly4%20objects.png?raw=true)
 
-####-5-
+####-6-
 In this window, change one of the weights. Hit OK to close the editor window
 ![07](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_07%20editing%20a%20specific%20weight%20of%20the%20ControlPoly4%20object.png?raw=true)
 
-####-6-
+####-7-
 Hit F5 to recompute the model. In the case shown in the picture, raising the weights from 1.0 to 4.0 for the second pole causes the curve to be drawn towards the second pole.
 ![08](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_08%20the%20CubicCurve4%20object%20updates%20to%20the%20modified%20ControlPoly4%20weight.png?raw=true)
 The weights can be used to influence the model directly, but it is not recommended as a basic modeling strategy. The primary function of the weights is to allow exact conversion of arcs of cricles (and ellipses and other conics). This is done automatically and generally shouldn't be messed with. The mechanism is exposed here to present the python object model.
 
-####-7-
+####-8-
 Start a new sketch on the xy plane. Draw 1 circle and 1 line. The line must have one point (end point or start point) exactly on the circle center. Do not put anything else in the sketch. Place it so it doesn't overlap the first sketch. Odd angles are good, as they will show us more later. The Sketch _must_ be from the sketcher workbench, not the part design workbench.
 ![09](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_09%20a%20single%20Node%20sketch%20on%20xy.png?raw=true)
 This type sketch is called a _Node_ sketch.
 
-####-8-
+####-9-
 Start a new sketch on the yz plane. Draw another node sketch. Place it so it doesn't overlap the other sketches. Odd angles are good, as they will show us more later. The Sketch _must_ be from the sketcher workbench, not the part design workbench.
 ![10](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_10%20a%20single%20Node%20sketch%20on%20yz.png?raw=true)
 
-####-9-
+####-10-
 Select both Node sketches and click the ControlPoly4 macro
 ![02](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/ControlPoly4.png?raw=true)
 ![11](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_11%20run%20ControlPoly4%20macro%20on%20two%20Node%20sketches.png?raw=true)
@@ -121,7 +123,7 @@ In the Data Tab, you can see three parameters:
 
 At this stage, take a moment to hide/show the different objects by selecting them in the model tree. Turn the model around and inspect it. Note that the two nodes are in separate planes, and the ControlPoly4_2N joins them to form a non planar polygon.
 
-####-10-
+####-11-
 Select the ControlPoly_2N object and click the CubicCurve4 macro
 ![04](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/CubicCurve4.png?raw=true)
 ![14](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_14%20non%20planar%20CubicCurve4%20object.png?raw=true)
@@ -135,15 +137,15 @@ Now we can see the different roles played by the Node sketches and their compone
 * The center of the circle in each node determines the start(/end) point of the curve
 * The line controls the start(/end) tangent of the curve
 
-####-11- (optional)
-Repeat steps 4, 5,and 6 with ControlPoly4_2N to verify that the weight controls work
+####-12- (optional)
+Repeat steps 5, 6,and 7 with ControlPoly4_2N to verify that the weight controls work. Edit the Node sketches and watch the curves updating.
 ![15](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_15%20non%20planar%20ControlPoly4%20weight%20edit.png?raw=true)
 
-####-12-
+####-13-
 Start a new sketch on the zx plane. Draw an arc of cirle, SUBTENDING 90 degrees (less than a quarter of a circle). There are usually no problems up to 180 degrees, but 90 degrees is _rock solid_. I like to make models very stable, so i split my arcs as necessary. You can put whatever else you like in this sketch, but the arc _must_ be drawn first. The Sketch _must_ be from the sketcher workbench, not the part design workbench.
 ![16](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_16%20a%20sketch%20of%20an%20arc%20of%20circle%20SUBTENDING%2090%20degrees.png?raw=true)
 
-####-13-
+####-14-
 Select the sketch with the arc, and click the ControlPoly4 macro
 ![02](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/ControlPoly4.png?raw=true)
 This creates a ControlPoly4_Arc object in the document. Note the '_2N_' suffix. This is the third flavor of the ControlPoly4 category of objects
@@ -154,7 +156,7 @@ In the Data Tab, you can see two parameters:
 
 Note that this time, the weights are not the default [1,1,1,1]. The values generated automatically will give a true circular arc.
 
-####-14-
+####-15-
 Select the ControlPoly4_Arc object, and click the CubicCurve4 macro
 ![04](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/CubicCurve4.png?raw=true)
 
@@ -163,7 +165,7 @@ This creates one more CubicCurve4 object in the document.
 In the Data Tab, you can see a single parameter:
 * Poly = ControlPoly4_Arc. This was the input selection, and it can be remapped to _any ControlPoly4_ object (of which there are 3 varieties at this time)
 
-What is the point  of steps 13 and 14 if just end up with the same arc?
+What is the point  of steps 14 and 15 if just end up with the same arc?
 * Sketcher arcs are quadratic NURBS
 * the CubicCurve4 version of the arc is a cubic NURBS
 * cubic NURBS are the simplest form that is suitable for free form modeling
@@ -173,7 +175,7 @@ What is the point  of steps 13 and 14 if just end up with the same arc?
 here is an example picture of blending a sketcher arc extrusion to a freeform surface with _exact_ matching at the seam. OUT OF SCOPE for this tutorial, i just want to show a concrete example.
 ![21](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/blend%20arc%20to%2066%20demo/live%2066%2002.PNG?raw=true)
 
-####-15- BONUS ROUND
+####-16- BONUS ROUND
 For any single sketch, the ControlPoly4 macro uses Arc mode if there aren't exactly 3 sketch objects (3L mode). This always applies to the first geometry object in the sketch.
 The net effect is 
 * elliptic arcs are converted exactly.
