@@ -21,13 +21,13 @@ As a library, NURBSlib_EVM provides basic elements that _can_ be used to produce
 
 ### Specific investment of time required:
 * 5 minutes to read the page
-* download three files from this repositiory (5 files if you want icons)
+* download three files from this repository (5 files if you want icons)
 * set up two FreeCAD macros
-* 20 minutes to to follow the tutorial, up to two hours to examine most variations
+* 20 minutes to follow the tutorial, up to two hours to examine most variations
 
 ### Motivation? It will take a few tutorials, but here is the goal:
 ![target](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/begin%20transition%20to%200.17/Bezier%20primary%20Surface%20Volume%2066-07.bmp.png?raw=true)
-The specific element of interest in the picture above is the fairly smooth blending of three main surfaces at the front top corner. There is a large 'blending radius' between the top and narrow front surface, and a sharp 'blending radius' between the wide side surface and the first two. These radii are controlled parametrically, and the seams are 95% curvature continuous. There are some known flaws as well, but lets stay postive for now!
+The specific element of interest in the picture above is the fairly smooth blending of three main surfaces at the front top corner. There is a large 'blending radius' between the top and narrow front surface, and a sharp 'blending radius' between the wide side surface and the first two. These radii are controlled parametrically, and the seams are 95% curvature continuous. There are some known flaws as well, but let's focus on the positive for now!
 
 
 ### Setup ControlPoly4 and CubicCurve4:
@@ -55,9 +55,13 @@ Select the 3 line sketch and click the ControlPoly4 macro
 This creates a ControlPoly4_3L object in the document. Note the '_3L_' suffix. This is one of several different flavors of the ControlPoly4 category of objects
 ![03](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_03%20ControlPoly4_3L%20object.png?raw=true)
 
+In the case of the three line sketch, the ControlPoly4_3L object is hidden by the sketch itself. Hide the sketch to see it directly if you wish.
+
 In the Data Tab, you can see two parameters:
 * Sketch - this was the input selection, and it can be remapped to another sketch (also of exactly three lines end-to-end)
 * Weights - we'll talk about this again in a moment
+
+ It's not very interesting yet, so let's keep moving to next step!
 
 Select the ControlPoly_3L object and click the CubicCurve4 macro
 ![04](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/CubicCurve4.png?raw=true)
@@ -74,7 +78,7 @@ Here's why:
 * Many properties of the NURBS can be determined directly from the polygon. These can be used to build other polygons.
 * Calculating curves and surfaces we don't need limits how much we can build before FreeCAD overloads and crashes.
 * I could spend a long time learning to nest objects inside of each other, but FreeCAD is not completely consistent as it is, and i'm not sure i even know _yet_ what the best nesting strategy is (i am aware of several competing methods).
-* in the meantime, i have complete freedom to name all the objects and organize them in folders as i like. It is actually really annoying when FreeCAD moves stuff around (for example when mirroring a surface)   
+* in the meantime, i have complete freedom to name all the objects and organize them in folders as i like. It is actually really annoying when FreeCAD moves stuff around in the model tree (for example when mirroring a surface)   
 
 -hold here while editing- Below are the rest of the pictures for the tutorial, i will complete the step descriptions ASAP, thanks for reading!
 
@@ -90,7 +94,6 @@ Hit F5 to recompute the model. In the case shown in the picture, raising the wei
 ![08](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_08%20the%20CubicCurve4%20object%20updates%20to%20the%20modified%20ControlPoly4%20weight.png?raw=true)
 The weights can be used to influence the model directly, but it is not recommended as a basic modeling strategy. The primary function of the weights is to allow exact conversion of arcs of cricles (and ellipses and other conics). This is done automatically and generally shouldn't be messed with. The mechanism is exposed here to present the python object model.
 
-
 Start a new sketch on the xy plane. Draw 1 circle and 1 line. The line must have one point (end point or start point) exactly on the circle center. Do not put anything else in the sketch.
 ![09](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_09%20a%20single%20Node%20sketch%20on%20xy.png?raw=true)
 This type sketch is called a _Node_ sketch.
@@ -98,11 +101,10 @@ This type sketch is called a _Node_ sketch.
 Start a new sketch on the yz plane. Draw another node sketch.
 ![10](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_10%20a%20single%20Node%20sketch%20on%20yz.png?raw=true)
 
-Select both Node sketches click the ControlPoly4 macro
+Select both Node sketches and click the ControlPoly4 macro
 ![02](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/ControlPoly4.png?raw=true)
 ![11](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_11%20run%20ControlPoly4%20macro%20on%20two%20Node%20sketches.png?raw=true)
-
-This creates a ControlPoly4_2N object in the document. Note the '_3L_' suffix. This is second flavor of the ControlPoly4 category of objects
+This creates a ControlPoly4_2N object in the document. Note the '_2N_' suffix. This is the second flavor of the ControlPoly4 category of objects
 ![12](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_12%20ControlPoly4_2N%20object.png?raw=true)
 
 In the Data Tab, you can see three parameters:
@@ -115,6 +117,15 @@ At this stage, take a moment to hide/show the different objects by selecting the
 Select the ControlPoly_2N object and click the CubicCurve4 macro
 ![04](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/CubicCurve4.png?raw=true)
 ![14](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_14%20non%20planar%20CubicCurve4%20object.png?raw=true)
+This creates one more CubicCurve4 object in the document.
+In the Data Tab, you can see a single parameter:
+* Poly = ControlPoly4_2N. This was the input selection, and it can be remapped to _any ControlPoly4_ object (of which there are 3 varieties at this time)
+
+Now we can see the different roles played by the Node sketches and their components. Back in ControlPoly4_2N:
+* the Node passed to Sketch0 controls the start of the curve
+* the Node passed to Sketch1 controls the end of the curve
+* The center of the circle in each node determines the start(/end) point of the curve
+* The line controls the start(/end) tangent of the curve
 
 ![15](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_15%20non%20planar%20ControlPoly4%20weight%20edit.png?raw=true)
 
