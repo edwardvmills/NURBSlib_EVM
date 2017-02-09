@@ -45,10 +45,10 @@ Place them in your FreCAD macro folder (and a suitable icon folder)
 In FreeCAD, set up macros for ControlPoly4 and CubicCurve4.
 
 ### Usage
-####1
+####-1-
 In FreeCAD, open a new document. Draw a sketch with 3 lines connected end to end. Nothing else should be in the sketch (for now)
 ![01](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_01%20A%20sketch%20of%20three%20lines%20connected%20end%20to%20end.png?raw=true)
-####2
+####-2-
 Select the 3 line sketch and click the ControlPoly4 macro
 ![02](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/ControlPoly4.png?raw=true)
 
@@ -63,7 +63,7 @@ In the Data Tab, you can see two parameters:
 
  It's not very interesting yet, so let's keep moving to next step!
 
-####3
+####-3-
 Select the ControlPoly_3L object and click the CubicCurve4 macro
 ![04](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/CubicCurve4.png?raw=true)
 
@@ -83,31 +83,31 @@ Here's why:
 
 -hold here while editing- Below are the rest of the pictures for the tutorial, i will complete the step descriptions ASAP, thanks for reading!
 
-####4
+####-4-
 Now that we have a CubicCurve4 attached to the ControlPoly4, let's go back to the ControlPoly4 object and examine the weight controls.
 
 In the data tab of the polygon, the weights are displayed as a list with default values [1,1,1,1]. Hitting the ... button on the right side of the list opens up a very simple list editor window. 
 ![06](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_06%20the%20weight%20list%20of%20all%20ControlPoly4%20objects.png?raw=true)
 
-####5
+####-5-
 In this window, change one of the weights. Hit OK to close the editor window
 ![07](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_07%20editing%20a%20specific%20weight%20of%20the%20ControlPoly4%20object.png?raw=true)
 
-####6
+####-6-
 Hit F5 to recompute the model. In the case shown in the picture, raising the weights from 1.0 to 4.0 for the second pole causes the curve to be drawn towards the second pole.
 ![08](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_08%20the%20CubicCurve4%20object%20updates%20to%20the%20modified%20ControlPoly4%20weight.png?raw=true)
 The weights can be used to influence the model directly, but it is not recommended as a basic modeling strategy. The primary function of the weights is to allow exact conversion of arcs of cricles (and ellipses and other conics). This is done automatically and generally shouldn't be messed with. The mechanism is exposed here to present the python object model.
 
-####7
-Start a new sketch on the xy plane. Draw 1 circle and 1 line. The line must have one point (end point or start point) exactly on the circle center. Do not put anything else in the sketch.
+####-7-
+Start a new sketch on the xy plane. Draw 1 circle and 1 line. The line must have one point (end point or start point) exactly on the circle center. Do not put anything else in the sketch. Place it so it doesn't overlap the first sketche. Odd angles are good, as they will show us more later.
 ![09](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_09%20a%20single%20Node%20sketch%20on%20xy.png?raw=true)
 This type sketch is called a _Node_ sketch.
 
-####8
-Start a new sketch on the yz plane. Draw another node sketch.
+####-8-
+Start a new sketch on the yz plane. Draw another node sketch. Place it so it doesn't overlap the other sketches. Odd angles are good, as they will show us more later.
 ![10](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_10%20a%20single%20Node%20sketch%20on%20yz.png?raw=true)
 
-####9
+####-9-
 Select both Node sketches and click the ControlPoly4 macro
 ![02](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/ControlPoly4.png?raw=true)
 ![11](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_11%20run%20ControlPoly4%20macro%20on%20two%20Node%20sketches.png?raw=true)
@@ -119,11 +119,9 @@ In the Data Tab, you can see three parameters:
 * Sketch1 - this was the second input selection, and it can be remapped to another sketch (must also be a node sketch)
 * Weights - exactly the same as in ControlPoly_3L
 
-At this stage, take a moment to hide/show the different objects by selecting them in the model tree. Trun the model around and inspect.
+At this stage, take a moment to hide/show the different objects by selecting them in the model tree. Turn the model around and inspect it. Note that the two nodes are in separate planes, and the COntrolPoly4_2N joins them to form a non planar polygon.
 
-Note that the two node 
-
-####10
+####-10-
 Select the ControlPoly_2N object and click the CubicCurve4 macro
 ![04](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/CubicCurve4.png?raw=true)
 ![14](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_14%20non%20planar%20CubicCurve4%20object.png?raw=true)
