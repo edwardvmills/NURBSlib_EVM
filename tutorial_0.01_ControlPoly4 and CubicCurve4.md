@@ -4,9 +4,9 @@
 
 [return to main page](http://edwardvmills.github.io/NURBSlib_EVM/)
 
-This 'tutorial' is meant to give a glimpse of the NURBSlib_EVM _library_. This is not a FreeCAD tutorial.
+This 'tutorial' is meant to give a glimpse of the NURBSlib_EVM _library_.
 
-As a library, NURBSlib_EVM provides basic elements that _can_ be used to produce models, but are not streamlined. Some steps in this tutorial will feel repetitive. They _can_ be automated, and they _will_ be automated eventually, however, _at this time_, priority is given to stability and versatility of the objects
+As a library, NURBSlib_EVM provides basic elements that _can_ be used to produce models, but are not streamlined. Some steps in this tutorial will feel repetitive. They can be automated, and they will be automated eventually, however, at this time, priority is given to stability and versatility of the objects
 
 ### Target audience for this specific tutorial
 * Triplus 
@@ -26,7 +26,7 @@ As a library, NURBSlib_EVM provides basic elements that _can_ be used to produce
 
 ### Motivation? It will take a few tutorials, but here is the goal:
 ![target](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/begin%20transition%20to%200.17/Bezier%20primary%20Surface%20Volume%2066-07.bmp.png?raw=true)
-NURBS have a _very_ steep learning curve (which is also a NURBS :)). If you know the curves well, the surfaces are not too bad.
+The specific element of interest in the picture above is the fairly smooth blending of three main surfaces at the front top corner.
 
 
 ### Setup ControlPoly4 and CubicCurve4:
