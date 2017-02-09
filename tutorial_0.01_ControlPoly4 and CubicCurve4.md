@@ -46,7 +46,7 @@ In FreeCAD, set up macros for ControlPoly4 and CubicCurve4.
 
 ### Usage
 ####-1-
-In FreeCAD, open a new document. Draw a sketch with 3 lines connected end to end. Nothing else should be in the sketch (for now)
+In FreeCAD, open a new document. Draw a sketch with 3 lines connected end to end. Nothing else should be in the sketch (for now). The Sketch _must_ be from the sketcher workbench, not the part design workbench.
 ![01](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_01%20A%20sketch%20of%20three%20lines%20connected%20end%20to%20end.png?raw=true)
 ####-2-
 Select the 3 line sketch and click the ControlPoly4 macro
@@ -99,12 +99,12 @@ Hit F5 to recompute the model. In the case shown in the picture, raising the wei
 The weights can be used to influence the model directly, but it is not recommended as a basic modeling strategy. The primary function of the weights is to allow exact conversion of arcs of cricles (and ellipses and other conics). This is done automatically and generally shouldn't be messed with. The mechanism is exposed here to present the python object model.
 
 ####-7-
-Start a new sketch on the xy plane. Draw 1 circle and 1 line. The line must have one point (end point or start point) exactly on the circle center. Do not put anything else in the sketch. Place it so it doesn't overlap the first sketche. Odd angles are good, as they will show us more later.
+Start a new sketch on the xy plane. Draw 1 circle and 1 line. The line must have one point (end point or start point) exactly on the circle center. Do not put anything else in the sketch. Place it so it doesn't overlap the first sketch. Odd angles are good, as they will show us more later. The Sketch _must_ be from the sketcher workbench, not the part design workbench.
 ![09](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_09%20a%20single%20Node%20sketch%20on%20xy.png?raw=true)
 This type sketch is called a _Node_ sketch.
 
 ####-8-
-Start a new sketch on the yz plane. Draw another node sketch. Place it so it doesn't overlap the other sketches. Odd angles are good, as they will show us more later.
+Start a new sketch on the yz plane. Draw another node sketch. Place it so it doesn't overlap the other sketches. Odd angles are good, as they will show us more later. The Sketch _must_ be from the sketcher workbench, not the part design workbench.
 ![10](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_10%20a%20single%20Node%20sketch%20on%20yz.png?raw=true)
 
 ####-9-
@@ -135,13 +135,28 @@ Now we can see the different roles played by the Node sketches and their compone
 * The center of the circle in each node determines the start(/end) point of the curve
 * The line controls the start(/end) tangent of the curve
 
+####-11- (optional)
+Repeat steps 4, 5,and 6 with ControlPoly4_2N to verify that the weight controls work
 ![15](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_15%20non%20planar%20ControlPoly4%20weight%20edit.png?raw=true)
 
+####-12-
+Start a new sketch on the zx plane. Draw an arc of cirle, SUBTENDING 90 degrees (less than a quarter of a circle). There are usually no problems up to 180 degrees, but 90 degrees is _rock solid_. I like to make models very stable, so i split my arcs as necessary. You can put whatever else you like in this sketch, but the arc _must_ be drawn first. The Sketch _must_ be from the sketcher workbench, not the part design workbench.
 ![16](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_16%20a%20sketch%20of%20an%20arc%20of%20circle%20SUBTENDING%2090%20degrees.png?raw=true)
 
-![17](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_17%20run%20ControlPoly4%20macro%20on%20sketch%20of%20arc%20of%20circle.png?raw=true)
-
+####-13-
+Select the sketch with the arc, and click the ControlPoly4 macro
+![02](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/ControlPoly4.png?raw=true)
+This creates a ControlPoly4_Arc object in the document. Note the '_2N_' suffix. This is the third flavor of the ControlPoly4 category of objects
 ![18](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_18%20ControlPoly4_Arc%20object.png?raw=true)
+In the Data Tab, you can see two parameters:
+* Sketch - this was the input selection, and it can be remapped to another sketch (also of a sketch)
+* Weights = [1,0.8356,0.8356,1]
+
+Note that this time, the weights are not the default [1,1,1,1]. The values generated automatically will give a true circular arc.
+
+####-14-
+Select the ControlPoly4_Arc object, and click the CubicCurve4 macro
+![04](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/CubicCurve4.png?raw=true)
 
 ![19](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_19%20run%20CubicCurve4%20on%20ControlPoly4_Arc.png?raw=true)
 
