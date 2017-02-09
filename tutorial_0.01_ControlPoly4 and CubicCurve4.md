@@ -10,7 +10,7 @@
 * Chris_G if he's curious
 * anyone else who wants to, of course, but it'll be hard to follow without context.
 
-This 'tutorial' is meant to give a glimpse of the NURBSlib_EVM _library_ to knowledgable users of FreeCAD. No explanations of basic FreeCAD actions is provided at this time.
+This 'tutorial' is meant to give a glimpse of the NURBSlib_EVM _library_ to knowledgable users of FreeCAD. No explanations of basic FreeCAD actions are provided at this time.
 
 As a library, NURBSlib_EVM provides basic elements that _can_ be used to produce models, but are not streamlined. Some steps in this tutorial will feel repetitive. They can be automated, and they will be automated eventually, in the form of a workbench. At this time, priority is given to stability and versatility of the objects. The interface is minimal, Spartan even. This not necessarily a bad thing.
 
@@ -20,7 +20,7 @@ As a library, NURBSlib_EVM provides basic elements that _can_ be used to produce
 * an understanding of the three basic planes in FreeCAD
 
 ### Specific investment of time required:
-* 15 minutes to read the page and get an idea of what you might get out of it
+* 15 minutes to read this page and get an idea of what you might get out of it
 * download three files from this repository (5 files if you want icons)
 * set up two FreeCAD macros
 * 30 minutes to follow the tutorial, up to two hours to examine most variations
@@ -59,7 +59,7 @@ In the case of the three line sketch, the ControlPoly4_3L object is hidden by th
 
 In the Data Tab, you can see two parameters:
 * Sketch - this was the input selection, and it can be remapped to another sketch (also of exactly three lines end-to-end)
-* Weights - we'll talk about this again in a moment
+* Weights - we'll talk about this again in a moment   
 
  It's not very interesting yet, so let's keep moving to next step!
 
