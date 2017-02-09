@@ -10,7 +10,7 @@
 * Chris_G if he's curious
 * anyone else who wants to, of course, but it'll be hard to follow without context.
 
-This 'tutorial' is meant to give a glimpse of the NURBSlib_EVM _library_ to knoledgable users of FreeCAD. No explanations of basic FreeCAD actions is provided at this time.
+This 'tutorial' is meant to give a glimpse of the NURBSlib_EVM _library_ to knowledgable users of FreeCAD. No explanations of basic FreeCAD actions is provided at this time.
 
 As a library, NURBSlib_EVM provides basic elements that _can_ be used to produce models, but are not streamlined. Some steps in this tutorial will feel repetitive. They can be automated, and they will be automated eventually, in the form of a workbench. At this time, priority is given to stability and versatility of the objects. The interface is minimal, Spartan even.
 
@@ -27,7 +27,7 @@ As a library, NURBSlib_EVM provides basic elements that _can_ be used to produce
 
 ### Motivation? It will take a few tutorials, but here is the goal:
 ![target](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/begin%20transition%20to%200.17/Bezier%20primary%20Surface%20Volume%2066-07.bmp.png?raw=true)
-The specific element of interest in the picture above is the fairly smooth blending of three main surfaces at the front top corner.
+The specific element of interest in the picture above is the fairly smooth blending of three main surfaces at the front top corner. There is a large 'blending radius' between the top and narrow front surface, and a sharp 'blending radius' between the wide side surface and the first two. These radii are controlled parametrically, and the seams are 95% curvature continuous. There are some known flaws as well, but lets stay postive for now!
 
 
 ### Setup ControlPoly4 and CubicCurve4:
