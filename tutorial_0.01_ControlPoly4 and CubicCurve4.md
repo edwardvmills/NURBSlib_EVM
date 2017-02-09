@@ -59,7 +59,7 @@ In the case of the three line sketch, the ControlPoly4_3L object is hidden by th
 
 In the Data Tab, you can see two parameters:
 * Sketch - this was the input selection, and it can be remapped to another sketch (also of exactly three lines end-to-end)
-* Weights - we'll talk about this again in a moment   
+* Weights - we'll talk about this again in a moment      
 
  It's not very interesting yet, so let's keep moving to next step!
 
