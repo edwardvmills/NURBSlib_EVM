@@ -76,10 +76,16 @@ Here's why:
 * in the meantime, i have complete freedom to name all the objects and organize them in folders as i like. It is actually really annoying when FreeCAD moves stuff around (for example when mirroring a surface)   
 
 Below are the rest of the pictures for the tutorial, i will complete the step descriptions ASAP, thanks for reading!
+
+Now that we have a CubicCurve4 attached to the ControlPoly4, let's go back to the ControlPoly4 object and examine the weight controls.
+
+In the data tab of the polygon, the weights are displayed as a list with default values [1,1,1,1]. Hitting the ... button on the right side of the list opens up a very simple list editor window. 
 ![06](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_06%20the%20weight%20list%20of%20all%20ControlPoly4%20objects.png?raw=true)
 
+In this window, change one of the weights. Hit OK to close the editor window
 ![07](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_07%20editing%20a%20specific%20weight%20of%20the%20ControlPoly4%20object.png?raw=true)
 
+Hit F5 to recompute the model. In the case shown in the picture, raising the weights from 1.0 to 4.0 for the second pole causes the curve to be drawn towards the second pole.
 ![08](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_08%20the%20CubicCurve4%20object%20updates%20to%20the%20modified%20ControlPoly4%20weight.png?raw=true)
 
 ![09](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_09%20a%20single%20Node%20sketch%20on%20xy.png?raw=true)
