@@ -5,11 +5,6 @@
 [return to main page](http://edwardvmills.github.io/NURBSlib_EVM/)
 
 ### Target audience for this specific tutorial / presentation
-* Triplus 
-* Microelly2
-* Chris_G if he's curious
-* anyone else who wants to, of course, but it'll be hard to follow without context.
-
 This 'tutorial' is meant to give a glimpse of the NURBSlib_EVM _library_ to knowledgable users of FreeCAD. No explanations of basic FreeCAD actions are provided at this time.
 
 As a library, NURBSlib_EVM provides basic elements that _can_ be used to produce models, but are not streamlined. Some steps in this tutorial will feel repetitive. They can be automated, and they will be automated eventually, in the form of a workbench. At this time, priority is given to stability and versatility of the objects. The interface is minimal, Spartan even. This is not necessarily a bad thing.
