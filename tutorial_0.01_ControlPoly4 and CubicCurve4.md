@@ -151,7 +151,7 @@ Select the sketch with the arc, and click the ControlPoly4 macro
 This creates a ControlPoly4_Arc object in the document. Note the '_Arc_' suffix. This is the third flavor of the ControlPoly4 category of objects
 ![18](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_18%20ControlPoly4_Arc%20object.png?raw=true)
 In the Data Tab, you can see two parameters:
-* Sketch - this was the input selection, and it can be remapped to another sketch (also of a sketch)
+* Sketch - this was the input selection, and it can be remapped to another sketch (also of arc)
 * Weights = [1,0.8356,0.8356,1]
 
 Note that this time, the weights are not the default [1,1,1,1]. The values generated automatically will give a true circular arc.
@@ -168,11 +168,11 @@ In the Data Tab, you can see a single parameter:
 What is the point  of steps 14 and 15 if just end up with the same arc?
 * Sketcher arcs are quadratic NURBS
 * the CubicCurve4 version of the arc is a cubic NURBS
-* cubic NURBS are the simplest form that is suitable for free form modeling
+* cubic NURBS are the simplest form that is generally considered suitable for free form modeling
 * Once it is in ControlPoly4_arc or CubicCurve4 form, our sketcher arc can now be used alongside the other curves to make surfaces
-* usually we only need the polygon, so we sketch the arc, make the polygon, and skip making a curve. There is little extra effort to ge the conversion
+* usually we only need the polygon, so we sketch the arc, make the polygon, and skip making a curve. There is little extra effort to get the conversion
 
-here is an example picture of blending a sketcher arc extrusion to a freeform surface with _exact_ matching at the seam. OUT OF SCOPE for this tutorial, i just want to show a concrete example.
+Here is an example picture of blending a sketcher arc extrusion to a freeform surface with _exact_ matching at the seam. OUT OF SCOPE for this tutorial, i just want to show a concrete example.
 ![21](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/blend%20arc%20to%2066%20demo/live%2066%2002.PNG?raw=true)
 
 ####-16- BONUS ROUND
