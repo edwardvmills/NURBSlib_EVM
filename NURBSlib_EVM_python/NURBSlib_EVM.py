@@ -3783,17 +3783,27 @@ class ControlGrid64_3_Grid44:
 		'''
 		p25=set_poles[11]
 		
+		
 		# 2nd strategy
+		''' this was better, sure, but it stills folds. going to set the whole corner planar, but non collapsed for third try.
 		degen_tan_factor=0.5 #initial was 0.75
 		degen_curv_factor=1.0/6.0 #initial was 0.1
 		#trim tangent
 		p21=p20+(set_poles[10]-p20)*degen_tan_factor
-		# add a segment control line snippet towards the thrid control point of the underlying 44 grid
+		# add a segment control line snippet towards the third control point of the underlying 44 grid
 		p22=p21+(p14-p21)*degen_curv_factor
 		#trim tangent
 		p24=p25+(set_poles[10]-p25)*degen_tan_factor
-		# add a segment control line snippet towards the thrid control point of the underlying 44 grid		
+		# add a segment control line snippet towards the third control point of the underlying 44 grid		
 		p23=p24+(p11-p24)*degen_curv_factor
+		'''
+		
+		#third strategy
+		p21=p20+(set_poles[10]-p20)*.5 # trim tangent
+		p22=p21+(set_poles[10]-p21)*.5 # 0 curvature along tangent trim
+		
+		p24=p25+(set_poles[10]-p25)*.5 # trim tangent
+		p23=p24+(set_poles[10]-p24)*.5 # 0 curvature along tangent trim
 		
 				
 		p30=set_poles[15]
