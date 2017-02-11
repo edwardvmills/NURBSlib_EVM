@@ -1,10 +1,14 @@
 # Tutorial 0.02
 ##ControlGrid44 and CubicSurface44 macros in NURBSlib_EVM
 
+These are the objects that respectively control and exploit a rational bicubic bezier surface.
+
 [return to main page](http://edwardvmills.github.io/NURBSlib_EVM/)
 
 ### Target audience for this specific tutorial
-This 'tutorial' is meant to give a glimpse of the NURBSlib_EVM _library_ to knowledgable users of FreeCAD. No explanations of basic FreeCAD actions are provided at this time. I will spend a little extra effort on the amazing Attachment Editor of FreeCAD as it relates to sketches used for surface modeling. 
+This 'tutorial' is meant to give a glimpse of the NURBSlib_EVM _library_ to knowledgable users of FreeCAD. No explanations of basic FreeCAD actions are provided at this time. I will spend a little extra effort on the amazing Attachment Editor of FreeCAD as it relates to sketches used for surface modeling. The actual grid and surface portion take less than one minute, but without good sketches they are uninteresting.
+
+I have included a starting point model, and a final model for the truly lazy.
 
 ### Requirements to follow this tutorial
 * [Tutorial 0.01](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.01%20ControlPoly4%20and%20CubicCurve4.md) completed (especially the setup portion)
@@ -14,7 +18,7 @@ This 'tutorial' is meant to give a glimpse of the NURBSlib_EVM _library_ to know
 * having at least a vague notion of NURBS or Bezier curves, such as found in Inkscape or Illustrator is very helpful
 
 ### Specific investment of time required:
-* 15 minutes to read this page and get an idea of what you might get out of it
+* 20 minutes to read this page and get an idea of what you might get out of it
 * download three files from this repository (5 files if you want icons)
 * set up two FreeCAD macros
 * 10 minutes to follow the tutorial, up to one hour to examine most variations
@@ -22,6 +26,10 @@ This 'tutorial' is meant to give a glimpse of the NURBSlib_EVM _library_ to know
 
 ### Setup ControlGrid44 and CubicSurface44:
 from [master](https://github.com/edwardvmills/NURBSlib_EVM) /NURBSlib_EVM_python, copy:
+* ControlGrid44.FCMacro
+* CubicSurface44.FCMacro
+
+from [master](https://github.com/edwardvmills/NURBSlib_EVM) /, copy:
 * ControlGrid44.FCMacro
 * CubicSurface44.FCMacro
 
