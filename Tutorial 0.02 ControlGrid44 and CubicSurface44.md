@@ -8,7 +8,7 @@ These are the objects that respectively control and exploit a rational bicubic b
 ### Target audience for this specific tutorial
 This 'tutorial' is meant to give a glimpse of the NURBSlib_EVM _library_ to knowledgable users of FreeCAD. No explanations of basic FreeCAD actions are provided at this time. I will spend a little extra effort on the amazing Attachment Editor of FreeCAD as it relates to sketches used for surface modeling. The actual grid and surface portion take less than one minute, but without good sketches they are uninteresting.
 
-I have included a starting point model, and a final model for the truly lazy.
+I have included a starting point model, and a final model for the lazy.
 
 ### Requirements to follow this tutorial
 * [Tutorial 0.01](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.01%20ControlPoly4%20and%20CubicCurve4.md) completed (especially the setup portion)
@@ -18,10 +18,10 @@ I have included a starting point model, and a final model for the truly lazy.
 * having at least a vague notion of NURBS or Bezier curves, such as found in Inkscape or Illustrator is very helpful
 
 ### Specific investment of time required:
-* 20 minutes to read this page and get an idea of what you might get out of it
+* X minutes to read this page and get an idea of what you might get out of it
 * download three files from this repository (5 files if you want icons)
 * set up two FreeCAD macros
-* 10 minutes to follow the tutorial, up to one hour to examine most variations
+* Y minutes to follow the tutorial, up to Z hour to examine most variations
 * Hypnosis warning, 3D sketching is dangerously fun
 
 ### Setup ControlGrid44 and CubicSurface44:
@@ -29,13 +29,9 @@ from [master](https://github.com/edwardvmills/NURBSlib_EVM) /NURBSlib_EVM_python
 * ControlGrid44.FCMacro
 * CubicSurface44.FCMacro
 
-from [master](https://github.com/edwardvmills/NURBSlib_EVM) /, copy:
-* ControlGrid44.FCMacro
-* CubicSurface44.FCMacro
-
-from [master](https://github.com/edwardvmills/NURBSlib_EVM) /NURBSlib_EVM_python, copy:
-* ControlGrid44.FCMacro
-* CubicSurface44.FCMacro
+from [master](https://github.com/edwardvmills/NURBSlib_EVM) /Tutorial Models/ControlGridd44 and CubicSurface44/, copy:
+* ControlGrid44 and CubicSurface44 bare bones.FCStd
+* ControlGrid44 and CubicSurface44 Complete.FCStd
 
 Optional: from [master](https://github.com/edwardvmills/NURBSlib_EVM) /icons, copy:
 * ControlGrid44.svg
@@ -49,21 +45,10 @@ All Sketches _must_ be Sketcher Workbench sketches, not  Part Design workbench. 
 
 ### Usage
 ####-1-
-In FreeCAD, open a new document. Draw a sketch with 3 lines connected end to end. Nothing else should be in the sketch (for now). 
-![01](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_01%20A%20sketch%20of%20three%20lines%20connected%20end%20to%20end.png?raw=true)
-####-2-
-Select the 3 line sketch and click the ControlPoly4 macro
-![02](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/ControlPoly4.png?raw=true)
+Open ControlGrid44 and CubicSurface44 bare bones.FCStd
+![01](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2001.png?raw=true)
 
-This creates a ControlPoly4_3L object in the document. Note the '_3L_' suffix. This is one of several different flavors of the ControlPoly4 category of objects
-![03](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_03%20ControlPoly4_3L%20object.png?raw=true)
-
-In the case of the three line sketch, the ControlPoly4_3L object is hidden by the sketch itself. Hide the sketch to see it directly if you wish.
-
-In the Data Tab, you can see two parameters:
-* Sketch - this was the input selection, and it can be remapped to another sketch (also of exactly three lines end-to-end)
-* Weights - we'll talk about this again in a moment      
-
-It's not very interesting yet, so let's keep moving to next step!
-
+This model containes some starting point sketches:
+* a folder containing a set of linked sketches that form a 3D pointer
+* a 
 
