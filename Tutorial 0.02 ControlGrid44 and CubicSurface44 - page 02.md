@@ -1,3 +1,6 @@
+##Tutorial 0.02 ControlGrid44 and CubicSurface44 - page 02
+[return to page 1](https://github.com/edwardvmills/NURBSlib_EVM/edit/gh-pages/Tutorial%200.02%20ControlGrid44%20and%20CubicSurface44%20-%20page%2001.md)
+
 ### Usage
 ####-1-
 Open ControlGrid44 and CubicSurface44 bare bones.FCStd
