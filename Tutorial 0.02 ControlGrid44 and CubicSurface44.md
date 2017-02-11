@@ -1,5 +1,5 @@
-# Tutorial 0.01
-##ControlPoly4 and CubicCurve4 macros in NURBSlib_EVM
+# Tutorial 0.02
+##ControlGrid44 and CubicSurface44 macros in NURBSlib_EVM
 
 [return to main page](http://edwardvmills.github.io/NURBSlib_EVM/)
 
@@ -9,6 +9,7 @@ This 'tutorial' is meant to give a glimpse of the NURBSlib_EVM _library_ to know
 As a library, NURBSlib_EVM provides basic elements that _can_ be used to produce models, but are not streamlined. Some steps in this tutorial will feel repetitive. They can be automated, and they will be automated eventually, in the form of a workbench. At this time, priority is given to stability and versatility of the objects. The interface is minimal, Spartan even. This is not necessarily a bad thing.
 
 ### Requirements to follow this tutorial / presentation
+* [Tutorial 0.01](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.01%20ControlPoly4%20and%20CubicCurve4.md) completed (es[ecially the setup portion)
 * ability to set up a macro in [FreeCAD](http://www.freecadweb.org/) 0.17 is required (Part.Line vs Part.LineSegment deprecation warning is fatal in 0.16)
 * ability to create sketches of lines and arcs in FreeCAD
 * an understanding of the three basic planes in FreeCAD
