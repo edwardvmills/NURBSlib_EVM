@@ -58,7 +58,7 @@ Select all four ControlPoly4 objects, go to the view tab, change **line color** 
 
 ####-25-
 
-In the model tree, select the ControlPoly4 objects in the control we created them (CTRL-LEFTCLICK). You should see them get selected in the following order:
+In the model tree, select the ControlPoly4 objects in the same order we created them (CTRL-LEFTCLICKs). You should see them get selected in the following order:
 * front
 * right
 * back
