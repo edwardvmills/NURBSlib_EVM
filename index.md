@@ -5,8 +5,7 @@ This is the rough workflow prototyping phase. most basic objects are now paramet
 
 What does it do right now? Here is my favorite model so far. It shows control of an overall shape with 'main' sketches, and automatic 'blending' of the corners of the main surfaces to obtain curvature continuity (G2).
 
-![Best example of current state]
-(https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/begin%20transition%20to%200.17/Bezier%20primary%20Surface%20Volume%2058-06.bmp.png?raw=true)
+![Best example of current state](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/begin%20transition%20to%200.17/Bezier%20primary%20Surface%20Volume%2058-06.bmp.png?raw=true)
 
 ![Best example of current state](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/begin%20transition%20to%200.17/Bezier%20primary%20Surface%20Volume%2041-07.bmp.png?raw=true)  
 
