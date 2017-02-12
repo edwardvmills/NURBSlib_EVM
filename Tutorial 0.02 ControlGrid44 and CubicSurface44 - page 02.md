@@ -5,7 +5,7 @@
 ####-1-
 Open _ControlGrid44 and CubicSurface44 bare bones.FCStd_
 
-I recommend you immediately save it as _ControlGrid44 and CubicSurface44 in progress.FCStd_ or some other name you like. This is to maintain a fresh copy of the tarting point.
+I recommend you immediately save it as _ControlGrid44 and CubicSurface44 in progress.FCStd_ or some other name you like. This is to maintain a fresh copy of the starting point.
 
 ![01](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2001.png?raw=true)
 
@@ -26,7 +26,7 @@ Hit CTRL-V (paste). Rename the folder to _3D node controller - front left_
 ![03](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2003.png?raw=true)
 
 ####-3-
-Expand the folder and select _Anchor - xy001_ (mine has 001 added to the contents, because i copied/pasted once exactly. you do it over and over, you will get 002, 003, 004, etc added to your object names. Pay attention to the screenshots, because our object names will probably get out of sync. if you want, you can use the screenshots to see my object names and adjust yours. F2 to rename an object)
+Expand the folder and select _Anchor - xy001_ (mine has 001 added to the contents, because i copied/pasted once exactly. If you do it over and over, you will get 002, 003, 004, etc added to your object names. Pay attention to the screenshots, because our object names will probably get out of sync. if you want, you can use the screenshots to see my object names and adjust yours. Select an object and hit F2 to rename it)
 
 Go to the Part workbench, under menu Part, select the _attachment..._ function. (i have added this function to a custom toolbar so i don't have to switch around the workbenches so much)
 
@@ -48,7 +48,9 @@ After exiting the Attachment Editor, _Anchor - xy001_ is flagged for recomputati
 
 After recomputation, we see that the entire group of sketches has moved to the left end of _front\_profile\_zx_.
 
-#### _Reattaching the Anchor moves the entire group. Collections of interlinked sketches can be reused simply by copying and pasting a folder. As long as you give the folder a good name, it is not necessary to rename each item inside. As long as you can easily identify the 'root' (or _Anchor_, you can reuse the entire group)
+#### _Reattaching the Anchor moves the entire group. Collections of interlinked sketches can be reused simply by copying and pasting a folder. As long as you give the folder a good name, it is not necessary to rename each item inside. As long as you can easily identify the 'root' (or _Anchor_, you can reuse the entire group)_
+
+[UNDER CONSTRUCTION]
 
 ![07](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2007.png?raw=true)
 
