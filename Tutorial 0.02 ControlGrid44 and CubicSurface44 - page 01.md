@@ -2,11 +2,12 @@
 ##ControlGrid44 and CubicSurface44 macros in NURBSlib_EVM
 
 These are the objects that respectively control and exploit a rational bicubic bezier surface.
-
 [return to main page](http://edwardvmills.github.io/NURBSlib_EVM/)
 
 ### Target audience for this specific tutorial
-This 'tutorial' is meant to give a glimpse of the NURBSlib_EVM _library_ to knowledgable users of FreeCAD. No explanations of basic FreeCAD actions are provided at this time. I will spend a little extra effort on the amazing Attachment Editor of FreeCAD as it relates to sketches used for surface modeling. The actual grid and surface portion take less than one minute, but without good sketches they are uninteresting.
+This 'tutorial' is meant to give a glimpse of the NURBSlib_EVM _library_ to knowledgable users of FreeCAD. No explanations of basic FreeCAD actions are provided at this time. I will spend a little extra effort on the amazing Attachment Editor of FreeCAD as it relates to sketches used for surface modeling. FreeCAD's 2D sketcher, when combined with the Part Workbench attachment editor and unlimited external references, is the best 3D sketching system i have ever seen (my experience is limited to Solidworks and Autodesk Inventor).
+
+The actual grid and surface portion take less than one minute, but without good sketches they are uninteresting.
 
 I have included a starting point model, and a final model for the lazy.
 
@@ -42,5 +43,7 @@ Place them in your FreCAD macro folder (and a suitable icon folder)
 In FreeCAD, set up macros for ControlGrid44 and ControlGrid44.
 
 All Sketches _must_ be Sketcher Workbench sketches, not  Part Design workbench. refer to [Tutorial 0.01](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.01%20ControlPoly4%20and%20CubicCurve4.md)
+
+This Tutorial is split up so there are no more than 10 images per page. These are full size screenshots.
 
 [go to page 2](https://github.com/edwardvmills/NURBSlib_EVM/edit/gh-pages/Tutorial%200.02%20ControlGrid44%20and%20CubicSurface44%20-%20page%2002.md)
