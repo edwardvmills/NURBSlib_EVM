@@ -46,13 +46,12 @@ The _Attachment mode_ is automatically set to _Translate origin_. This is what w
 
 After exiting the Attachment Editor, _Anchor - xy001_ is flagged for recomputation. Hit F5 to recompute the model
 
+![07](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2007.png?raw=true)
+
 After recomputation, we see that the entire group of sketches has moved to the left end of _front\_profile\_zx_.
 
 #### _Reattaching the Anchor moves the entire group. Collections of interlinked sketches can be reused simply by copying and pasting a folder. As long as you give the folder a good name, it is not necessary to rename each item inside. As long as you can easily identify the 'root' (or _Anchor_, you can reuse the entire group)_
 
-[UNDER CONSTRUCTION]
-
-![07](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2007.png?raw=true)
 
 ![08](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2008.png?raw=true)
 
