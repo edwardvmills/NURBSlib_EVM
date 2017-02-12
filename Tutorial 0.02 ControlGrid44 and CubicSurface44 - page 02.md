@@ -28,7 +28,7 @@ Hit CTRL-V (paste). Rename the folder to **_3D node controller - front left_**
 ####-3-
 Expand the folder and select **_Anchor - xy001_** (mine has 001 added to the contents, because i copied/pasted once exactly. If you do it over and over, you will get 002, 003, 004, etc added to your object names. Pay attention to the screenshots, because our object names will probably get out of sync. if you want, you can use the screenshots to see my object names and adjust yours. Select an object and hit F2 to rename it)
 
-Go to the Part workbench, under menu Part, select the **_attachment..._** entry in the menu list. (i have added this function to a custom toolbar so i don't have to switch around the workbenches so much)
+Go to the Part workbench, under menu Part, select the **attachment...** entry in the menu list. (i have added this function to a custom toolbar so i don't have to switch around the workbenches so much)
 
 ![04](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2004.png?raw=true)
 
@@ -40,7 +40,7 @@ When you have selected the point, you can see the attachment editor reporting th
 
 **_Anchor - xy001_**, the light blue sketch, is immediately translated to the vertex when you select it. Only one sketch moves.
 
-The **_Attachment mode_** is automatically set to **_Translate origin_** because we selected one vertex. This is what we want. Hit OK
+The **Attachment mode** is automatically set to **Translate origin** because we selected one vertex. This is what we want. Hit OK
 
 ![06](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2006.png?raw=true)
 
