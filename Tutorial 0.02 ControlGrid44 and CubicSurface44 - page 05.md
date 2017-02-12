@@ -12,7 +12,7 @@ Set view to axonometric.We need to be looking at the model from the same point t
 
 ####-19-
 
-Create a new folder and put everything in the object tree into it. rename the folder Sketches.
+Create a new folder and put everything in the object tree into it. rename the folder **_Sketches_**.
 
 ![32](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2032.png?raw=true)
 
