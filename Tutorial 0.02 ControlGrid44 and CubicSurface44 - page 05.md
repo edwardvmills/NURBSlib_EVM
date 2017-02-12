@@ -46,7 +46,7 @@ Select the two nodes on the leftt side and click the ControlPoly4 macro.
 
 ####-24-
 
-Hide all the sketches. We noew see the ControlPoly4 objects we just created.
+Hide all the sketches. We now see the ControlPoly4 objects we just created.
 
 ![37](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2037.png?raw=true)
 
