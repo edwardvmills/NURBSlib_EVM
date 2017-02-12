@@ -36,7 +36,7 @@ Turn the sketches back on
 
 ####-30-
 
-Edit the arc sketch as shown below.
+Edit the arc sketch as shown below. Change the vertical dimension controlling the arc center from 10 to 100.
 
 ![46](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2046.png?raw=true)
 
