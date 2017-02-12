@@ -27,19 +27,32 @@ Rotate the model around and inspect. Note where the control lines go through the
 
 ![44](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2044.png?raw=true)
 
+
+####-29-
+
+Turn the sketches back on
+
 ![45](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2045.png?raw=true)
+
+####-30-
+
+Edit the arc sketch as shown below.
 
 ![46](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2046.png?raw=true)
 
+Entering a dimension updates immediately. Drag and drop updates every time you drop.
+
 ![47](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2047.png?raw=true)
+
+####-31- 
+
+replicate the changes shown in the pictures below.
 
 ![48](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2048.png?raw=true)
 
 ![49](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2049.png?raw=true)
 
 ![50](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2050.png?raw=true)
-
-
 
 ##[Go to page 7](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.02%20ControlGrid44%20and%20CubicSurface44%20-%20page%2007.md)
 
