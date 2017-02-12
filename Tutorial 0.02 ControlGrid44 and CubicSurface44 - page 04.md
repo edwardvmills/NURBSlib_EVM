@@ -60,7 +60,7 @@ Select the last drawn sketch (on YZ) and activate the attachment editor. Select 
 
 ![28](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2028.png?raw=true)
 
-Once the arc enfpoint is selected, the node move over to the arc. **Attachment mode** should default to **Translate orign**. this is what we want. Hit **OK**.
+Once the arc enfpoint is selected, the node moves over to the arc. **Attachment mode** should default to **Translate orign**. this is what we want. Hit **OK**.
 
 ![29](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2029.png?raw=true)
 
