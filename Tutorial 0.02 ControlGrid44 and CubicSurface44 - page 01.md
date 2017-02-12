@@ -8,7 +8,7 @@ These are the objects that respectively control and exploit a rational bicubic b
 [return to main page](http://edwardvmills.github.io/NURBSlib_EVM/)
 
 ### Target audience for this specific tutorial
-This 'tutorial' is meant to give a glimpse of the NURBSlib_EVM _library_ to knowledgable users of FreeCAD. No explanations of basic FreeCAD actions are provided at this time. I will spend a little extra effort on the amazing Attachment Editor of FreeCAD as it relates to sketches used for surface modeling. FreeCAD's 2D sketcher, when combined with the Part Workbench attachment editor and unlimited external references, is the best 3D sketching system i have ever seen (my experience is limited to Solidworks and Autodesk Inventor).
+This tutorial is meant to give a glimpse of the NURBSlib_EVM _library_ to knowledgable users of FreeCAD. No explanations of basic FreeCAD actions are provided at this time. I will spend a little extra effort on the amazing Attachment Editor of FreeCAD as it relates to sketches used for surface modeling. FreeCAD's 2D sketcher, when combined with the Part Workbench attachment editor and unlimited external references, is the best 3D sketching system i have ever seen (my experience is limited to Solidworks and Autodesk Inventor).
 
 The actual grid and surface portion take less than one minute, but without good sketches they are uninteresting.
 
