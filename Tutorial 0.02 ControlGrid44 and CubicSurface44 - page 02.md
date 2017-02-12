@@ -22,9 +22,12 @@ Hit CTRL-V (paste). Rename the folder to _3D node controller - front left_
 
 ![03](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2003.png?raw=true)
 
+####-3-
 Expand the folder and select _Anchor - xy001_ (mine has 001 added to the contents, because i copied/pasted once exactly. you do it over and over, you will get 002, 003, 004, etc added to your object names. Pay attention to the screenshots, because our object names will probably get out of sync. if you want, you can use the screenshots to se my object names and check yours)
 
 Go to the Part workbench, under menu Part, select the _attachment..._ function. (i have added this function to a custom toolbar so i don't have to switch around the workbenches so much)
+
+![04](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2004.png?raw=true)
 
 Select the left most point of the _front\_profile\_zx_ sketch. It must be the _point_ itself. Not the _line_. Slecting the line does a different awesome thing.
 
@@ -32,11 +35,17 @@ When you have selected the point, you can see the attachment editor reporting th
 
 The _Attachment mode_ is automatically set to _Translate origin_. This is what we want. Hit OK (and then cancel to escape..i think?)
 
-![04](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2004.png?raw=true)
+_Anchor - xy001_, the light blue sketch is immediately translated to the vertex when you select it. but only one sketch moves.
 
 ![05](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2005.png?raw=true)
 
+After exiting the Attachment Editor, _Anchor - xy001_ is flagged for recomputation. Hit F5 to recompute the model
+
 ![06](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2006.png?raw=true)
+
+After recomputation, we see that the entire group of sketches has moved to the left end of _front\_profile\_zx_.
+
+#### _Reattaching the Anchor moves the entire group. Collections of interlinked sketches can be reused simply by copying and pasting a folder. As long as you give the folder a good name, it is not necessary to rename each item inside. As long as you can easily identify the 'root' (or _Anchor_, you can reuse the entire group)
 
 ![07](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2007.png?raw=true)
 
