@@ -2,6 +2,8 @@
 # Tutorial 0.01
 ##ControlPoly4 and CubicCurve4 macros in NURBSlib_EVM
 
+These are the objects that respectively control and exploit a rational cubic bezier curve
+
 [return to main page](http://edwardvmills.github.io/NURBSlib_EVM/)
 
 ### Target audience for this specific tutorial / presentation
