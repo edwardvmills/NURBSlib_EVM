@@ -15,7 +15,7 @@ This model contains some starting point sketches:
 
 Select the _3D node controller blank - COPY-PASTE THIS FOLDER_ folder that contains the sketches, and hit CTRL-C (copy)
 
-FreeCAD will ask if we wish to copy the object the folder depends on, select YES
+FreeCAD will ask if we wish to copy the objects the folder itself depends on, select YES. (it is asking if we want to copy just the folder, or to include the contents of the folder. in this case, we want everything)
 
 ![02](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2002.png?raw=true)
 
