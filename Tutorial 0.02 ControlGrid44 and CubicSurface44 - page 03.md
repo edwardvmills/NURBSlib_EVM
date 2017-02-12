@@ -2,7 +2,7 @@
 ##Tutorial 0.02 ControlGrid44 and CubicSurface44 - page 03
 [return to page 2](https://github.com/edwardvmills/NURBSlib_EVM/edit/gh-pages/Tutorial%200.02%20ControlGrid44%20and%20CubicSurface44%20-%20page%2002.md)
 
-[return to page 1](https://github.com/edwardvmills/NURBSlib_EVM/edit/gh-pages/Tutorial%200.02%20ControlGrid44%20and%20CubicSurface44%20-%20page%2001.md)
+[return to first page](https://github.com/edwardvmills/NURBSlib_EVM/edit/gh-pages/Tutorial%200.02%20ControlGrid44%20and%20CubicSurface44%20-%20page%2001.md)
 ### Usage - continued
 
 ![11](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2011.png?raw=true)
