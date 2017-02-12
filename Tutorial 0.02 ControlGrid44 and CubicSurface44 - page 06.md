@@ -40,7 +40,7 @@ Edit the arc sketch as shown below.
 
 ![46](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2046.png?raw=true)
 
-Entering a dimension updates immediately. Drag and drop updates every time you drop.
+Entering a dimension updates immediately. Drag and drop updates every time you drop. **_CAUTION_** if the change in the sketch causes the grid to get all garbled, the resulting surface will be very hard to compute, and can cause FreeCAD to hang. This is a limitation of NURBS themselves. If you tell FreecAD to compute a pinched and folded NURBS, it will do its best, but the result will be ugly and cost a lot in processor time!
 
 ![47](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2047.png?raw=true)
 
