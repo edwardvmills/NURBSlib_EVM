@@ -3,7 +3,10 @@
 
 ### Usage
 ####-1-
-Open ControlGrid44 and CubicSurface44 bare bones.FCStd
+Open _ControlGrid44 and CubicSurface44 bare bones.FCStd_
+
+I recommend you immediately rename it _ControlGrid44 and CubicSurface44 in progress.FCStd_ or some other name you like.
+
 ![01](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2001.png?raw=true)
 
 This model containes some starting point sketches:
