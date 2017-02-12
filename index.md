@@ -1,11 +1,12 @@
 ## NURBSlib_EVM
-My python scripts for creating surfaces in [FreeCAD](http://freecadweb.org/).  
+My python scripts for creating surfaces in [FreeCAD](http://freecadweb.org/).   
 
 This is the rough workflow prototyping phase. most basic objects are now parametric. The workflow is based on sketches drawn in FreeCAD 0.17 or later. The sketches are used to control NURBS curves and surfaces. 
 
 What does it do right now? Here is my favorite model so far. It shows control of an overall shape with 'main' sketches, and automatic 'blending' of the corners of the main surfaces to obtain curvature continuity (G2).
 
-![Best example of current state](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/begin%20transition%20to%200.17/Bezier%20primary%20Surface%20Volume%2058-06.bmp.png?raw=true)
+![Best example of current state]
+(https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/begin%20transition%20to%200.17/Bezier%20primary%20Surface%20Volume%2058-06.bmp.png?raw=true)
 
 ![Best example of current state](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/begin%20transition%20to%200.17/Bezier%20primary%20Surface%20Volume%2041-07.bmp.png?raw=true)  
 
@@ -39,12 +40,17 @@ FreeCAD already has some of these tools in the Part module and i believe the Par
 All scripts (file extension .py and .fcmacro) in this repository are offered under the terms of the [GPLv3](http://www.gnu.org/licenses/gpl-3.0.en.html)   
 All models (file extension .fcstd). and icon files (file extension .svg) in this repository are offered under the terms of [CC-BY](http://creativecommons.org/licenses/by/2.0/)
 
-#REMOVED OUTDATED INSTALL/USE INFO. 
+## I have started making some tutorials:
+
+### [go to tutorial 0.01, ControlPoly4 and CubicCurve4 macros in NURBSlib_EVM](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.01%20ControlPoly4%20and%20CubicCurve4.md)
+
+### [go to Tutorial 0.02, ControlGrid44 and CubicSurface44](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.02%20ControlGrid44%20and%20CubicSurface44%20-%20page%2001.md)
+
 ## Workbench release planned soon.
 
-###NURBS in general, and what these scripts are trying to do   
+### NURBS in general, and what these scripts are trying to do   
 
-For now, my focus is on skinning sets of 3 or 4 curves in a loop. 
+For now, my focus is on skinning sets of 3 or 4 curves in a loop, and then smoothing out the seams between neighboring surfaces.
 
 The skinning routines should be   
 -*repeatable*: produce the same result for the same inputs   
@@ -61,3 +67,5 @@ For now, the Bezier curves and surfaces are considered to be 'rough drafts' of t
 In order to have isolated curvature at each curve endpoint, i made a 6 control point cubic curve and associated 6X6 surface. This surface type does not have a triangle version yet. Included are utilites to convert cubic Bezier and arcs to this curve type.   
 
 This will open up the possibility of using the 3rd and 4th points to control start and end curvature respectively. This can be done without interfering with the use of the 2nd and 5th control points to set tangents. Right now the curvature matching must be done by hand, but for any particular value of curvature desired at a curve connection, there are many possible control points positions. These additional degrees of freedom will (i hope) allow the possibility of controlling the derivative of curvature (highlight flow).
+
+
