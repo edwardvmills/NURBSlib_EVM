@@ -11,7 +11,7 @@ We just edited **_Anchor - xy001_**, the light blue sketch. The **_zx001_** and 
 
 ####-7-
 
-Begin editing the**_zx001_** sketch.
+Begin editing the **_zx001_** sketch. Please only perform the indicated change the tfirst time around
 
 ![12](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2012.png?raw=true)
 
@@ -25,7 +25,7 @@ Exit the sketch and rotate the model to inspect it.
 
 ![14](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2014.png?raw=true)
 
-**_merge001_** is a single node sketch that can point in any direction in 3D space, where the position and xy of the tangent are located in **_Anchor - xy001_**, and the z component of the tangent is controlled by **_zx001_**. There are many other ways to structure the sketches to get the same result. We could use horizontal and vertical dimensions in the sketches insted of angles. this particular method controls the _length_ of the **_merge001_** node directly.
+**_merge001_** is a single node sketch that can point in any direction in 3D space, where the position and xy of the tangent are located in **_Anchor - xy001_**, and the z component of the tangent is controlled by **_zx001_**. There are many other ways to structure the sketches to get the same result. We could use horizontal and vertical dimensions in the sketches insted of angles. this particular method controls the _length_ of the **_merge001_** node as projected on the xy plane.
 
 ![15](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2015.png?raw=true)
 
