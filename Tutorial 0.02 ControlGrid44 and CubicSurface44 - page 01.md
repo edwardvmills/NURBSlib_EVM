@@ -49,4 +49,4 @@ All Sketches _must_ be Sketcher Workbench sketches, not  Part Design workbench. 
 
 This Tutorial is split up so there are no more than 10 images per page. These are full size screenshots.
 
-[go to page 2](https://github.com/edwardvmills/NURBSlib_EVM/edit/gh-pages/Tutorial%200.02%20ControlGrid44%20and%20CubicSurface44%20-%20page%2002.md)
+[go to page 2](https://github.com/edwardvmills/NURBSlib_EVM/gh-pages/Tutorial%200.02%20ControlGrid44%20and%20CubicSurface44%20-%20page%2002.md)
