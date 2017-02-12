@@ -51,7 +51,7 @@ After exiting the Attachment Editor, **_Anchor - xy001_** is flagged for recompu
 
 After recomputation, we see that the entire group of sketches has moved to the left end of _front\_profile\_zx_.
 
-** _Reattaching the Anchor moves the entire group. Collections of interlinked sketches can be reused simply by copying and pasting a folder. As long as you give the folder a good name, it is not necessary to rename each item inside. As long as you can easily identify the 'root', or 'Anchor' element, you can reuse the entire group_**
+**_Reattaching the Anchor moves the entire group. Collections of interlinked sketches can be reused simply by copying and pasting a folder. As long as you give the folder a good name, it is not necessary to rename each item inside. As long as you can easily identify the 'root', or 'Anchor' element, you can reuse the entire group_**
 
 ####-5-
 Hide the original **_3D node controller blank - COPY-PASTE THIS FOLDER_** folder 
