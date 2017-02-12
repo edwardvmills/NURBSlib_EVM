@@ -3,7 +3,7 @@
 
 These are the objects that respectively control and exploit a rational bicubic bezier surface.
 
-[go to tutorial 0.01, ControlPoly4 and CubicCurve4 macros in NURBSlib_EVM](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.01%20ControlPoly4%20and%20CubicCurve4.md)
+[go to tutorial 0.01, ControlPoly4 and CubicCurve4](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.01%20ControlPoly4%20and%20CubicCurve4.md)
 
 [return to main page](http://edwardvmills.github.io/NURBSlib_EVM/)
 
