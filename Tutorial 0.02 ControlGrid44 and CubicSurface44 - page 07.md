@@ -42,11 +42,12 @@ select the disconnected node sketch, start he attachment editor, select the arc 
 
 The grid and surface disappear, but don't worry, they'll be right back. The node sketch is now tied to the arc point, but we need to edit the sketch drawing as well.
 
-![59](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2059.png?raw=true)
-
 ####-34-
 
 Edit the sketch. Place the circle of the node at the origin, which is now right at the end of the arc (make sue the line comes along as well). The polygon, grid and surfc=ace will snap right back.
+
+
+![59](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2059.png?raw=true)
 
 ![60](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2060.png?raw=true)
 
