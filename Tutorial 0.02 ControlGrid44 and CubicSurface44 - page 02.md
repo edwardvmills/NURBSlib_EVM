@@ -5,7 +5,7 @@
 ####-1-
 Open _ControlGrid44 and CubicSurface44 bare bones.FCStd_
 
-I recommend you immediately rename it _ControlGrid44 and CubicSurface44 in progress.FCStd_ or some other name you like.
+I recommend you immediately save it as _ControlGrid44 and CubicSurface44 in progress.FCStd_ or some other name you like. This is to maintain a fresh copy of the tarting point.
 
 ![01](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2001.png?raw=true)
 
