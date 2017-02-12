@@ -66,7 +66,7 @@ Once the arc enfpoint is selected, the node moves over to the arc. **Attachment 
 
 ####-17-
 
-Spin the model around to get a feel for where we are, and how the sketch so far relate to each other and the base planes. Inspect the DAG view in the next picture:
+Spin the model around to get a feel for where we are, and how the sketches so far relate to each other and the base planes. Inspect the DAG view in the next picture:
 * there are 3 independent groups
 * first is the _blank_ 3D controller, we can ignore that
 * the second group is the front profile, _and two nodes attached to it_
