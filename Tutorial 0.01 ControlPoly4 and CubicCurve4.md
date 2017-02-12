@@ -1,6 +1,6 @@
 
 # Tutorial 0.01
-##ControlPoly4 and CubicCurve4 macros
+##ControlPoly4 and CubicCurve4
 
 These are the objects that respectively control and exploit a rational cubic bezier curve
 
