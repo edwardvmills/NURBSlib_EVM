@@ -28,15 +28,15 @@ Select the sketch and under the data tab, edit its placement, -200 in z
 
 What's going on? the left side node polygon in the picture below moved correctly and followed the arc, but the other side didn't! The ControlPoly44 object has a red flag and is not updating.
 
-The node that is moving correctly was drawn on YZ, and then attched to the arc point.
+The node that is moving correctly was drawn on YZ, and then attached to the arc point.
 
 The node that is not moving correctly was drawn on XY, and tied to the arc through a geomtry link. This only works  as long as the arc is also on XY! if not, the geometry link still works, but since it is projected onto the node sketch, this doesn;t actually tie the two points together.
 
-The attachment editor is the correct way to connect sketches. Another advantage is we end up using the origin more in our sketches.
+The attachment editor is the correct way to connect sketches. Another advantage is we end up using the origin more in our sketches. This basically the first two contraints for free in every sketch.
 
 ####-33-
 
-select the disconnected node sketch, start he attachment editor, select the arc endpoint as a reference.
+select the disconnected node sketch, start the attachment editor, select the arc endpoint as a reference.
 
 ![58](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2058.png?raw=true)
 
@@ -44,9 +44,11 @@ The grid and surface disappear, but don't worry, they'll be right back. The node
 
 ####-34-
 
-Edit the sketch. Place the circle of the node at the origin, which is now right at the end of the arc (make sue the line comes along as well). The polygon, grid and surfc=ace will snap right back.
+Edit the sketch. Place the circle of the node at the origin, which is now right at the end of the arc (make sure the line comes along as well). The polygon, grid and surface will snap right back.
 
 [done for the day. i hope there aren't too many mistakes, as i tried to cover a lot of ground in one day. If something doesn't quite work, let me know and i'll fix it.
+
+[post questions/comments in this thread](https://forum.freecadweb.org/viewtopic.php?f=22&t=20632)...unless the mods get mad at me for using the FreeCAD forum this way, in which case i will remove this link.
 
 ![59](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2059.png?raw=true)
 
