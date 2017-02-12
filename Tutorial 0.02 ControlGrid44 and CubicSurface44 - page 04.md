@@ -4,7 +4,7 @@
 [return to first page](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.02%20ControlGrid44%20and%20CubicSurface44%20-%20page%2001.md)
 ### Usage - continued
 
-Create a node sketch as shown below. The 100 degeree angle is measured from the x axis of the sketch.
+Create a node sketch as shown below. The 100 degree angle is measured from the x axis of the sketch.
 
 ![21](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2021.png?raw=true)
 
