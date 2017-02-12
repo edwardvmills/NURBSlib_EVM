@@ -9,7 +9,7 @@ I recommend you immediately rename it _ControlGrid44 and CubicSurface44 in progr
 
 ![01](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2001.png?raw=true)
 
-This model containes some starting point sketches:
+This model contains some starting point sketches:
 * a folder containing a set of linked sketches that form a 3D pointer
 * a three line sketch on the zx plane
 
