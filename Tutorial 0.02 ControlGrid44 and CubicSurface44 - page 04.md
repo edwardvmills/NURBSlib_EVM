@@ -30,9 +30,9 @@ Close the sketch
 
 Click into empty space to make sure nothing is selected.
 
-Create a new sketch. since nothing is selected, the conventional plane chooser comes up. Select **XY-Plane**, and hit **OK**
+Create a new sketch. since nothing is selected, the conventional plane chooser comes up. Select **XY-Plane**, and hit **OK**.
 
-From the Sketcher toolbar, hit **Create an edge linkedto an external geometry**, select the arc, escape the command
+From the Sketcher toolbar, hit **Create an edge linked to an external geometry**, select the arc, escape the command
 
 ![24](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2024.png?raw=true)
 
@@ -40,7 +40,7 @@ Draw the node shown below. the circle is on the linked arc end point. This is th
 
 ![25](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2025.png?raw=true)
 
-####-14-
+####-15-
 
 Click into empty space to make sure nothing is selected.
 
@@ -57,11 +57,15 @@ Draw the node shown below. the circle is on the origin.
 
 ![28](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2028.png?raw=true)
 
+####-16-
+
 Select the last drawn sketch (on YZ) and activate the attachment editor. Select the right side endpoint of the arc sketch as a reference object.
 
 ![29](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2029.png?raw=true)
 
 Once the arc enfpoint is selected, the node move over to the arc. **Attachment mode** should default to **Translate orign**. this is what we want. Hit **OK**.
+
+####-17-
 
 Spin the model around to get a feel for where we are, and how the sketch so far relate to each other and the base planes. Inspect the DAG view in the next picture:
 * there are 3 independent groups
