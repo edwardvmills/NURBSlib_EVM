@@ -46,6 +46,7 @@ The grid and surface disappear, but don't worry, they'll be right back. The node
 
 Edit the sketch. Place the circle of the node at the origin, which is now right at the end of the arc (make sue the line comes along as well). The polygon, grid and surfc=ace will snap right back.
 
+[done for the day. i hope there aren't too many mistakes, as i tried to cover a lot of ground in one day. If something doesn't quite work, let me know and i'll fix it.
 
 ![59](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2059.png?raw=true)
 
