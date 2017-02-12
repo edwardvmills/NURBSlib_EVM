@@ -57,7 +57,7 @@ After recomputation, we see that the entire group of sketches has moved to the l
 Hide the original **_3D node controller blank - COPY-PASTE THIS FOLDER_** folder 
 ![08](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2008.png?raw=true)
 
-Begin editing the **_Anchor - xy0001_** sketch.
+Begin editing the **_Anchor - xy0001_** sketch. Please follow the instructions exactly the first time. This sketch is not _invincible_, it is just a demonstration, and it can be broken easily if used outside of its scope.
 
 Shown below is the sketch state in the original file
 ![09](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2009.png?raw=true)
