@@ -44,18 +44,24 @@ The _Attachment mode_ is automatically set to _Translate origin_. This is what w
 
 ![06](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2006.png?raw=true)
 
+####-4-
 After exiting the Attachment Editor, _Anchor - xy001_ is flagged for recomputation. Hit F5 to recompute the model
 
 ![07](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2007.png?raw=true)
 
 After recomputation, we see that the entire group of sketches has moved to the left end of _front\_profile\_zx_.
 
-#### _Reattaching the Anchor moves the entire group. Collections of interlinked sketches can be reused simply by copying and pasting a folder. As long as you give the folder a good name, it is not necessary to rename each item inside. As long as you can easily identify the 'root' (or _Anchor_, you can reuse the entire group)_
+#### _Reattaching the Anchor moves the entire group. Collections of interlinked sketches can be reused simply by copying and pasting a folder. As long as you give the folder a good name, it is not necessary to rename each item inside. As long as you can easily identify the 'root', or 'Anchor' element, you can reuse the entire group_
 
-
+####-5-
+Hide the original _3D node controller blank - COPY-PASTE THIS FOLDER_ folder 
 ![08](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2008.png?raw=true)
 
+Begin editing the _Anchor - xy0001_ sketch
+Shown below is the sketch state in the original file
 ![09](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2009.png?raw=true)
+
+####-6- change the angle from -20 to 85 degrees
 
 ![10](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2010.png?raw=true)
 
