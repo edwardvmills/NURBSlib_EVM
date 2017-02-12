@@ -180,4 +180,6 @@ The net effect is
 * parabola and hyperbola don't work yet, but it's just a matter of exposing startpoint and endpoint. I'm not worried about it at this time
 ![22](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_21%20freebie%20elliptic%20arc%20and%20line%20come%20for%20free.png?raw=true)
 
+[post questions/comments in this thread](https://forum.freecadweb.org/viewtopic.php?f=22&t=20632)...unless the mods get mad at me for using the FreeCAD forum this way, in which case i will remove this link.
+
 ##[go to Tutorial 0.02, ControlGrid44 and CubicSurface44](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.02%20ControlGrid44%20and%20CubicSurface44%20-%20page%2001.md)
