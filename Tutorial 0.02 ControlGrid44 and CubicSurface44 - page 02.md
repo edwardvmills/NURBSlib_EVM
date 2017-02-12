@@ -8,7 +8,11 @@ Open ControlGrid44 and CubicSurface44 bare bones.FCStd
 
 This model containes some starting point sketches:
 * a folder containing a set of linked sketches that form a 3D pointer
-* a 
+* a three line sketch on the zx plane
+
+Select the folder that contains the sketches and hit CTRL-C (copy)
+
+FreeCAD will ask if we wish to copy the object the folder depends on, select YES
 
 ![02](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2002.png?raw=true)
 
