@@ -4,9 +4,24 @@
 [return to first page](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.02%20ControlGrid44%20and%20CubicSurface44%20-%20page%2001.md)
 ### Usage - continued
 
+####-26-
+
+Change the color of the grid to light purple
+
 ![41](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2041.png?raw=true)
 
+####-27-
+
+With grid still selected, click the CubicSurface44 macro.
+![00](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/CubicSurface44.png?raw=true)
+
 ![42](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2042.png?raw=true)
+
+###-28-
+
+Change the color of the surface to orange, and change the transparency to 40. The color and transparency are useful to process the depth of the image better. Maybe you prefer other colors, the point is that tryng to decipher a bunch of black lines on a grey surface is hard on the brain, and contrast frees up your brain for other tasks.
+
+Rotate the model around and inspect. Note where the control lines go throught the surface. try to figure out how the angles of the lines lead to the curves of the surface.
 
 ![43](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2043.png?raw=true)
 
