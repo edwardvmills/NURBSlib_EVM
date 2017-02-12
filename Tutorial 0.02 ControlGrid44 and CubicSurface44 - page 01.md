@@ -47,6 +47,6 @@ In FreeCAD, set up macros for ControlGrid44 and ControlGrid44.
 
 All Sketches _must_ be Sketcher Workbench sketches, not  Part Design workbench. refer to [Tutorial 0.01](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.01%20ControlPoly4%20and%20CubicCurve4.md)
 
-This Tutorial is split up so there are no more than 10 images per page. These are full size screenshots.
 
-[go to page 2](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.02%20ControlGrid44%20and%20CubicSurface44%20-%20page%2002.md)
+This Tutorial is split into several pages so there are no more than 10 images per page. These are full size screenshots.
+##[go to page 2](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.02%20ControlGrid44%20and%20CubicSurface44%20-%20page%2002.md)
