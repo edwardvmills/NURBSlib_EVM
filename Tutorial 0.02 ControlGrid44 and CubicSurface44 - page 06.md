@@ -54,7 +54,7 @@ A good in between step is to hide the surfaces you aren't modifying, leave their
 
 ####-31- 
 
-replicate the changes shown in the pictures below.
+Replicate the changes shown in the pictures below. (or skip to step 32 for the last important point of this tutorial)
 
 ![48](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2048.png?raw=true)
 
