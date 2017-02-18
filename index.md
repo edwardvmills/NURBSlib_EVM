@@ -24,7 +24,7 @@ The next image shows the current required steps:
 
 There is a fair amount of work to setup a blended model, but the payoff is that all the work is parametric, so one can go back and edit the initial overall sketch, and everything, including the blends will update. This is shown below. Moving the white lines of the sketch sculpts the blended surface.   
 
-![manipulating model above](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric//FreeCAD%200.16Bezier%20surface%20segment%20and%20blend/Bezier%20surface%20segment%20and%20blend%2018/1f7g55.gif?raw=true)  
+![manipulating model above](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric//FreeCAD%200.16/Bezier%20surface%20segment%20and%20blend/Bezier%20surface%20segment%20and%20blend%2018/1f7g55.gif?raw=true)  
 
 
 The ultimate goal is to implement a set of tools that require *very few points and tangents/normals* to generate NURBS surfaces of high continuity. I have some ideas as to what constitutes an efficient and intuitive input/interface structure. This is very personal, and cannot address all individual preferences. 
