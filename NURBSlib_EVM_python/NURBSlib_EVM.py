@@ -1,5 +1,5 @@
 #    NURBSLib_EVM
-#    (c) Edward Mills 2016
+#    (c) Edward Mills 2016-2017
 #    edwardvmills@gmail.com
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -130,56 +130,62 @@ def NURBS_Cubic_6P_curve(poles):
 		i=i+1;
 	return bs
 
-def Cubic_Bezier_ddu(pole1, pole2):   # first derivative with respect to parameter, returns value at first pole given. weights not inlcuded!
+def Cubic_Bezier_ddu(pole1, pole2):   # first derivative with respect to parameter, returns value at first pole given. weights not included!
 	P1=Base.Vector(pole1)
 	P2=Base.Vector(pole2)
 	Cubic_Bezier_ddu = (P2 - P1)*3
 	return Cubic_Bezier_ddu
 
-def Cubic_6P_ddu(pole1, pole2):   # first derivative with respect to parameter, returns value at first pole given. weights not inlcuded!
+def Cubic_6P_ddu(pole1, pole2):   # first derivative with respect to parameter, returns value at first pole given. weights not included!
 	P1=Base.Vector(pole1)
 	P2=Base.Vector(pole2)
 	Cubic_6P_ddu = (P2 - P1)*9
 	return Cubic_6P_ddu
 
-def Cubic_Bezier_d2du2(pole1, pole2, pole3): # second derivative with respect to parameter, returns value at first pole given. weights not inlcuded!
+def Cubic_Bezier_d2du2(pole1, pole2, pole3): # second derivative with respect to parameter, returns value at first pole given. weights not included!
 	P1=Base.Vector(pole1)
 	P2=Base.Vector(pole2)
 	P3=Base.Vector(pole3)	
 	Cubic_Bezier_d2du2 = (P1- P2*2 + P3)*6
 	return Cubic_Bezier_d2du2
 
-def Cubic_6P_d2du2(pole1, pole2, pole3): # second derivative with respect to parameter, returns value at first pole given. weights not inlcuded!
+def Cubic_6P_d2du2(pole1, pole2, pole3): # second derivative with respect to parameter, returns value at first pole given. weights not included!
 	P1=Base.Vector(pole1)
 	P2=Base.Vector(pole2)
 	P3=Base.Vector(pole3)	
 	Cubic_6P_d2du2 = (P1*2- P2*3 + P3)*27
 	return Cubic_6P_d2du2
 
-def Cubic_Bezier_curvature(pole1, pole2, pole3): # curvature, returns value at first pole given. weights not inlcuded!
+def Cubic_Bezier_curvature(pole1, pole2, pole3): # curvature, returns value at first pole given. weights not included!
 	ddu = Cubic_Bezier_ddu(pole1, pole2)
 	d2du2 = Cubic_Bezier_d2du2(pole1, pole2, pole3)
 	Cubic_Bezier_curvature = ddu.cross(d2du2).Length/ddu.Length.__pow__(3)
 	return Cubic_Bezier_curvature
 
-def Cubic_6P_curvature(pole1, pole2, pole3): # curvature, returns value at first pole given. weights not inlcuded!
+def Cubic_6P_curvature(pole1, pole2, pole3): # curvature, returns value at first pole given. weights not included!
 	ddu = Cubic_6P_ddu(pole1, pole2)
 	d2du2 = Cubic_6P_d2du2(pole1, pole2, pole3)
 	Cubic_6P_curvature = ddu.cross(d2du2).Length/ddu.Length.__pow__(3)
 	return Cubic_6P_curvature
 
+def equalVectors(vector0,vector1,tol):
+	if (vector1-vector0).Length <= tol:
+		return 1
+	elif (vector1-vector0).Length <= tol:
+		return 0
+	
 def orient_a_to_b(polesa,polesb):
 
-	if (polesa[-1]==polesb[0]):  # last point of first curve is first point of second curve
+	if equalVectors(polesa[-1],polesb[0],0.000001):  # last point of first curve is first point of second curve
 		# curve 1 is oriented properly
 		return polesa
-	elif (polesa[-1]==polesb[-1]):  # last point of first curve is last point of second curve
+	elif equalVectors(polesa[-1],polesb[-1],0.000001):  # last point of first curve is last point of second curve
 		# curve 1 is oriented properly
 		return polesa
-	elif (polesa[0]==polesb[0]):  # first point of first curve is first point of second curve
+	elif equalVectors(polesa[0],polesb[0],0.000001):  # first point of first curve is first point of second curve
 		# curve 1 is reversed
 		return polesa[::-1]
-	elif (polesa[0]==polesb[-1]):  # first point of first curve is last point of second curve
+	elif equalVectors(polesa[0],polesb[-1],0.000001):  # first point of first curve is last point of second curve
 		# curve 1 is reversed
 		return polesa[::-1]
 	else:
@@ -3658,6 +3664,154 @@ class ControlGrid66_4Subs:
 		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
 
+
+class SubGrid62Tri_2Surf64s:
+	def __init__(self, obj , NL_Surf_0, NL_Surf_1):
+		''' Add the properties '''
+		FreeCAD.Console.PrintMessage("\nSubGrid62Tri_2Surf64s class Init\n")
+		obj.addProperty("App::PropertyLink","NL_Surf_0","SubGrid62Tri_2Surf64s","first reference 6X4 surface").NL_Surf_0 = NL_Surf_0
+		obj.addProperty("App::PropertyLink","NL_Surf_1","SubGrid62Tri_2Surf64s","second reference 6X4 surface").NL_Surf_1 = NL_Surf_1
+		obj.addProperty("Part::PropertyGeometryList","Legs","SubGrid62Tri_2Surf64s","control segments").Legs
+		obj.addProperty("App::PropertyVectorList","Poles","SubGrid62Tri_2Surf64s","Poles").Poles
+		obj.addProperty("App::PropertyFloatList","Weights","SubGrid62Tri_2Surf64s","Weights").Weights
+	
+		obj.Proxy = self
+
+	def execute(self, fp):
+		'''Do something when doing a recomputation, this method is mandatory'''
+		# outline:
+		# -find shared corner
+		# -set 'u' row - imagine the future surface as uvn (n is normal). 
+		# -set 'v' row - imagine the future surface as uvn (n is normal).
+		# -build a corner focused 33 grid using similar logic as the corner focused 66 grid. 
+		#the $10 question here is whether this even maintains G1? maybe...it has been many steps since the bezier surface was segmented.
+		
+		# get grids form the surfaces
+		Grid_0=fp.NL_Surf_0.Grid
+		Grid_1=fp.NL_Surf_1.Grid
+		
+		#get the FreeCAD surface form the NL surface object
+		
+		Surf_0 = fp.NL_Surf_0.Shape.Surface
+		Surf_1 = fp.NL_Surf_1.Shape.Surface
+		
+		
+		# extract corner points
+		corners_0=[fp.Grid_0.Poles[0],fp.Grid_0.Poles[5],fp.Grid_0.Poles[18],fp.Grid_0.Poles[23]]
+		corners_1=[fp.Grid_1.Poles[0],fp.Grid_1.Poles[5],fp.Grid_1.Poles[18],fp.Grid_1.Poles[23]]
+		# find the common point
+		common = 'not_found_yet'
+		for i in range(0,4):
+			for j in range(0,4):
+				if corners_0[i] == corners_1[j]:
+					common=[i,j]
+		if common == 'not_found_yet':
+			print 'common point of grids not found. If this object was working previously, this is an evaluation error'
+		print 'common ', common
+		# tested-runs-
+		
+		# the two 6 point sides of each grid should form a V when looking at the future grid
+		# a is the left leg of the V, i.e. common[0] = 0 or 3
+		# b is the right leg of the V i.e. common[1] = 2 or 1
+		
+		# check input grid order, swap grids if necessary
+		if (common[0] == 1 or common[0] == 2) and (common[1] == 0 or common[1] == 3):
+			print 'swapping grid order'
+			temp=fp.Grid_0
+			fp.Grid_0=fp.Grid_1
+			fp.Grid_1=temp
+			# get the corners again
+			corners_0=[fp.Grid_0.Poles[0],fp.Grid_0.Poles[5],fp.Grid_0.Poles[18],fp.Grid_0.Poles[23]]
+			corners_1=[fp.Grid_1.Poles[0],fp.Grid_1.Poles[5],fp.Grid_1.Poles[18],fp.Grid_1.Poles[23]]
+			# find common again
+			for i in range(0,4):
+				for j in range(0,4):
+					if corners_0[i] == corners_1[j]:
+						common=[i,j]
+			print 'common ', common
+		
+		if common[0] == 0:
+			v_col0_poles = [fp.Grid_0.Poles[0],fp.Grid_0.Poles[1],fp.Grid_0.Poles[2]]
+			v_col0_weights = [fp.Grid_0.Weights[0],fp.Grid_0.Weights[1],fp.Grid_0.Weights[2]]
+			v_col1_poles = [fp.Grid_0.Poles[6],fp.Grid_0.Poles[7],fp.Grid_0.Poles[8]]
+			v_col1_weights = [fp.Grid_0.Weights[6],fp.Grid_0.Weights[7],fp.Grid_0.Weights[8]]			
+		
+		if common[0] == 3:
+			v_col0_poles = [fp.Grid_0.Poles[23],fp.Grid_0.Poles[22],fp.Grid_0.Poles[21]]
+			v_col0_weights = [fp.Grid_0.Weights[23],fp.Grid_0.Weights[22],fp.Grid_0.Weights[21]]
+			v_col1_poles = [fp.Grid_0.Poles[17],fp.Grid_0.Poles[16],fp.Grid_0.Poles[15]]
+			v_col1_weights = [fp.Grid_0.Weights[17],fp.Grid_0.Weights[16],fp.Grid_0.Weights[15]]					
+		
+		if common[1] == 1:
+			u_row0_poles = [fp.Grid_1.Poles[5],fp.Grid_1.Poles[4],fp.Grid_1.Poles[3]]
+			u_row0_weights = [fp.Grid_1.Weights[5],fp.Grid_1.Weights[4],fp.Grid_1.Weights[3]]
+			u_row1_poles = [fp.Grid_1.Poles[11],fp.Grid_1.Poles[10],fp.Grid_1.Poles[9]]
+			u_row1_weights = [fp.Grid_1.Weights[11],fp.Grid_1.Weights[10],fp.Grid_1.Weights[9]]					
+			
+		if common[1] == 2:
+			u_row0_poles = [fp.Grid_1.Poles[18],fp.Grid_1.Poles[19],fp.Grid_1.Poles[20]]
+			u_row0_weights = [fp.Grid_1.Weights[18],fp.Grid_1.Weights[19],fp.Grid_1.Weights[20]]
+			u_row1_poles = [fp.Grid_1.Poles[12],fp.Grid_1.Poles[13],fp.Grid_1.Poles[14]]
+			u_row1_weights = [fp.Grid_1.Weights[12],fp.Grid_1.Weights[13],fp.Grid_1.Weights[14]]					
+			
+		u_tan_ratio = (u_row0_poles[1]-u_row0_poles[0]).Length / (v_col1_poles[0]-v_col0_poles[0]).Length
+		v_tan_ratio = (v_col0_poles[1]-v_col0_poles[0]).Length / (u_row1_poles[0]-u_row0_poles[0]).Length
+		
+		p00 = u_row0_poles[0]
+		p01 = u_row0_poles[1]
+		p02 = u_row0_poles[2]		
+		p10 = v_col0_poles[1]
+		p20 = v_col0_poles[2]
+		p11_u = p01 + (u_row0_poles[1]-u_row1_poles[1])*v_tan_ratio
+		p12 = p02 + (u_row0_poles[2]-u_row1_poles[2])*v_tan_ratio
+		p11_v = p10 + (v_col0_poles[1]-v_col1_poles[1])*u_tan_ratio
+		p21 = p20 + (v_col0_poles[2]-v_col1_poles[2])*u_tan_ratio	
+		p11 = (p11_u + p11_v) * 0.5
+		p22_u = p12 + (p21-p11)
+		p22_v = p21 + (p12-p11)		
+		p22_temp = (p22_u + p22_v) * 0.5
+		
+		p22 = p22_temp + fp.adjust_0 * (p01-p00) + fp.adjust_1 * (p10-p00)
+		
+		fp.Poles = [p00, p01, p02, p10, p11, p12, p20, p21, p22]
+		
+		w00 = u_row0_weights[0]
+		w01 = u_row0_weights[1]
+		w02 = u_row0_weights[2]		
+		w10 = v_col0_weights[1]
+		w20 = v_col0_weights[2]		
+		
+		w11 = w01 * w10
+		w12 = w02 * w10
+		w21 = w01 * w20
+		w22 = w02 * w20
+		
+		fp.Weights = [w00, w01, w02, w10, w11, w12, w20, w21, w22]
+		
+		Legs=[0]*12
+		
+		Legs[0]=Part.LineSegment(p00,p01)
+		Legs[1]=Part.LineSegment(p01,p02)
+		
+		Legs[2]=Part.LineSegment(p00,p10)
+		Legs[3]=Part.LineSegment(p10,p20)
+		
+		Legs[4]=Part.LineSegment(p01,p11)
+		Legs[5]=Part.LineSegment(p02,p12)
+		
+		Legs[6]=Part.LineSegment(p10,p11)
+		Legs[7]=Part.LineSegment(p20,p21)
+		
+		Legs[8]=Part.LineSegment(p11,p12)
+		Legs[9]=Part.LineSegment(p11,p21)
+
+		Legs[10]=Part.LineSegment(p12,p22)
+		Legs[11]=Part.LineSegment(p21,p22)
+		
+		fp.Legs=Legs
+		fp.Shape = Part.Shape(fp.Legs)
+		
+		
 class ControlGrid64_3_Grid44:
 	def __init__(self, obj , ControlGrid44, Corner):
 		''' Add the properties '''
