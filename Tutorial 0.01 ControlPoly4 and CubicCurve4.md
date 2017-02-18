@@ -12,7 +12,7 @@ This tutorial is meant to give a glimpse of the NURBSlib_EVM _library_ to knowle
 As a library, NURBSlib_EVM provides basic elements that _can_ be used to produce models, but are not streamlined. Some steps in this tutorial will feel repetitive. They can be automated, and they will be automated eventually, in the form of a workbench. At this time, priority is given to stability and versatility of the objects. The interface is minimal, Spartan even. This is not necessarily a bad thing.
 
 ### Requirements to follow this tutorial / presentation
-* ability to set up a macro in [FreeCAD](http://www.freecadweb.org/) 0.17 is required (Part.Line vs Part.LineSegment deprecation warning is fatal in 0.16)
+* ability to set up a macro in [FreeCAD](http://www.freecadweb.org/) 0.17 is required
 * ability to create sketches of lines and arcs in FreeCAD
 * an understanding of the three basic planes in FreeCAD
 * having at least a vague notion of NURBS or Bezier curves, such as found in Inkscape or Illustrator is very helpful
