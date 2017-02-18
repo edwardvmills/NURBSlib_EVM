@@ -20,7 +20,7 @@ The next image shows the current required steps:
 -trim/clip sections of curves / surfaces (several steps needed here)   
 -blend the sections   
 
-![A semi decent G2 seam between two surfaces](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/Bezier%20surface%20segment%20and%20blend/Bezier%20surface%20segment%20and%20blend%2021/Bezier%20surface%20segment%20and%20blend%2021.gif?raw=true)   
+![A semi decent G2 seam between two surfaces](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/FreeCAD%200.16/Bezier%20surface%20segment%20and%20blend/Bezier%20surface%20segment%20and%20blend%2021/Bezier%20surface%20segment%20and%20blend%2021.gif?raw=true)   
 
 There is a fair amount of work to setup a blended model, but the payoff is that all the work is parametric, so one can go back and edit the initial overall sketch, and everything, including the blends will update. This is shown below. Moving the white lines of the sketch sculpts the blended surface.   
 
