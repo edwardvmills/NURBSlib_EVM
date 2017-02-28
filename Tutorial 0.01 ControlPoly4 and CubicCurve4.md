@@ -24,7 +24,7 @@ As a library, NURBSlib_EVM provides basic elements that _can_ be used to produce
 * 30 minutes to follow the tutorial, up to two hours to examine most variations
 
 ### Motivation? It will take a few tutorials, but here is the goal:
-![target](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/begin%20transition%20to%200.17/Bezier%20primary%20Surface%20Volume%2066-07.bmp.png?raw=true)
+![target](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/FreeCAD%200.17.9528/Bezier%20primary%20Surface%20Volume%2066-07.bmp.png?raw=true)
 The specific element of interest in the picture above is the fairly smooth blending of three main surfaces at the front top corner. There is a large 'blending radius' between the top and narrow front surface, and a sharp 'blending radius' between the wide side surface and the first two. These radii are controlled parametrically, and the seams are 95% curvature continuous. There are some known flaws as well, but let's focus on the positive for now!
 
 
