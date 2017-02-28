@@ -2319,7 +2319,7 @@ class ControlPoly6_FilletBezier:
 		# This allows start and end curvature control.
 
 		corner='none'
-		if p00==p10: 
+		if equalVectors(p00,p10,0.000001): 
 			p0=[poles_0[5],weights_0[5]]
 			p1=[poles_0[4],weights_0[4]]
 			p2=[poles_0[3],weights_0[3]]
@@ -2328,7 +2328,7 @@ class ControlPoly6_FilletBezier:
 			p5=[poles_1[5],weights_0[5]]
 			corner='p00p10'
 		
-		if p00==p11:
+		if equalVectors(p00,p11,0.000001):
 			p0=[poles_0[5],weights_0[5]]
 			p1=[poles_0[4],weights_0[4]]
 			p2=[poles_0[3],weights_0[3]]
@@ -2337,7 +2337,7 @@ class ControlPoly6_FilletBezier:
 			p5=[poles_1[0],weights_0[0]]
 			corner='p00p11'
 		
-		if p01==p10:
+		if equalVectors(p01,p10,0.000001):
 			p0=[poles_0[0],weights_0[0]]
 			p1=[poles_0[1],weights_0[1]]
 			p2=[poles_0[2],weights_0[2]]
@@ -2346,7 +2346,7 @@ class ControlPoly6_FilletBezier:
 			p5=[poles_1[5],weights_0[5]]
 			corner='p01p10'
 		
-		if p01==p11:
+		if equalVectors(p01,p11,0.000001):
 			p0=[poles_0[0],weights_0[0]]
 			p1=[poles_0[1],weights_0[1]]
 			p2=[poles_0[2],weights_0[2]]
@@ -2817,9 +2817,9 @@ class ControlGrid44_2EdgeSegments:
 
 		# determine u or v segmentation and get parameter span fron cutting points for curve b
 		param_b0=surface.parameter(b0)
-		print 'param_b0: ', param_b0
+		#print 'param_b0: ', param_b0
 		param_b1=surface.parameter(b1)
-		print 'param_b1: ', param_b1
+		#print 'param_b1: ', param_b1
 		if ((param_b0[0]<0.001 and param_b1[0]<0.001) or (param_b0[0]>0.999 and param_b1[0]>0.999)): # if u is constant 0 or constant 1 along curve
 			segdirb = 'v'
 			if param_b0[1] < param_b1[1]:
@@ -2951,7 +2951,7 @@ class ControlGrid64_2Grid44:  # surfaces not strictly used as input, but this is
 		found = 0
 		for i in range(0,4):
 			for j in range(0,4):
-				if corners_0[i]==corners_1[j]:
+				if equalVectors(corners_0[i],corners_1[j],0.000001):
 					seam_index[found]=[i,j]
 					found=found+1
 					
@@ -3276,7 +3276,7 @@ class SubGrid33_2Grid64s:
 		common = 'not_found_yet'
 		for i in range(0,4):
 			for j in range(0,4):
-				if corners_0[i] == corners_1[j]:
+				if equalVectors(corners_0[i],corners_1[j],0.000001):
 					common=[i,j]
 		if common == 'not_found_yet':
 			print 'common point of grids not found. If this object was working previously, this is an evaluation error'
@@ -3299,7 +3299,7 @@ class SubGrid33_2Grid64s:
 			# find common again
 			for i in range(0,4):
 				for j in range(0,4):
-					if corners_0[i] == corners_1[j]:
+					if equalVectors(corners_0[i],corners_1[j],0.000001):
 						common=[i,j]
 			print 'common ', common
 		
@@ -3664,7 +3664,6 @@ class ControlGrid66_4Subs:
 		fp.Legs=Legs
 		fp.Shape = Part.Shape(fp.Legs)
 
-
 class SubGrid62Tri_2Surf64s:
 	def __init__(self, obj , NL_Surf_0, NL_Surf_1):
 		''' Add the properties '''
@@ -3683,7 +3682,7 @@ class SubGrid62Tri_2Surf64s:
 		# -find shared corner
 		# -set 'u' row - imagine the future surface as uvn (n is normal). 
 		# -set 'v' row - imagine the future surface as uvn (n is normal).
-		# -build a corner focused 33 grid using similar logic as the corner focused 66 grid. 
+		# -build a corner focused 33 grid using similar logic as the corner focused 66 grid.
 		#the $10 question here is whether this even maintains G1? maybe...it has been many steps since the bezier surface was segmented.
 		
 		# get grids form the surfaces
