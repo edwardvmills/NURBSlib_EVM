@@ -6,7 +6,7 @@ Point_onCurve and ControlPoly4_segment respectively define points along a curve 
 
 ControlPoly6 and CubicCurve6 respectively control and exploit a cubic NURBS curve of 6 control points. 
 
-If the title above made no sense to you, please refer to the beginning of this tutorial series   
+For clarification, please refer to the beginning of this tutorial series   
 [go to tutorial 0.01, ControlPoly4 and CubicCurve4](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.01%20ControlPoly4%20and%20CubicCurve4.md)    
 [go to Tutorial 0.02, ControlGrid44 and CubicSurface44](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.02%20ControlGrid44%20and%20CubicSurface44%20-%20page%2001.md)    
 [return to main page](http://edwardvmills.github.io/NURBSlib_EVM/)
@@ -14,6 +14,8 @@ If the title above made no sense to you, please refer to the beginning of this t
 ## Motivation
 
 ![target](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2000.png?raw=true)
+
+A straight line (zero curvature) blended into a true arc (constant curvature) by use of a blending curve. The curvature is continuous (this is not top grade surfacing yet, but it is an important step along the way)
 
 Matching curvature at the ends of a Bezier curve is very challenging. It is possible in some cases, but the result is then often unsatisfactory from a design standpoint. Since my goal is to design broad strokes with Bezier, i need a special curve/surface to cleanly join pairs of Bezier curves/surfaces. This is where ControlPoly6 and CubicCurve6 come into play. These objects can be used to model in their own right, but they were specifically created for the task of blending Bezier objects.
 
