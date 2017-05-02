@@ -170,7 +170,7 @@ What is the point  of steps 14 and 15 if just end up with the same arc?
 * usually we only need the polygon, so we sketch the arc, make the polygon, and skip making a curve. There is little extra effort to get the conversion
 
 Here is an example picture of blending a sketcher arc extrusion to a freeform surface with _exact_ matching at the seam. OUT OF SCOPE for this tutorial, i just want to show a concrete example.
-![21](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/blend%20arc%20to%2066%20demo/live%2066%2002.PNG?raw=true)
+![21](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/development_FC_models/parametric/FreeCAD%200.16/blend%20arc%20to%2066%20demo/live%2066%2002.PNG?raw=true)
 
 #### -16- BONUS ROUND
 For any single sketch, the ControlPoly4 macro uses Arc mode if there aren't exactly 3 sketch objects (3L mode). This always applies to the first geometry object in the sketch.
