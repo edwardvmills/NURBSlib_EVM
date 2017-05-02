@@ -5,7 +5,8 @@
 These are the objects that respectively:   
 -define a point at an editable parameter along a curve   
 -define a ControlPoly4 for a segment of a curve between two Point_onCurve objects   
--define a 6 point Poly based on two ControlPoly4   
+-define a ControlPoly6 based on two ControlPoly4. This control polygon gives 6 total points   
+-define a 6 point cubic NURBS curve that uses a ControlPoly6 to
 
 [go to tutorial 0.01, ControlPoly4 and CubicCurve4](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.01%20ControlPoly4%20and%20CubicCurve4.md)
 
