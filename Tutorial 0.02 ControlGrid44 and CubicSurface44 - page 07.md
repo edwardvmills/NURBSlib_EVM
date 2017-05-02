@@ -1,5 +1,5 @@
 
-##Tutorial 0.02 ControlGrid44 and CubicSurface44 - page 07
+## Tutorial 0.02 ControlGrid44 and CubicSurface44 - page 07
 [return to page 6](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.02%20ControlGrid44%20and%20CubicSurface44%20-%20page%2005.md)
 
 [return to first page](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.02%20ControlGrid44%20and%20CubicSurface44%20-%20page%2001.md)
@@ -17,7 +17,7 @@
 
 ![55](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2055.png?raw=true)
 
-####-32-
+#### -32-
 
 Now let's do a dramatic change: move the entire arc sketch downward by 200.
 Select the sketch and under the data tab, edit its placement, -200 in z
@@ -34,7 +34,7 @@ The node that is not moving correctly was drawn on XY, and tied to the arc throu
 
 The attachment editor is the correct way to connect sketches. Another advantage is we end up using the origin more in our sketches. This basically the first two contraints for free in every sketch.
 
-####-33-
+#### -33-
 
 select the disconnected node sketch, start the attachment editor, select the arc endpoint as a reference.
 
@@ -42,7 +42,7 @@ select the disconnected node sketch, start the attachment editor, select the arc
 
 The grid and surface disappear, but don't worry, they'll be right back. The node sketch is now tied to the arc point, but we need to edit the sketch drawing as well.
 
-####-34-
+#### -34-
 
 Edit the sketch. Place the circle of the node at the origin, which is now right at the end of the arc (make sure the line comes along as well). The polygon, grid and surface will snap right back.
 
