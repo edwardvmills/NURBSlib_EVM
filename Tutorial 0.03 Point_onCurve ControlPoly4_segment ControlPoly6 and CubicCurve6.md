@@ -38,11 +38,7 @@ I have included a starting point model, and a final model for the lazy.
 * set up two FreeCAD macros
 * Y minutes to follow the tutorial, up to Z hour to examine most variations
 
-
-
-# UNDER CONSTRUCTION - this line is the approximate end of correct content - everything below is simple copy/paste
-
-### Setup ControlGrid44 and CubicSurface44:
+### Setup Point_onCurve, ControlPoly4_segment, ControlPoly6, and CubicCurve6:
 from [master](https://github.com/edwardvmills/NURBSlib_EVM) /NURBSlib_EVM_python, copy:
 * Point_onCurve.FCMacro
 * ControlPoly4_segment.FCMacro
@@ -67,4 +63,6 @@ All Sketches _must_ be Sketcher Workbench sketches, not  Part Design workbench. 
 
 
 This Tutorial is split into several pages so there are no more than 10 full size screenshots per page.
-##[go to page 2](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.02%20ControlGrid44%20and%20CubicSurface44%20-%20page%2002.md)
+
+
+## [go to page 2](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.02%20ControlGrid44%20and%20CubicSurface44%20-%20page%2002.md)
