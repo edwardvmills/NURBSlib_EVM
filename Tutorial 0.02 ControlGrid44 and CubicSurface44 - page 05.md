@@ -39,7 +39,7 @@ Select the arc sketch and click the ControlPoly4 macro.
 
 #### -23-
 
-Select the two nodes on the leftt side and click the ControlPoly4 macro.
+Select the two nodes on the left side and click the ControlPoly4 macro.
 ![00](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/ControlPoly4.png?raw=true)
 
 ![36](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2036.png?raw=true)
