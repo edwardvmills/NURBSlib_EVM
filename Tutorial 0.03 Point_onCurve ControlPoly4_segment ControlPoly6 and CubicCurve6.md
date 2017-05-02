@@ -14,6 +14,8 @@ ControlPoly6 and CubicCurve6 respectively control and exploit a cubic NURBS curv
 
 The fact that there are 6 and not 4 control point while still limting the degree to cubic take us beyond Bezier objects to the first full NURBS of the library. The additional points allow us to set the curvature at each end of the curve independently. This is shown in the picture below. Given two Bezier curves that meet at a sharp corner, we can define arbitrary setbacks (red points) and blend the two curves between the red points and the corners.
 
+![target](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2000.png?raw=true)
+
 Limiting to cubic keeps tesselation and al internal NURBS function efficient.
 
 
