@@ -32,7 +32,7 @@ The node that is moving correctly was drawn on YZ, and then attached to the arc 
 
 The node that is not moving correctly was drawn on XY, and tied to the arc through a geomtry link. This only works  as long as the arc is also on XY! if not, the geometry link still works, but since it is projected onto the node sketch, this doesn't actually tie the two points together.
 
-The attachment editor is the correct way to connect sketches. Another advantage is we end up using the origin more in our sketches. This basically the first two contraints for free in every sketch.
+The attachment editor is the correct way to connect sketches. Another advantage is we end up using the origin more in our sketches. This basically gives the first two contraints for free in every sketch.
 
 #### -33-
 
