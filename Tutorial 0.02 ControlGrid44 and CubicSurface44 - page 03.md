@@ -11,7 +11,7 @@ We just edited **_Anchor - xy001_**, the light blue sketch. The **_zx001_** and 
 
 #### -8-
 
-Begin editing the **_zx001_** sketch. Please only perform the indicated change the tfirst time around
+Begin editing the **_zx001_** sketch. Please only perform the indicated change the first time around
 
 ![12](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2012.png?raw=true)
 
