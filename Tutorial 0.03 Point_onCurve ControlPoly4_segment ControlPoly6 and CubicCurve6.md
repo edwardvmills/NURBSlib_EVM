@@ -8,10 +8,8 @@ These are the objects that respectively:
 -define a ControlPoly6 based on two ControlPoly4. This control polygon gives 6 total points   
 -define a 6 point cubic NURBS curve that uses a ControlPoly6 to
 
-[go to tutorial 0.01, ControlPoly4 and CubicCurve4](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.01%20ControlPoly4%20and%20CubicCurve4.md)
-
-[go to Tutorial 0.02, ControlGrid44 and CubicSurface44](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.02%20ControlGrid44%20and%20CubicSurface44%20-%20page%2001.md)
-
+[go to tutorial 0.01, ControlPoly4 and CubicCurve4](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.01%20ControlPoly4%20and%20CubicCurve4.md)    
+[go to Tutorial 0.02, ControlGrid44 and CubicSurface44](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.02%20ControlGrid44%20and%20CubicSurface44%20-%20page%2001.md)    
 [return to main page](http://edwardvmills.github.io/NURBSlib_EVM/)
 
 # UNDER CONSTRUCTION - this line is the approximate end of correct content - everything below is simple copy/paste
