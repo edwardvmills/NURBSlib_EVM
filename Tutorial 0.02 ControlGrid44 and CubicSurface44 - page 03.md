@@ -5,7 +5,7 @@
 [return to first page](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.02%20ControlGrid44%20and%20CubicSurface44%20-%20page%2001.md)
 ### Usage - continued
 
-We just edited **_Anchor - xy001_**, the light blue sketch. The **_zx001_** and **_merge001_** sketches have updated as well.We are about to see how they are connected in one moment.
+We just edited **_Anchor - xy001_**, the light blue sketch. The **_zx001_** and **_merge001_** sketches have updated as well. We are about to see how they are connected in one moment.
 
 ![11](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2011.png?raw=true)
 
