@@ -1,4 +1,4 @@
-##Tutorial 0.02 ControlGrid44 and CubicSurface44 - page 04
+## Tutorial 0.02 ControlGrid44 and CubicSurface44 - page 04
 [return to page 3](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.02%20ControlGrid44%20and%20CubicSurface44%20-%20page%2003.md)
 
 [return to first page](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.02%20ControlGrid44%20and%20CubicSurface44%20-%20page%2001.md)
@@ -10,7 +10,7 @@ Create a node sketch as shown below. The 100 degree angle is measured from the x
 
 Close the Sketch
 
-####-13-
+#### -13-
 
 Go to TOP VIEW
 
@@ -26,7 +26,7 @@ Draw an arc of circle as shown. the center is constrained to the y axis and ther
 
 Close the sketch
 
-####-14-
+#### -14-
 
 Click into empty space to make sure nothing is selected.
 
@@ -40,7 +40,7 @@ Draw the node shown below. the circle is on the linked arc end point. This is th
 
 ![25](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2025.png?raw=true)
 
-####-15-
+#### -15-
 
 Click into empty space to make sure nothing is selected.
 
@@ -54,7 +54,7 @@ Draw the node shown below. the circle is on the origin.
 
 ![27](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2027.png?raw=true)
 
-####-16-
+#### -16-
 
 Select the last drawn sketch (on YZ) and activate the attachment editor. Select the right side endpoint of the arc sketch as a reference object.
 
@@ -64,7 +64,7 @@ Once the arc enfpoint is selected, the node moves over to the arc. **Attachment 
 
 ![29](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2029.png?raw=true)
 
-####-17-
+#### -17-
 
 Spin the model around to get a feel for where we are, and how the sketches so far relate to each other and the base planes. Inspect the DAG view in the next picture:
 * there are 3 independent groups
@@ -74,4 +74,4 @@ Spin the model around to get a feel for where we are, and how the sketches so fa
 
 ![30](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2030.png?raw=true)
 
-##[Go to page 5](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.02%20ControlGrid44%20and%20CubicSurface44%20-%20page%2005.md)
+## [Go to page 5](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.02%20ControlGrid44%20and%20CubicSurface44%20-%20page%2005.md)
