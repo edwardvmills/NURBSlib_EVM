@@ -95,7 +95,7 @@ In this window, change one of the weights. Hit OK to close the editor window
 #### -7-
 Hit F5 to recompute the model. In the case shown in the picture, raising the weights from 1.0 to 4.0 for the second pole causes the curve to be drawn towards the second pole.
 ![08](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_08%20the%20CubicCurve4%20object%20updates%20to%20the%20modified%20ControlPoly4%20weight.png?raw=true)
-The weights can be used to influence the model directly, but it is not recommended as a basic modeling strategy. The primary function of the weights is to allow exact conversion of arcs of cricles (and ellipses and other conics). This is done automatically and generally shouldn't be messed with. The mechanism is exposed here to present the python object model.
+The weights can be used to influence the model directly, but it is not recommended as a basic modeling strategy. The primary function of the weights is to allow exact conversion of arcs of circles (and ellipses and other conics). This is done automatically and generally shouldn't be messed with. The mechanism is exposed here to present the python object model.
 
 #### -8-
 Start a new sketch on the xy plane. Draw 1 circle and 1 line. The line must have one point (end point or start point) exactly on the circle center. Do not put anything else in the sketch. Place it so it doesn't overlap the first sketch. Odd angles are good, as they will show us more later. The Sketch _must_ be from the sketcher workbench, not the part design workbench.
