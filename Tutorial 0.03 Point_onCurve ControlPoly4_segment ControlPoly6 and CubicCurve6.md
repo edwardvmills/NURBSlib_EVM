@@ -2,7 +2,10 @@
 
 ## Point_onCurve, ControlPoly4_segment, ControlPoly6, and CubicCurve6 macros in NURBSlib_EVM
 
-These are the objects that respectively control and exploit a rational bicubic bezier surface.
+These are the objects that respectively:
+-define a point at an editable parameter along a curve
+-define a ControlPoly4 for a segment of a curve between two Point_onCurve objects
+-define a 6 point Poly based on two ControlPoly4
 
 [go to tutorial 0.01, ControlPoly4 and CubicCurve4](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.01%20ControlPoly4%20and%20CubicCurve4.md)
 [go to Tutorial 0.02, ControlGrid44 and CubicSurface44](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.02%20ControlGrid44%20and%20CubicSurface44%20-%20page%2001.md)
