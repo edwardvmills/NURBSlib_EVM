@@ -2,15 +2,20 @@
 
 ## Point_onCurve, ControlPoly4_segment, ControlPoly6, and CubicCurve6 macros in NURBSlib_EVM
 
-These are the objects that respectively:   
--define a point at an editable parameter along a curve   
--define a ControlPoly4 for a segment of a curve between two Point_onCurve objects   
--define a ControlPoly6 based on two ControlPoly4. This control polygon gives 6 total points   
--define a 6 point cubic NURBS curve that uses a ControlPoly6 to
+Point_onCurve and ControlPoly4_segment respectively define points along a curve and sections of a curve.
+
+ControlPoly6 and CubicCurve6 respectively control and exploit a cubic NURBS curve of 6 control points. 
 
 [go to tutorial 0.01, ControlPoly4 and CubicCurve4](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.01%20ControlPoly4%20and%20CubicCurve4.md)    
 [go to Tutorial 0.02, ControlGrid44 and CubicSurface44](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.02%20ControlGrid44%20and%20CubicSurface44%20-%20page%2001.md)    
 [return to main page](http://edwardvmills.github.io/NURBSlib_EVM/)
+
+## Motivation
+
+The fact that there are 6 and not 4 control point while still limting the degree to cubic take us beyond Bezier objects to the first full NURBS of the library. The additional points allow us to set the curvature at each end of the curve independently. This is shown in the picture below. Given two Bezier curves that meet at a sharp corner, we can define arbitrary setbacks (red points) and blend the two curves between the red points and the corners.
+
+Limiting to cubic keeps tesselation and al internal NURBS function efficient.
+
 
 # UNDER CONSTRUCTION - this line is the approximate end of correct content - everything below is simple copy/paste
 
