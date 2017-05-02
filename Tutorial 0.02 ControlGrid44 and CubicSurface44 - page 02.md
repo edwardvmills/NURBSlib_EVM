@@ -1,8 +1,8 @@
-##Tutorial 0.02 ControlGrid44 and CubicSurface44 - page 02
+## Tutorial 0.02 ControlGrid44 and CubicSurface44 - page 02
 [return to page 1](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.02%20ControlGrid44%20and%20CubicSurface44%20-%20page%2001.md)
 
 ### Usage
-####-1-
+#### -1-
 Open **_ControlGrid44 and CubicSurface44 bare bones.FCStd_**
 
 I recommend you immediately save it as **_ControlGrid44 and CubicSurface44 in progress.FCStd_** or some other name you like. This is to maintain a fresh copy of the starting point.
@@ -19,13 +19,13 @@ FreeCAD will ask if we wish to copy the objects the folder itself depends on, se
 
 ![02](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2002.png?raw=true)
 
-####-2-
+#### -2-
 
 Hit CTRL-V (paste). Rename the folder to **_3D node controller - front left_**
 
 ![03](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2003.png?raw=true)
 
-####-3-
+#### -3-
 Expand the folder and select **_Anchor - xy001_** (mine has 001 added to the contents, because i copied/pasted once exactly. If you do it over and over, you will get 002, 003, 004, etc added to your object names. Pay attention to the screenshots, because our object names will probably get out of sync. if you want, you can use the screenshots to see my object names and adjust yours. Select an object and hit F2 to rename it)
 
 Go to the Part workbench, under menu Part, select the **attachment...** entry in the menu list. (i have added this function to a custom toolbar so i don't have to switch around the workbenches so much)
@@ -44,7 +44,7 @@ The **Attachment mode** is automatically set to **Translate origin** because we 
 
 ![06](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2006.png?raw=true)
 
-####-4-
+#### -4-
 After exiting the Attachment Editor, **_Anchor - xy001_** is flagged for recomputation. Hit F5 to recompute the model
 
 ![07](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2007.png?raw=true)
@@ -53,20 +53,20 @@ After recomputation, we see that the entire group of sketches has moved to the l
 
 **_Reattaching the Anchor moves the entire group. Collections of interlinked sketches can be reused simply by copying and pasting a folder. As long as you give the folder a good name, it is not necessary to rename each item inside. As long as you can easily identify the 'root', or 'Anchor' element, you can reuse the entire group_**
 
-####-5-
+#### -5-
 Hide the original **_3D node controller blank - COPY-PASTE THIS FOLDER_** folder 
 ![08](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2008.png?raw=true)
 
-####-6-
+#### -6-
 Begin editing the **_Anchor - xy0001_** sketch. Please follow the instructions exactly the first time. This sketch is not _invincible_, it is just a demonstration, and it can be broken easily if used outside of its scope. there will be occasion to come back and play around with it some more later.
 
 Shown below is the sketch state in the original file
 ![09](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2009.png?raw=true)
 
-####-7- 
+#### -7- 
 
 change the angle from -20 to 85 degrees
 
 ![10](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2010.png?raw=true)
 
-##[go to page 3](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.02%20ControlGrid44%20and%20CubicSurface44%20-%20page%2003.md)
+## [go to page 3](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.02%20ControlGrid44%20and%20CubicSurface44%20-%20page%2003.md)
