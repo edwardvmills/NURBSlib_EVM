@@ -42,7 +42,7 @@ I have included a starting point model, and a final model for the lazy.
 ### Specific investment of time required:
 * X minutes to read this page and get an idea of what you might get out of it
 * download six files from this repository (10 files if you want icons)
-* set up two FreeCAD macros
+* set up four FreeCAD macros
 * Y minutes to follow the tutorial, up to Z hour to examine most variations
 
 ### Setup Point_onCurve, ControlPoly4_segment, ControlPoly6, and CubicCurve6:
