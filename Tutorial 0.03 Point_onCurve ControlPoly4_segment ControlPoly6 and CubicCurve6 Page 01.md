@@ -19,7 +19,7 @@ A straight line (zero curvature) blended into a true arc (constant curvature) by
 
 Matching curvature at the ends of a Bezier curve is very challenging. It is possible in some cases, but the result is then often unsatisfactory from a design standpoint. Since my goal is to design broad strokes with Bezier, i need a special curve/surface to cleanly join pairs of Bezier curves/surfaces. This is where ControlPoly6 and CubicCurve6 come into play. These objects can be used to model in their own right, but they were specifically created for the task of blending Bezier objects.
 
-The fact that there are 6 and not 4 control point while still limiting the degree to cubic takes us beyond Bezier objects to the first full NURBS of the library. The additional points allow us to set the curvature at each end of the curve independently. This is shown in the picture above. Given two Bezier curves that meet at a sharp corner, we can define arbitrary setbacks (red points), and blend the two curves between the setbacks and the corners. In the picture above, the various curves are extruded using simple FreeCAD functions to allow us to quickly see the highlights of the curves. This is a handy way to examine curves before building complex grids and surfaces
+The fact that there are 6 and not 4 control point while still limiting the degree to cubic takes us beyond Bezier objects to the first full NURBS of the library. The additional points allow us to set the curvature at each end of the curve independently. This is shown in the picture above. Given two Bezier curves that meet at a sharp corner, we can define arbitrary setbacks (red points), and blend the two curves between the setbacks and the corners.  
 
 Limiting the NURBS to cubic keeps tesselation and all internal NURBS functions efficient. The ControlPoly6 of the blend above is shown *out of the box*. It gives curvature continuity (G2), and the default settings are ok for rough drafts. There are manually adjustable parameters that can get us to G3, or very close, with careful tuning. These adjustments are a topic onto themselves and will only be glanced at here.
 
@@ -119,6 +119,8 @@ Right now, clicking and adjusting manually are the only two ways to set the para
 Add more points on the curves as shown in the pictures below (and make them red and size 5.0 as well)
 * Arc curve, very close to the corner of the two curve. Set u to 1.0, so it is in the corner istelf
 * Arc curve, very close tot he far left end. Set u to 0.0 so it is on the far edge
+* Line curve, towards the corner, but not too close. Set u to 0.22
+* Line curve, towards the right end. Set u to 0.7
 
 ![06](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2006.png?raw=true)
 
@@ -127,10 +129,6 @@ Add more points on the curves as shown in the pictures below (and make them red 
 ![08](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2008.png?raw=true)
 
 ![09](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2009.png?raw=true)
-
-
-
-# UNDER CONSTRUCTION
 
 This Tutorial is split into several pages so there are no more than 10 full size screenshots per page.
 
