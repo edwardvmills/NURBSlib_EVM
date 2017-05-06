@@ -4,15 +4,19 @@
 [return to first page](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.03%20Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%20-%20page%2001.md)
 
 ### Usage - Continued
-#### -2- Continued
+#### -3-
+
+* Pick the first segment polygon, hit CubicCurve_4 (https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/CubicCurve_4.png?raw=true)
+* Set the curve color to dark orange
+
 
 ![20](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2020.png?raw=true)
 
-* create a new folder in the model tree and put all the Point_onCurve objets in it
+
 
 ![21](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2021.png?raw=true)
 
-* Arc curve, very close to the far left end. Set u to 0.0 so it is on the far edge
+
 
 ![22](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2022.png?raw=true)
 
