@@ -54,6 +54,6 @@ Edit the sketch. Place the circle of the node at the origin, which is now right 
 
 ![60](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlGridd44%20and%20CubicSurface44/ControlGrid44%20and%20CubicSurface44%2060.png?raw=true)
 
-## [Go to Tutorial 0.03](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.03%20Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6.md)
+## [Go to Tutorial 0.03](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.03%20Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6 - page 01.md)
 
 [return to main page](http://edwardvmills.github.io/NURBSlib_EVM/)
