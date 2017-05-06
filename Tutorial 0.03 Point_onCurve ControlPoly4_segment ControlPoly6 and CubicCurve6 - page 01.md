@@ -120,7 +120,7 @@ Right now, clicking and adjusting manually are the only two ways to set the para
 #### -2-  
 
 Add more points on the curves as shown in the pictures below (and make them red and size 5.0 as well)
-* Arc curve, very close to the corner of the two curve. Set u to 1.0, so it is in the corner istelf
+* Arc curve, very close to the corner of the two curve. Set u to 1.0, so it is in the corner itself
 
 ![06](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2006.png?raw=true)
 
@@ -128,7 +128,11 @@ Add more points on the curves as shown in the pictures below (and make them red 
 
 ![08](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2008.png?raw=true)
 
-* Arc curve, very close tot he far left end. Set u to 0.0 so it is on the far edge
+Following the few next pictures: first create all the points, then select them all at once to change size and color, then adjust the u values
+ 
+* Arc curve, very close to the far left end. Set u to 0.0 so it is on the far edge
+* Line curve, towards the corner, but not too close. Set u to 0.22
+* Line curve, towards the right end. Set u to 0.7
 
 ![09](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2009.png?raw=true)
 
