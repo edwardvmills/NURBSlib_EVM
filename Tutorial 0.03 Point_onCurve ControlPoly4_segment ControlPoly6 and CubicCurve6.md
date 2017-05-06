@@ -107,7 +107,9 @@ Hide the sketches and show the CubicCurve objects (select in tree and hit _space
 * the last parameter, labeled u, is the parametric position along the curve
 * change u to 0.60
 
-The point is created by default at the location of the mouse click. It is good to avoid clicking too cloe to the middle. By clicking much closer to one end of the curve or the other, the u value is always much closer to 0 or 1. This makes it easy to see which direction u  goes, and how to perform the adjustment you wish.
+The point is created by default at the location of the mouse click. It is good to avoid clicking too close to the middle. By clicking much closer to one end of the curve or the other, the u value is always much closer to 0 or 1. This makes it easy to see which direction u  goes, and how to slide the point along the curve in the direction you wish.
+
+Right now, clicking and adjusting manually are the only two ways to set the parameters.
 
 ![05](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2005.png?raw=true)
 
