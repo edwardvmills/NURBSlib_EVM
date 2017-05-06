@@ -83,9 +83,8 @@ This model contains a folder of starting elements:
 * CubicCurve_4 objects linked to the control polys above
 * extrusion surfaces for linked to the CubicCurve_4 objects above (these are made using the Part workbench extrude command, not PartDesign)
 
-#### -2-
-
-![02](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2002.png?raw=true)
+#### -2-   
+Hide the sketches and show the CubicCurve objects (selst in tree and hit _spacebar_ to toggle visibility
 
 ![02](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2002.png?raw=true)
 
