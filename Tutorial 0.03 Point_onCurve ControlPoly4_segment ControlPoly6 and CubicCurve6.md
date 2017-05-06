@@ -116,9 +116,9 @@ Right now, clicking and adjusting manually are the only two ways to set the para
 
 #### -2-  
 
-Add more points on the curves as shown in the pictures below
-* Arc curve, very close to the corner of the two curve
-* Arc curve, very close tot he far left end
+Add more points on the curves as shown in the pictures below (and make them red and size 5.0 as well)
+* Arc curve, very close to the corner of the two curve. Set u to 1.0, so it is in the corner istelf
+* Arc curve, very close tot he far left end. Set u to 0.0 so it is on the far edge
 
 ![06](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2006.png?raw=true)
 
