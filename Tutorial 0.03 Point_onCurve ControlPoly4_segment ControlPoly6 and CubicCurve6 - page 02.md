@@ -7,7 +7,7 @@
 
 ![10](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2010.png?raw=true)
 
-Create a new folder in the model tree and put all the Point_onCurve objets in it
+* create a new folder in the model tree and put all the Point_onCurve objets in it
 
 ![11](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2011.png?raw=true)
 
