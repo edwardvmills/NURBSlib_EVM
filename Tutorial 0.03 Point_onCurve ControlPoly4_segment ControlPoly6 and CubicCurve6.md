@@ -96,10 +96,18 @@ Hide the sketches and show the CubicCurve objects (select in tree and hit _space
 
 * select the Point_onCurve object in the model tree
 * go to the view tab
-* set size to 5 .0
+* set size to 5.0
 * set color to red
 
 ![04](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2004.png?raw=true)
+
+* with the Point_onCurve object still selected, go to the view tab
+* note the link to the reference curve
+* note that the object has a Position property (which is used by other objects)
+* the last parameter, labeled u, is the parametric position along the curve
+* change u to 0.60
+
+The point is created by default at the location of the mouse click. It is good to avoid clicking too cloe to the middle. By clicking much closer to one end of the curve or the other, the u value is always much closer to 0 or 1. This makes it easy to see which direction u  goes, and how to perform the adjustment you wish.
 
 ![05](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2005.png?raw=true)
 
