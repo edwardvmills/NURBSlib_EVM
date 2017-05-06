@@ -74,7 +74,7 @@ Open **_Point_onCurve ControlPoly4_segment ControlPoly6 and CubicCurve6 00 start
 
 I recommend you immediately save it as **_Point_onCurve ControlPoly4_segment ControlPoly6 and CubicCurve6 in progress.FCStd_** or some other name you like. This is to maintain a fresh copy of the starting point.
 
-![01](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2001.pngg?raw=true)
+![01](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2001.png?raw=true)
 
 This model contains some starting elements:
 * a folder containing a set of linked sketches that form a 3D pointer
