@@ -92,7 +92,7 @@ Hide the sketches and show the CubicCurve objects (select in tree and hit _space
 
 ![02](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2002.png?raw=true)
 
-* click the arc CubicCurve_4 between its center and where the two curves meet (see picture below
+* click the arc CubicCurve_4 between its center and where the two curves meet (see picture below)
 * hit the Point_onCurve macro ![Point_onCurve](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/Point_OnCurve.png?raw=true)
 
 ![03](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2003.png?raw=true)
