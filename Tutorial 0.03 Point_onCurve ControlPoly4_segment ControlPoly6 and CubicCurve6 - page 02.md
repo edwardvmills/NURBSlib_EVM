@@ -36,11 +36,11 @@ We are going to cut the curve based on the points we just created. Remember to i
 
 ![16](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2016.png?raw=true)
 
+![17](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2017.png?raw=true)
+
 A ControlPoly4_segment object is created. Select it and go to the data tab. You can see a link to the underlying curve, and links to the two points.
 
 As explained in the first tutorial, the default behavior of the library is to create a control polygon or a control grid first, instead of curves and surfaces directly.
-
-![17](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2017.png?raw=true)
 
 Let's keep making segments!
 
