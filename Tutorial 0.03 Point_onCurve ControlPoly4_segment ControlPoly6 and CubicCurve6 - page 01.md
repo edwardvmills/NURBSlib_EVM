@@ -1,15 +1,18 @@
 # Tutorial 0.03   
 
+## Blending the corner of two cubic Bezier curves
+
 ## Point_onCurve, ControlPoly4_segment, ControlPoly6, and CubicCurve6 macros in NURBSlib_EVM
+
+The methods shown here to work with curves are almost identical to the methods used to work with surfaces.
 
 Point_onCurve and ControlPoly4_segment respectively define points along a curve and sections of a curve (at those points).
 
 ControlPoly6 and CubicCurve6 respectively control and exploit a cubic NURBS curve of 6 control points. 
 
-For clarification, please refer to the beginning of this tutorial series   
 [go to tutorial 0.01, ControlPoly4 and CubicCurve4](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.01%20ControlPoly4%20and%20CubicCurve4.md)    
 [go to Tutorial 0.02, ControlGrid44 and CubicSurface44](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.02%20ControlGrid44%20and%20CubicSurface44%20-%20page%2001.md)    
-[return to main page](http://edwardvmills.github.io/NURBSlib_EVM/)
+[return to the main project page](http://edwardvmills.github.io/NURBSlib_EVM/)
 
 ## Motivation
 
