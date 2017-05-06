@@ -76,9 +76,16 @@ I recommend you immediately save it as **_Point_onCurve ControlPoly4_segment Con
 
 ![01](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2001.png?raw=true)
 
-This model contains some starting elements:
-* a folder containing a set of linked sketches that form a 3D pointer
-* a three line sketch on the zx plane
+This model contains a folder of starting elements:
+* a sketch of a straight line
+* a sketch of an arc connected to the straight line at one end
+* ControlPoly4_Arc objects linked to the straight line sketch (refer to tutorial one if you're curious why both use the "Arc" type. it's just the quick and easy cheat for a a simple example)
+* CubicCurve_4 objects linked to the control polys above
+* extrusion surfaces for linked to the CubicCurve_4 objects above (these are made using the Part workbench extrude command, not PartDesign)
+
+#### -2-
+
+![02](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2002.png?raw=true)
 
 # UNDER CONSTRUCTION
 
