@@ -25,6 +25,15 @@
 
 ![15](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2015.png?raw=true)
 
+### -2-
+
+We are going to cut the curve based on the points we just created. Remember to identify the objects you wish to select, and select in the model tree. Selection in the 3D view is unpredictable, especially if you need a Point_onCurve on top of a curve endpoint.
+
+* select the CubicCurve_4 of the arc
+* ctrl-select the first Point_onCurve (the corner of the two curves)
+* ctrl-select the second Point_onCurve (middle of the arc curve)
+* hit the ControlPoly4_segment macro ![Point_onCurve](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/ControlPoly4_segment.png?raw=true)
+
 ![16](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2016.png?raw=true)
 
 ![17](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2017.png?raw=true)
