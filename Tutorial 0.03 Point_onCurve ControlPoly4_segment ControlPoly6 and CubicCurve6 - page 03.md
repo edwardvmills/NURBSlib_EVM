@@ -6,7 +6,7 @@
 ### Usage - Continued
 #### -3-
 
-* Pick the first segment polygon, hit CubicCurve_4 ![CubicCurve_4](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/CubicCurve_4.png?raw=true)
+* Pick the first segment polygon, hit CubicCurve_4 ![CubicCurve4](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/CubicCurve4.png?raw=true)
 * Set the curve color to dark orange
 
 
