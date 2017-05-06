@@ -8,7 +8,7 @@
 
 * Pick the first segment polygon, hit CubicCurve_4 ![CubicCurve4](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/CubicCurve4.png?raw=true)
 * Set the curve color to dark orange
-
+* repeat for second segment polygon
 
 ![20](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2020.png?raw=true)
 
