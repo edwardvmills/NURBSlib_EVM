@@ -126,9 +126,9 @@ Add more points on the curves as shown in the pictures below (and make them red 
 
 ![07](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2007.png?raw=true)
 
-* Arc curve, very close tot he far left end. Set u to 0.0 so it is on the far edge
-
 ![08](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2008.png?raw=true)
+
+* Arc curve, very close tot he far left end. Set u to 0.0 so it is on the far edge
 
 ![09](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2009.png?raw=true)
 
