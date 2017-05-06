@@ -24,7 +24,7 @@ Matching curvature at the ends of a Bezier curve is very challenging. It is poss
 
 The fact that there are 6 and not 4 control point while still limiting the degree to cubic takes us beyond Bezier objects to the first full NURBS of the library. The additional points allow us to set the curvature at each end of the curve independently. This is shown in the picture above. Given two Bezier curves that meet at a sharp corner, we can define arbitrary setbacks (red points), and blend the two curves between the setbacks and the corners.  
 
-Limiting the NURBS to cubic keeps tesselation and all internal NURBS functions efficient. The ControlPoly6 of the blend above is shown *out of the box*. It gives curvature continuity (G2), and the default settings are ok for rough drafts. There are manually adjustable parameters that can get us to G3, or very close, with careful tuning. These adjustments are a topic onto themselves and will only be glanced at here.
+Limiting the NURBS to cubic keeps  the tesselation process and all other internal NURBS functions efficient. The ControlPoly6 of the blend above is shown *out of the box*. It gives curvature continuity (G2), and the default settings are ok for rough drafts. There are manually adjustable parameters that can get us to G3, or very close, with careful tuning. These adjustments are a topic onto themselves and will only be glanced at here.
 
 ### Target audience for this specific tutorial
 This tutorial is meant to give a glimpse of the NURBSlib_EVM _library_ to knowledgable users of FreeCAD. No explanations of basic FreeCAD actions are provided at this time.
