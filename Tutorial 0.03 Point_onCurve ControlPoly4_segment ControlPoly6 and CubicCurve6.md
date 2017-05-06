@@ -81,12 +81,14 @@ This model contains a folder of starting elements:
 * a sketch of an arc connected to the straight line at one end
 * ControlPoly4_Arc objects linked to the straight line sketch (refer to [tutorial 0.01](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.01%20ControlPoly4%20and%20CubicCurve4.md) if you're curious why both use the "Arc" type. it's just the quick and easy cheat for a a simple example)
 * CubicCurve_4 objects linked to the control polys above
-* extrusion surfaces for linked to the CubicCurve_4 objects above (these are made using the Part workbench extrude command, not PartDesign)
+* extrusion surfaces for linked to the CubicCurve_4 objects above (these are made using the Part workbench extrude command, not PartDesign). Extruding a curve allows us to see the highlights of the curves. Bad highlights will make two curves that looked just fine by themselves look  very artificial when used in a surface. If you have worked through tutorial 0.02, you will appreciate the ability to quickly generate a surface without dealing with grids!
+
 
 #### -2-   
-Hide the sketches and show the CubicCurve objects (selst in tree and hit _spacebar_ to toggle visibility
+Hide the sketches and show the CubicCurve objects (select in tree and hit _spacebar_ to toggle visibility
 
 ![02](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2002.png?raw=true)
+
 
 ![03](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2003.png?raw=true)
 
