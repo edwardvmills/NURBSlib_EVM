@@ -51,9 +51,9 @@ Let's keep making segments!
 
 ![18](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2018.png?raw=true)
 
-![19](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2019.png?raw=true)
+Once you have your second segment polygon, select them both, change the line to size 1.0 light blue, point to size 4.0 dark blue.
 
-* hit the Point_onCurve macro ![Point_onCurve](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/Point_OnCurve.png?raw=true)
+![19](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2019.png?raw=true)
 
 This Tutorial is split into several pages so there are no more than 10 full size screenshots per page.
 
