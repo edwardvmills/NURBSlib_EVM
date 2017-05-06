@@ -89,6 +89,7 @@ Hide the sketches and show the CubicCurve objects (select in tree and hit _space
 
 ![02](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2002.png?raw=true)
 
+[Point_OnCurve(https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/Point_OnCurve.png?raw=true)
 
 ![03](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2003.png?raw=true)
 
