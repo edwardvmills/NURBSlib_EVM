@@ -128,7 +128,7 @@ Add more points on the curves as shown in the pictures below (and make them red 
 
 ![08](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2008.png?raw=true)
 
-Following the few next pictures: first create all the points, then select them all at once to change size and color, then adjust the u values
+Following the few next pictures: first create all the points, then select them all at once to change size and color, then adjust the u values (the details will be repeated along the way, this summary is to give an overview of aht we are doing)
  
 * Arc curve, very close to the far left end. Set u to 0.0 so it is on the far edge
 * Line curve, towards the corner, but not too close. Set u to 0.22
