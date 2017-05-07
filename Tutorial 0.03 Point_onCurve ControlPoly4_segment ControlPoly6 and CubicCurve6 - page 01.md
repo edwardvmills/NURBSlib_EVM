@@ -20,7 +20,9 @@ ControlPoly6 and CubicCurve6 respectively control and exploit a cubic NURBS curv
 
 A straight line (zero curvature) blended into a true arc (constant curvature) by use of a blending curve. The curvature is continuous (this is not top grade surfacing yet, but it is an important step along the way).
 
-Matching curvature at the ends of a Bezier curve is very challenging. It is possible in some cases, but the result is then often unsatisfactory from a design standpoint (the curvature matches, but the curves look _nothing_ like before). Since my goal is to design broad strokes with Bezier, i need a special curve/surface to cleanly join pairs of Bezier curves/surfaces. I want to so within *well cotrolled* region, and leave the curves *unchanged* outside of those regions. I want to be able to name the different sections as i wish in the model tree so i can find them and edit them in a logical manner. I *do NOT* want a single NURBS of degree 7, with 12 control points, and 20 knots in the knot vector. I want feature based surfacing!
+Matching curvature at the ends of a Bezier curve is very challenging. It is possible in some cases, but the result is then often unsatisfactory from a design standpoint (the curvature matches, but the curves look _nothing_ like before). Since my goal is to design broad strokes with Bezier, i need a special curve/surface to cleanly join pairs of Bezier curves/surfaces. 
+
+I want to do this within a *well controlled* region, and i want to leave the curves *unchanged* outside of those regions. I want to be able to name the different sections as i wish in the model tree so i can find them and edit them in a logical manner. I *do NOT* want a single NURBS of degree 7, with 12 control points, and 20 knots in the knot vector. I want feature based surfacing!
 
 This is where ControlPoly6 and CubicCurve6 come into play. These objects can be used to model in their own right, but they were specifically created for the task of blending Bezier objects.
 
