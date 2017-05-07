@@ -25,12 +25,18 @@ In the long term, the plan for this library is to introduce higher degree Bezier
 
 ![32](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2032.png?raw=true)
 
-This creates the actual curve associated witht eh ControlPoly6 object above.
+This creates the actual curve associated with the ControlPoly6 object above.
 * change color to dark orange
 
 ![33](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2033.png?raw=true)
 
+* Part Extrude the CubicCurve_6 object
+* check for duplicates surface/figure out where FreeCAD decide to put the curve (model tree or under the part extrude or both)
+* set diplay mode shaded, color light orange, same as the segment curve extrusion.
+
 ![34](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2034.png?raw=true)
+
+Having no visible edge lines and the same color for all three new surface segments is critical. Having lines visble where two surfaces join can give the illusion of a smooth join, but when you render or machine the model, there are no lines. All of a sudden the imperfections of the join will scream, and what seemed half decent will be seen as a failure!
 
 ![35](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2035.png?raw=true)
 
