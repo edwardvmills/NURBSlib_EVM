@@ -31,7 +31,7 @@ Sometimes Part Extrude creates multiple entities. Carefully deletes extras. insp
 
 Repeat steps -2- and -3- with the  line curve on the right
 * create segment polygons with the CubicCurve_4 object and the Point_onCurve objects
-* create CubicCurve_4 objects form the section polygons
+* create CubicCurve_4 objects from the section polygons
 * extrude the outer curve segment (far right side)
 * set colors and element sizes along the way. If you don't, you will likely be unable to hide/show the correct elements later on, as a result you will not be able to make the proper selections, create the correct new elements, or edit them if you somehow did.
 
