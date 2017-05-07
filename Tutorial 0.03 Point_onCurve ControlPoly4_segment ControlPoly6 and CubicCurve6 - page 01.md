@@ -1,6 +1,6 @@
 # Tutorial 0.03   - Page 01
 
-## Blending the corner of two cubic Bezier curves
+## Blending the corner of two cubic Bezier curves - tested on 0.17.10980
 
 ## Point_onCurve, ControlPoly4_segment, ControlPoly6, and CubicCurve6 macros in NURBSlib_EVM
 
