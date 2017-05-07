@@ -4,11 +4,11 @@
 [return to first page](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.03%20Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%20-%20page%2001.md)
 
 ### Usage - Continued
-#### -4-
+#### -5-
 
-* Pick the first segment polygon, hit CubicCurve_4 ![CubicCurve4](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/CubicCurve4.png?raw=true)
-* Set the curve color to dark orange
-* repeat for second segment polygon
+* select the two CubicCurve_4 objects that form the corner, hit ControlPoly6 ![CubicCurve4](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/ControlPoly6.png?raw=true)
+* Set the poly color to light blue
+* set the poly point color to dark blue, size 4.0
 
 ![30](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2030.png?raw=true)
 
