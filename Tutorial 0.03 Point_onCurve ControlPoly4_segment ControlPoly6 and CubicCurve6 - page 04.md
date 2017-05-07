@@ -33,12 +33,12 @@ This creates the actual curve associated with the ControlPoly6 object above.
 ![33](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2033.png?raw=true)
 
 * Part Extrude the CubicCurve_6 object
-* check for duplicates surface/figure out where FreeCAD decide to put the curve (model tree or under the part extrude or both)
+* check for duplicate surfaces/figure out where FreeCAD decided to put the curve (model tree or under the part extrude or both?)
 * set diplay mode shaded, color light orange, same as the segment curve extrusions.
 
 ![34](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2034.png?raw=true)
 
-Having no visible edge lines and the same color for all three new surface segments is critical. Having lines visble where two surfaces join can give the illusion of a smooth join, but when you render or machine the model, there are no lines. All of a sudden the imperfections of the join will scream, and what seemed half decent will be seen as a failure! Two surfaces side by side almost never look that bad, but when you patch many into a body, you really don't want to see all the seams. Think of them as scars. One scar can be sexy, but too many of them and you start to wonder...
+Having no visible edge lines and the same color for all three new surface segments is critical. Having lines visble where two surfaces join can give the illusion of a smooth join, but when you render or machine the model, there are no lines. All of a sudden the imperfections of the join will scream, and what seemed half decent will be seen as a failure! Two surfaces side by side almost never look that bad, but when you patch many into a body, you really don't want to see all the seams. Think of them as scars. One scar can be sexy, but too many of them and you start to wonder about life choices...
 
 In the pictures below we have curvature matching at the seams. This is a decent start.
 
