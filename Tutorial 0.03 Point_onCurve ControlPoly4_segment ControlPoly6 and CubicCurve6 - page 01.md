@@ -4,7 +4,7 @@
 
 ## Point_onCurve, ControlPoly4_segment, ControlPoly6, and CubicCurve6 macros in NURBSlib_EVM
 
-The methods shown here to work with curves are almost identical to the methods used to work with surfaces.  Learning the curve method will tell you if you wish to learn to manipulate the grid version (same but more parameters to set).
+The methods shown here to work with curves are almost identical to the methods used to work with surfaces.
 
 Point_onCurve and ControlPoly4_segment respectively define points along a curve and sections of a curve (at those points).
 
