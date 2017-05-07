@@ -27,7 +27,7 @@
 
 ### -2-
 
-We are going to cut the curve based on the points we just created. Remember to identify the objects you wish to select, and select in the model tree. Selection in the 3D view is unpredictable, especially if you need a Point_onCurve on top of a curve endpoint.
+We are going to cut the curve based on the points we just created. Remember to identify the objects you wish to select, and select in the model tree. Selection in the 3D view is unpredictable, especially if you need to selct a Point_onCurve which lies on top of a curve endpoint.
 
 * select the CubicCurve_4 of the arc
 * ctrl-select the first Point_onCurve (middle of the arc curve)
