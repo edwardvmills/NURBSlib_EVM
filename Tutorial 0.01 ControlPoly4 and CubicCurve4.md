@@ -4,7 +4,7 @@
 
 These are the objects that respectively control and exploit a rational cubic bezier curve
 
-[return to main page](http://edwardvmills.github.io/NURBSlib_EVM/)
+[return to main project page](http://edwardvmills.github.io/NURBSlib_EVM/)
 
 ### Target audience for this specific tutorial / presentation
 This tutorial is meant to give a glimpse of the NURBSlib_EVM _library_ to knowledgable users of FreeCAD. No explanations of basic FreeCAD actions are provided at this time.
