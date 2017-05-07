@@ -42,4 +42,4 @@ Repeat steps -2- and -3- with the  line curve on the right
 ![37](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2037.png?raw=true)
 
 
-This is the last tutorial for the library right now. [return to main page](http://edwardvmills.github.io/NURBSlib_EVM/)
+This is the last tutorial for the library right now. [return to project main page](http://edwardvmills.github.io/NURBSlib_EVM/)
