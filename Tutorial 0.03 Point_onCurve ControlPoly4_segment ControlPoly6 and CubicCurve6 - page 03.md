@@ -12,9 +12,11 @@
 
 ![20](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2020.png?raw=true)
 
-* select the arc curve segment on the left (away from the center). Use Part Extrude, 20 mm
-* sometimes Part Extrude creates multiple entities. Carefully deletes extras. inspect your model to make sure you don't an important element. Alternatively, just hide the extras, but this could be confusing later.
-* set the Display mode to shaded (hides the edges
+* select the arc curve segment on the left (away from the center). Use Part Extrude, 20 mm   
+
+Sometimes Part Extrude creates multiple entities. Carefully deletes extras. inspect your model to make sure you lose don't an important element. Alternatively, just hide the extras, but this could be confusing later. Sometimes Part Extrude moves the underlying curve out of the main model tree, sometimes it doesn't! If you try to delete something and it complains about links, cancel!   
+
+* set the Display mode to shaded (hides the edges)
 * set the color to light orange
 
 ![21](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2021.png?raw=true)
