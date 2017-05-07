@@ -19,8 +19,6 @@
 
 ![21](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2021.png?raw=true)
 
-
-
 ![22](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2022.png?raw=true)
 
 ![23](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2023.png?raw=true)
@@ -29,11 +27,11 @@
 
 ### -4-
 
-Repeat steps -2- and -3- witht eh line curve on the right
+Repeat steps -2- and -3- with the  line curve on the right
 * create segment polygons witht e CubicCurve_4 object and the Point_onCurve objects
 * create CubicCurve_4 objects form the section polygons
 * extrude the outer curve segment (far right side)
-set colors and element sizes along the way. If you didn't, you would likely be unable to hide/show the correct elements later on, as a result you would not be able to make the proper selections, create the correct new elements, or edit them if you somehow did.
+* set colors and element sizes along the way. If you didn't, you would likely be unable to hide/show the correct elements later on, as a result you would not be able to make the proper selections, create the correct new elements, or edit them if you somehow did.
 
 ![25](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2025.png?raw=true)
 
