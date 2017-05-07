@@ -111,7 +111,7 @@ Hide the sketches and show the CubicCurve objects (select in tree and hit _space
 * with the Point_onCurve object still selected, go to the data tab
 * note the link to the reference curve
 * note that the object has a Position property (which is used by other objects)
-* the last parameter, labeled u, is the parametric position along the curve
+* the last parameter, labeled u, is the parametric position along the curve (0.0 is start point, 1.0 is end point)
 * change u to 0.60
 
 
