@@ -6,9 +6,11 @@
 ### Usage - Continued
 #### -5-
 
-* select the two CubicCurve_4 objects that form the corner, hit ControlPoly6 ![CubicCurve4](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/ControlPoly6.png?raw=true)
+* select the two CubicCurve_4 objects that form the corner, hit ControlPoly6 ![ControlPoly6](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/ControlPoly6.png?raw=true)
 
 ![30](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2030.png?raw=true)
+
+![31](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2031.png?raw=true)
 
 This creates our first 6 point cubic NURBS, a ControlPoly6 of type ControlPoly6_FilletBezier. Once again, ControlPoly6 objects *can* be used to model directly, but they exist *for the purpose* of joining cubic bezier segment. The extra points on a ControlPoly6 give it flexibility, but also make it easy to make absolutely awfully ugly curves.
 
@@ -17,7 +19,9 @@ In the long term, the plan for this library is to introduce higher degree Bezier
 * Set the poly color to light blue
 * set the poly point color to dark blue, size 4.0
 
-![31](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2031.png?raw=true)
+### -6-
+
+* select the ControlPoly6_FilletBezier object, hit CubicCurve_6 ![CubicCurve6](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/icons/CubicCurve6.png?raw=true)
 
 ![32](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2032.png?raw=true)
 
