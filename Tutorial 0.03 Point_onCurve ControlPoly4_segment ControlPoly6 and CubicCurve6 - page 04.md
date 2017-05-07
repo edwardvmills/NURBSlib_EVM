@@ -12,7 +12,7 @@
 
 This creates our first 6 point cubic NURBS, a ControlPoly6 of type ControlPoly6_FilletBezier. Once again, ControlPoly6 objects *can* be used to model directly, but they exist *for the purpose* of joining cubic bezier segment. The extra points on a ControlPoly6 give it flexibility, but also make it easy to make absolutely awfully ugly curves.
 
-In the long term, the plan for this library is to introduce higher degree Bezier for main design flexibility (5 point Bezier is quartic, 6 points is quintic, etc), and to keep the NURBS *in the corners*, so to speak. Bezier curves have some *self smoothing* properties that keep it from kinking in the middle unexpectedly.
+In the long term, the plan for this library is to introduce higher degree Bezier for main design flexibility (5 point Bezier is quartic, 6 points is quintic, etc), and to keep the NURBS *in the corners*, so to speak. Bezier curves have some *self smoothing* properties that keep them from kinking in the middle unexpectedly. A general NURBS can be very rough *within its own borders*.
 
 * Set the poly color to light blue
 * set the poly point color to dark blue, size 4.0
