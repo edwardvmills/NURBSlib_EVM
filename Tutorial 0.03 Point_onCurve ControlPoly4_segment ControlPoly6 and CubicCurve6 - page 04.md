@@ -32,17 +32,21 @@ This creates the actual curve associated with the ControlPoly6 object above.
 
 * Part Extrude the CubicCurve_6 object
 * check for duplicates surface/figure out where FreeCAD decide to put the curve (model tree or under the part extrude or both)
-* set diplay mode shaded, color light orange, same as the segment curve extrusion.
+* set diplay mode shaded, color light orange, same as the segment curve extrusions.
 
 ![34](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2034.png?raw=true)
 
-Having no visible edge lines and the same color for all three new surface segments is critical. Having lines visble where two surfaces join can give the illusion of a smooth join, but when you render or machine the model, there are no lines. All of a sudden the imperfections of the join will scream, and what seemed half decent will be seen as a failure!
+Having no visible edge lines and the same color for all three new surface segments is critical. Having lines visble where two surfaces join can give the illusion of a smooth join, but when you render or machine the model, there are no lines. All of a sudden the imperfections of the join will scream, and what seemed half decent will be seen as a failure! Two surfaces side by side almost never look that bad, but when you patch many into a body, you really don't want to see all the seams. Think of them as scars. One scar can be sexy, but too many of them and you start to wonder...
+
+In the pictures below we have curvature matching at the seams. This is a decent start.
 
 ![35](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2035.png?raw=true)
 
 ![36](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2036.png?raw=true)
 
 ![37](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2037.png?raw=true)
+
+The next tutorial will deal with using the objects already present in this model to inspect seam quality and change the parameters manually to reach G3, *change of curvature* matching!
 
 
 This is the last tutorial for the library right now. [return to project main page](http://edwardvmills.github.io/NURBSlib_EVM/)
