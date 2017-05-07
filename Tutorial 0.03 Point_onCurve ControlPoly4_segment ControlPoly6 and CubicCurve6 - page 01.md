@@ -36,7 +36,7 @@ This tutorial is meant to give a glimpse of the NURBSlib_EVM _library_ to knowle
 I have included a starting point model, and a final model for the lazy.
 
 ### Requirements to follow this tutorial
-* [Tutorial 0.01](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.01%20ControlPoly4%20and%20CubicCurve4.md) is absolutely (especially the setup portion)
+* [Tutorial 0.01](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.01%20ControlPoly4%20and%20CubicCurve4.md) is absolutely mandatory(especially the setup portion)
 * [Tutorial 0.02](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.02%20ControlGrid44%20and%20CubicSurface44%20-%20page%2001.md) is highly recommended but not technically necessary 
 * ability to set up a macro in [FreeCAD](http://www.freecadweb.org/) 0.17 is required (Part.Line vs Part.LineSegment deprecation warning is fatal in 0.16)
 * ability to create sketches of lines and arcs in FreeCAD
