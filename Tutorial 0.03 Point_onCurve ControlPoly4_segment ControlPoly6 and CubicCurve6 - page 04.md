@@ -16,6 +16,8 @@ This creates our first 6 point cubic NURBS ontrol polygon, a ControlPoly6 of typ
 
 In the long term, the plan for this library is to introduce higher degree Bezier for main design flexibility (5 point Bezier is quartic, 6 points is quintic, etc), and to keep the NURBS *in the corners*, so to speak. Bezier curves have some *self smoothing* properties that keep them from kinking in the middle unexpectedly. A general NURBS can be very rough *within its own borders*.
 
+In this case, the ControlPoly6 looks carefully at the two curves it is linked to, determines the curvature on one end, on the other end, and makes a guess on the remaining dgrees of freedom in the NURBS to produce a reasonable poly.
+
 * Set the poly color to light blue
 * set the poly point color to dark blue, size 4.0
 
