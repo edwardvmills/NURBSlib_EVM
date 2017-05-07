@@ -72,15 +72,13 @@ In FreeCAD, set up macros for Point_onCurve, ControlPoly4_segment, ControlPoly6,
 
 All Sketches _must_ be Sketcher Workbench sketches, not  Part Design workbench. refer to [Tutorial 0.01](https://github.com/edwardvmills/NURBSlib_EVM/blob/gh-pages/Tutorial%200.01%20ControlPoly4%20and%20CubicCurve4.md)
 
-
-
-
 ### Usage
 #### -1-
 Open **_Point_onCurve ControlPoly4_segment ControlPoly6 and CubicCurve6 00 starting point.FCStd_**
 
 I recommend you immediately save it as **_Point_onCurve ControlPoly4_segment ControlPoly6 and CubicCurve6 in progress.FCStd_** or some other name you like. This is to maintain a fresh copy of the starting point.
 
+(all screenshots link to fullsize screenshots wher you can clearly read the model tree, see icons, and check to DAG view to understand the object dependencies)
 ![01](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6/Point_onCurve%20ControlPoly4_segment%20ControlPoly6%20and%20CubicCurve6%2001.png?raw=true)
 
 This model contains a folder of starting elements:
