@@ -1,3 +1,5 @@
+# ALL DEVELOPMENT HAS MIGRATED TO [SILK](https://edwardvmills.github.io/Silk/)
+
 ## NURBSlib_EVM
 My python scripts for creating surfaces in [FreeCAD](http://freecadweb.org/).   
 
