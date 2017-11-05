@@ -44,7 +44,7 @@ In FreeCAD, set up macros for ControlPoly4 and CubicCurve4. Wherever you do put 
 
 ### Usage
 #### -1-
-In FreeCAD, open a new document. Draw a sketch with 3 lines connected end to end. Nothing else should be in the sketch (for now). The Sketch _must_ be from the sketcher workbench, not the part design workbench.
+In FreeCAD, open a new document. Draw a sketch with 3 lines connected end to end in order (the second line drawn should connect to the first, and the third should connect to the second. Using the Sketcher Polyline tool will ensure this is always the case). Nothing else should be in the sketch (for now). The Sketch _must_ be from the sketcher workbench, not the part design workbench.
 ![01](https://github.com/edwardvmills/NURBSlib_EVM/blob/master/Tutorial%20Models/ControlPoly4%20and%20CubicCurve4/_01%20A%20sketch%20of%20three%20lines%20connected%20end%20to%20end.png?raw=true)
 #### -2-
 Select the 3 line sketch and click the ControlPoly4 macro
