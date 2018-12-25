@@ -52,6 +52,6 @@ The next tutorial will deal with using the objects already present in this model
 
 [return to project main page](http://edwardvmills.github.io/NURBSlib_EVM/)
 
-### Project has moved to [Silk Repository](http://edwardvmills.github.io/Silk/)
+### Project has moved to the [Silk Repository](http://edwardvmills.github.io/Silk/)
 
-### Next tutorial can be found on [FreeCAD forum](https://forum.freecadweb.org/viewtopic.php?f=22&t=23243&start=70#p188431) you can go back and read the erlier parts of the comment thread too, but the next logical point is where this link takes you to.
+### Next tutorial can be found on [FreeCAD forum](https://forum.freecadweb.org/viewtopic.php?f=22&t=23243&start=70#p188431) you can go back and read the earlier parts of the comment thread to see where the kayak model started. This links take you to a point where we start blending surfaces together.
