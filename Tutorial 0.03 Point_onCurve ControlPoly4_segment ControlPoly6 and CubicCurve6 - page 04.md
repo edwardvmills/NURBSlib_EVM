@@ -54,4 +54,4 @@ The next tutorial will deal with using the objects already present in this model
 
 ### Project has moved to [Silk Repository](http://edwardvmills.github.io/Silk/)
 
-### Next tutorial can be found on [FreeCAD forum](https://forum.freecadweb.org/viewtopic.php?f=22&t=23243&start=70#p188431)
+### Next tutorial can be found on [FreeCAD forum](https://forum.freecadweb.org/viewtopic.php?f=22&t=23243&start=70#p188431) you can go back and read the erlier parts of the comment thread too, but the next logical point is where this link takes you to.
