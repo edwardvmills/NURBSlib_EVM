@@ -53,6 +53,6 @@ The next tutorial will deal with using the objects already present in this model
 
 This is the last tutorial for the library right now. [return to project main page](http://edwardvmills.github.io/NURBSlib_EVM/)
 
-Project has movved to [return to project main page](http://edwardvmills.github.io/Silk/)
+Project has moved to [Silk Repository](http://edwardvmills.github.io/Silk/)
 
 Next tutorial can be found on [FreeCAD forum](https://forum.freecadweb.org/viewtopic.php?f=22&t=23243&start=70#p188431)
