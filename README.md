@@ -1,4 +1,7 @@
+# FOR REFERENCE ONLY
 # ALL DEVELOPMENT HAS MIGRATED TO [SILK](https://edwardvmills.github.io/Silk/)
+# LOTS OF GOOD INFO HERE, BUT DON"T TRY TO RUN THE CODE (USE SILK ABOVE)
+# MORE RECENT MODELS INCLUDED IN SILK (NEW FreeCAD VERSIONS BREAK OLD MODELS)
 
 ## NURBSlib_EVM
 My python scripts for creating surfaces in [FreeCAD](http://freecadweb.org/).   
